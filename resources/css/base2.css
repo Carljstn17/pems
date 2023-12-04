@@ -1,0 +1,43 @@
+.row-container{
+    width: 100%;
+	margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.col-container{
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+.navigation{
+    border-bottom: 1px solid grey;
+    z-index: 1;
+}
+.margin{
+    margin-top: 8rem;
+}
+.bg{
+    background-color: whitesmoke;
+}
+.hover{
+    transition: .5s;
+}
+.hover:hover{
+    transform: scale(1.01);
+}
+
+@media only screen and (max-width: 600px) {
+    .row-container{
+        grid-template-columns: repeat(1);
+    }
+    .col-container{
+        width: 100%;
+    }
+  }
+
