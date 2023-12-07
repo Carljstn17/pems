@@ -1,6 +1,5 @@
 .navigation{
     border-bottom: 1px solid grey;
-    z-index: 1;
 }
 
 .bg{
@@ -8,7 +7,7 @@
 }
 
 .sidebar{
-    z-index: 5;
+    position: relative;
 }
 
 html {

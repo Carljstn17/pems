@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Payroll;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+class PayrollController extends Controller
+{
+    public function showStaffPayroll()
+    {
+        return view('staff.payroll');
+    }
+    public function showPayrollLatest()
+    {
+        // $payrolls = Payroll::all();
+
+        return view('payroll.latest');
+    }
+    public function showPayrollNew()
+    {
+        return view('payroll.new');
+    }
+    public function showPayrollOngoing()
+    {
+        // $allPayrolls = Payroll::all()
+
+        return view('payroll.ongoing');
+    }
+    // public function showLatest($id)
+    // {
+    //     try {
+    //         $payrolls = Payroll::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+    //     } catch (ModelNotFoundException $e) {
+    //         abort(404);
+    //     }
+
+    //     return view('project.showproject')->with('payrolls', $payrolls);
+    // }
+
+    // public function showOngoing($id)
+    // {
+    //     try {
+    //         $allPayrolls = Payroll::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+    //     } catch (ModelNotFoundException $e) {
+    //         abort(404);
+    //     }
+
+    //     return view('project.showproject')->with('payrolls', $allPayrolls);
+    // }
+}

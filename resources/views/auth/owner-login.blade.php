@@ -19,23 +19,31 @@
 <div class="container-fluid">
     <div class="card mx-auto p-4" style="max-width: 400px;">
         <div class="card-body">
-            <h2 class="card-title text-center p-4">Login</h2>
+            <h2 class="card-title text-center p-4">Owner Login</h2>
 
             <form method="POST" action="{{ url('/owner/login') }}">
                 @csrf
 
                 <div class="form-group mb-2">
                     <label for="name"></label>
-                    <input type="name" name="name" class="form-control" placeholder="Username" required>
+                    <input type="name" name="name" class="form-control" placeholder="Username" id="name" :value="@old('name')" required>
                 </div>
+
+                    @error('name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+
 
                 <div class="form-group mb-2">
                     <label for="password"></label>
                     <div class="form-group mb-2">
-                        <input type="password" name="password" class="form-control" id="myInput" placeholder="Password" required>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Password" :value="@old('password')" required>
                         </div>
                     </div>
                 </div>
+                    @error('password')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
                 <div class="d-grid m-3 mb-5">
                     <button type="submit" class="btn btn-dark btn-block">Login</button>

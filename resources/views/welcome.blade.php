@@ -14,7 +14,7 @@
         @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
     </head>
     <body class="antialiased">
-        <main class="mx-auto" style="width:400px;">
+        <main class="mx-auto" style="width:380px;">
             <div class="row">
                 <div class="col-md-4 text-center">
                     <img src="{{ asset('image/logo.jpg') }}" alt="logo" class="img-fluid text-center">

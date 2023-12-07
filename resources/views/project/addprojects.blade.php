@@ -2,8 +2,14 @@
 
     <x-slot name="content">
         <div class="container-fluid">
+            <div class="mt-3">
+                <a href="{{ url()->previous() }}" class="link-dark text-decoration-none">
+                    <i class="fs-4 bi-backspace">back</i>
+                </a>
+            </div>
             <div class="py-12">
-                <div class="card mx-auto p-4 mt-5" style="max-width: 1000px;">
+                <div class="card mx-auto p-4 mt-3" style="max-width: 1000px;">
+                    <h1 class="fs-4 p-2">Add Project Form</h1>
                     <form action="{{ url('/staff/store') }}" method="POST">
                         @csrf
                         <div class="mb-3">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -15,6 +16,26 @@ class AuthController extends Controller
 
     public function ownerLogin(Request $request)
     {
+        $rules = [
+            'name' => 'required|string',
+            'password' => 'required|string',
+        ];
+    
+        // Custom error messages
+        $messages = [
+            'name.required' => 'Incorrect Username',
+            'password.required' => 'Incorrect Password',
+        ];
+    
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules, $messages);
+    
+        // Check if the validation fails
+        if ($validator->fails()) {
+            return redirect('/owner-login')
+                ->withErrors($validator)
+                ->withInput();
+        }
         $credentials = $request->only('name', 'password');
 
         if (Auth::attempt($credentials)) {
@@ -67,7 +88,7 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->intended('/');
     }
 
     public function displayUser()
@@ -84,6 +105,27 @@ class AuthController extends Controller
 
     public function staffLogin(Request $request)
     {
+        $rules = [
+            'name' => 'required|string',
+            'password' => 'required|string',
+        ];
+    
+        // Custom error messages
+        $messages = [
+            'name.required' => 'Incorrect Username',
+            'password.required' => 'Incorrect Password',
+        ];
+    
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules, $messages);
+    
+        // Check if the validation fails
+        if ($validator->fails()) {
+            return redirect('/staff-login')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $credentials = $request->only('name', 'password');
 
         if (Auth::attempt($credentials)) {

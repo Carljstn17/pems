@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProjectController extends Controller
 {
@@ -12,7 +13,7 @@ class ProjectController extends Controller
     {
         $projects = Project::all();
 
-        return view('staff.oprojects')->with('projects', $projects);
+        return view('project.oprojects')->with('projects', $projects);
     }
     public function store(Request $request)
     {
@@ -38,8 +39,15 @@ class ProjectController extends Controller
         ]);
         return redirect('/staff/ongoing-projects')->with('success', 'Employee registered successfully.');
     }
-    public function show($id){
+    public function show($id)
+    {
+        try {
+            $project = Project::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            abort(404);
+        }
 
+        return view('project.showproject')->with('project', $project);
     }
     public function showStaffProject()
     {
@@ -47,14 +55,14 @@ class ProjectController extends Controller
     }
     public function showNewProject()
     {
-        return view('staff.nprojects');
+        return view('project.nprojects');
     }
     public function showAllProject()
     {
-        return view('staff.aprojects');
+        return view('project.aprojects');
     }
     public function addProject()
     {
-        return view('staff.addprojects');
+        return view('project.addprojects');
     }
 }

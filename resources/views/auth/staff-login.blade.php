@@ -28,6 +28,9 @@
                     <label for="name"></label>
                     <input type="name" name="name" class="form-control" placeholder="Username" required>
                 </div>
+                @error('name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
                 <div class="form-group mb-2">
                     <label for="password"></label>
@@ -36,6 +39,9 @@
                         </div>
                     </div>
                 </div>
+                @error('password')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
                 <div class="d-grid m-3 mb-5">
                     <button type="submit" class="btn btn-dark btn-block">Login</button>

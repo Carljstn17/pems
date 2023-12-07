@@ -3,7 +3,6 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use App\Http\Middleware\CheckUserRole;
 
 class Kernel extends HttpKernel
 {
@@ -14,6 +13,14 @@ class Kernel extends HttpKernel
      *
      * @var array<int, class-string|string>
      */
+
+     protected $routeMiddleware = [
+        // Add your custom middleware here
+        'checkLogin' => \App\Http\Middleware\CheckLoginMiddleware::class,
+        'checkRole' => \App\Http\Middleware\CheckUserRole::class,
+        // ... other middleware
+    ];
+
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,

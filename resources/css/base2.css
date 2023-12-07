@@ -14,10 +14,11 @@
 html {
     overflow-x: hidden;
 }
-
+.sidebar{
+    position: relative;
+}
 .navigation{
     border-bottom: 1px solid grey;
-    z-index: 1;
 }
 .margin{
     margin-top: 8rem;
@@ -25,14 +26,28 @@ html {
 .bg{
     background-color: whitesmoke;
 }
-.hover{
+.hover,
+.hover2{
     transition: .5s;
-}
+}s
 .hover:hover{
+    opacity: .8;
     transform: scale(1.01);
 }
 
+.hover2:hover{
+    background-color: rgb(17, 17, 17);
+    transform: scale(1.005);
+}
+
+.latest{
+    background-color: white;
+}
+
 @media only screen and (max-width: 600px) {
+    .table-responsive{
+        width: 100%;
+    }
     .row-container{
         grid-template-columns: repeat(1);
     }
@@ -40,4 +55,22 @@ html {
         width: 100%;
     }
   }
+
+@media only screen and (max-width: 376px) {
+    .table-responsive{
+        width: 290px;
+    }
+  }
+
+.narrow-cell
+{
+    width: 20%;
+}
+
+input.no-border {
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
 

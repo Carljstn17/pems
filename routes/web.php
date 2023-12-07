@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProjectController;
 
 /*
@@ -19,10 +20,6 @@ use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/nav', function () {
-    return view('navigation');
 });
 
 //owner route
@@ -60,6 +57,14 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/all-projects', [ProjectController::class, 'showAllProject']);
     Route::get('/staff/add-projects', [ProjectController::class, 'addProject']);
     Route::post('/staff/store', [ProjectController::class, 'store']);
+    Route::get('/staff/show/{id}', [ProjectController::class, 'show'])->name('project.showproject');
+
+    Route::get('/staff/payroll', [PayrollController::class, 'showStaffPayroll'])->name('staff.payroll');
+    Route::get('/staff/payroll/latest', [PayrollController::class, 'showPayrollLatest']);
+    Route::get('/staff/payroll/new', [PayrollController::class, 'showPayrollNew']);
+    Route::get('/staff/payroll/on-going', [PayrollController::class, 'showPayrollOngoing']);
+    // Route::get('/staff/payroll/show-latest/{id}', [ProjectController::class, 'showLatest'])->name('payroll.');
+    // Route::get('/staff/payroll/all-ongoing/{id}', [ProjectController::class, 'showOngoing'])->name('payroll.');
 });
 
 

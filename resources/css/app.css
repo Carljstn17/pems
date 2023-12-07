@@ -8,12 +8,12 @@ main{
 
 @media only screen and (max-width: 600px) {
     .img-fluid{
-        width: 200px;
+        width: 150px;
         margin: auto;
     }
     main{
         width: 100%;
-        padding: 1rem;
-        margin-top: 2rem;
+        padding: 2rem;
+        margin: 0;
     }
   }
