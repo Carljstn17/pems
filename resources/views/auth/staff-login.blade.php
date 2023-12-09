@@ -26,9 +26,9 @@
 
                 <div class="form-group mb-2">
                     <label for="name"></label>
-                    <input type="name" name="name" class="form-control" placeholder="Username" required>
+                    <input type="text" name="username" class="form-control" placeholder="Username" required>
                 </div>
-                @error('name')
+                @error('username')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
 

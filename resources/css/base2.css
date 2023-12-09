@@ -36,8 +36,7 @@ html {
 }
 
 .hover2:hover{
-    background-color: rgb(17, 17, 17);
-    transform: scale(1.005);
+    opacity: .9;
 }
 
 .latest{
@@ -74,3 +73,20 @@ input.no-border {
     margin: 0;
 }
 
+.custom-date-input {
+    position: relative;
+}
+
+.custom-date-input input[type="date"]::before {
+    content: attr(placeholder);
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #000000;
+}
+
+.custom-date-input input[type="date"] {
+    padding-left: 80px; /* Adjust this value based on your design */
+}

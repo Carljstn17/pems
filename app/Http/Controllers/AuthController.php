@@ -17,13 +17,13 @@ class AuthController extends Controller
     public function ownerLogin(Request $request)
     {
         $rules = [
-            'name' => 'required|string',
+            'username' => 'required|string',
             'password' => 'required|string',
         ];
     
         // Custom error messages
         $messages = [
-            'name.required' => 'Incorrect Username',
+            'username.required' => 'Incorrect Username',
             'password.required' => 'Incorrect Password',
         ];
     
@@ -36,17 +36,17 @@ class AuthController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $credentials = $request->only('name', 'password');
+        $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
             $role = Auth::user()->role;
 
-            if ($role == 'admin') {
+            if ($role == 'owner') {
                 return redirect()->intended('/owner/dashboard');
             }
         }
 
-        return redirect('/owner-login')->withErrors(['name' => 'Invalid credentials']);
+        return redirect('/owner-login')->withErrors(['username' => 'Invalid credentials']);
     }
     public function showOwnerPanel()
     {
@@ -57,17 +57,22 @@ class AuthController extends Controller
     {
         // Validate the request
         $request->validate([
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users|max:255',
+            'contact' => 'required',
             'password' => 'required|string|min:8',
+            'role' => 'required|in:owner,staff,laborer',
         ]);
 
 
         User::create([
+            'username' => $request->input('username'),
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'contact' => $request->input('contact'),
             'password' => bcrypt($request->input('password')),
-            'role' => 'staff',
+            'role' => $request->input('role'),
         ]);
 
         return redirect('/owner/accounts')->with('success', 'Employee registered successfully.');
@@ -106,13 +111,13 @@ class AuthController extends Controller
     public function staffLogin(Request $request)
     {
         $rules = [
-            'name' => 'required|string',
+            'username' => 'required|string',
             'password' => 'required|string',
         ];
     
         // Custom error messages
         $messages = [
-            'name.required' => 'Incorrect Username',
+            'username.required' => 'Incorrect Username',
             'password.required' => 'Incorrect Password',
         ];
     
@@ -126,7 +131,7 @@ class AuthController extends Controller
                 ->withInput();
         }
 
-        $credentials = $request->only('name', 'password');
+        $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
             $role = Auth::user()->role;
@@ -136,7 +141,7 @@ class AuthController extends Controller
             }
         }
 
-        return redirect('/staff-login')->withErrors(['name' => 'Invalid credentials']);
+        return redirect('/staff-login')->withErrors(['username' => 'Invalid credentials']);
     }
     public function showStaffPanel()
     {

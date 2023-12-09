@@ -3,11 +3,26 @@
     <x-slot name="content">
         <div class="">
             <div class="mt-3">
-                <i class="fs-4 bi-person-plus"></i> <span class="fs-4 d-sm-inline">On-Going Projects</span>
+                <i class="fs-4 bi-buildings"></i> <span class="fs-4 d-sm-inline">Projects | On-going</span>
             </div>
            
             <div class="py-2">
-                <div class="mt-5">
+                <div class="d-flex justify-content-between border-bottom border-dark-subtle pb-3 gap-2">
+                        <a href="{{ url('/staff/add-projects') }}" class="btn btn-outline-primary mt-3" style="transition:0.8s;"">
+                            <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Add New Project</span>
+                            <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add</span>
+                        </a>
+
+                    <form action="{{ route('search') }}" method="GET" class="mt-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
+                            <button type="submit" class="btn btn-outline-primary">Search</button>
+                        </div>
+                    </form>
+
+                </div>
+                
+                <div class="mt-3 border-bottom border-dark-subtle pb-3">
                     <div class="row-container gap-3">
                         @forelse ($projects as $project)
                             <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
@@ -27,27 +42,21 @@
                                 </a>
                             </div>
                         @empty
-                        <p>No projects yet.</p>
+                        <div class="text-center col-span">
+                            <i class="fs-1 bi bi-box"></i>
+                            <p>No on-going projects yet.</p>
+                        </div>
                         @endforelse
 
                         {{-- {{ $projects->links() }} --}}
                     </div>
                 </div>
+
+                <div class="mt-3">
+                    <a href="{{ url('/staff/old-projects') }}" class="text-decoration-none">View Old Project</a>
+                </div>
+
             </div>
-        </div>
-
-        <div class="text-end fixed-bottom p-4 d-none d-sm-inline">
-            <button class="btn btn-primary mb-2 py-3 px-5">
-                <a href="{{ url('/staff/add-projects') }}" class="nav-link">Add New Project</a>
-            </button><br>
-            <button class="btn btn-primary py-3 px-5">View Old Project</button>
-        </div>
-
-        <div class="text-end fixed-bottom p-4 d-sm-inline d-sm-none">
-            <button class="btn btn-primary mb-2 p-2">
-                <a href="{{ url('/staff/add-projects') }}" class="nav-link">Add New</a>
-            </button><br>
-            <button class="btn btn-primary p-2">View Old</button>
         </div>
     </x-slot>
 

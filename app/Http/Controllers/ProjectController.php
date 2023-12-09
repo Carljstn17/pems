@@ -11,9 +11,9 @@ class ProjectController extends Controller
 {
     public function showOnProject()
     {
-        $projects = Project::all();
+        $projects = Project::where('status', 'new')->get();
 
-        return view('project.oprojects')->with('projects', $projects);
+        return view('project.onprojects')->with('projects', $projects);
     }
     public function store(Request $request)
     {
@@ -57,10 +57,38 @@ class ProjectController extends Controller
     {
         return view('project.nprojects');
     }
-    public function showAllProject()
+
+    public function finishProject($id)
     {
-        return view('project.aprojects');
+        $project = Project::find($id);
+    
+        if ($project) {
+            $project->status = 'old';
+            $project->save();
+        }
+    
+        // Redirect to the Old Project page or wherever you want to go
+        return redirect()->route('old-projects');
     }
+
+    public function displayOldProject()
+    {
+        $oldProjects = Project::where('status', 'old')->get();
+
+        return view('project.oldprojects', ['oldProjects' => $oldProjects]);
+    }
+
+    public function showOldProject($id)
+    {
+        $oldProject = Project::where('id', $id)->first();
+
+        if (!$oldProject) {
+            abort(404); // Or handle the not found case as appropriate for your application
+        }
+        // Your logic for displaying old projects
+        return view('project.showoldproject')->with('oldProject', $oldProject);
+    }
+
     public function addProject()
     {
         return view('project.addprojects');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payroll;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,7 +22,9 @@ class PayrollController extends Controller
     }
     public function showPayrollNew()
     {
-        return view('payroll.new');
+        $projects = Project::all();
+        
+        return view('payroll.new', compact('projects'));
     }
     public function showPayrollOngoing()
     {

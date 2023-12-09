@@ -43,7 +43,7 @@
                     
                         <div class="mb-3">
                             <input 
-                            type="text" 
+                            type="number" 
                             class="form-control" 
                             id="contract" 
                             name="contract" 

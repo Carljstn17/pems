@@ -26,10 +26,10 @@
 
                 <div class="form-group mb-2">
                     <label for="name"></label>
-                    <input type="name" name="name" class="form-control" placeholder="Username" id="name" :value="@old('name')" required>
+                    <input type="text" name="username" class="form-control" placeholder="Username" id="username" :value="@old('username')" required>
                 </div>
 
-                    @error('name')
+                    @error('username')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
 

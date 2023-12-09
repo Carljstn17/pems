@@ -7,6 +7,17 @@
         
         <form action="/action_page.php" method="post" class="pb-5">
 
+            <div class="">
+                <select name="project_id" id="project_id" class="form-select col col-md-2 col-sm-6 mb-1">
+                    @foreach($projects as $project)
+                        <option value="{{ $project->id }}">
+                            {{ $project->project_id }}
+                            <span>&nbsp;|&nbsp; {{ $project->project_dsc }}</span>
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <table class="table table-bordered" id="dataTable">
                 <thead>
                     <tr>
@@ -50,10 +61,11 @@
                 </tfoot>
             </table>
 
-            <button type="button" class="btn btn-success" onclick="addRow()">+ Add Row</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
-
-            <button type="button" class="btn btn-danger" onclick="clearForm()">Clear</button>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-success" onclick="addRow()">+ Add Row</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-danger justify-content-end" onclick="clearForm()">Clear</button>
+            </div>    
         
         </form>
 

@@ -23,6 +23,7 @@ html {
     }
     .row-container{
         grid-template-columns: repeat(1);
+        grid-column: span 2;
     }
     .col-container{
         width: 50%;
@@ -49,4 +50,9 @@ html {
     width: 100%;
     display: flex;
     overflow: hidden;
+}
+
+.col-span{
+    display: grid;
+    grid-column: span 2;
 }

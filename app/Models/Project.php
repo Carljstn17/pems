@@ -18,5 +18,6 @@ class Project extends Model
         'location',
         'date_started',
         'contact',
+        'status'
     ];
 }

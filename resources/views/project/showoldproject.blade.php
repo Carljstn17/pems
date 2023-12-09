@@ -13,22 +13,22 @@
                         <tbody class="table-light">
                             <tr>
                                 <th>
-                                    <span class="d-none d-sm-inline">PR ID: {{ $project->project_id }}</span>
-                                    <span class="d-sm-inline d-sm-none">Pr-id: {{ $project->project_id }}</span>
+                                    <span class="d-none d-sm-inline">PR ID: {{ $oldProject->project_id }}</span>
+                                    <span class="d-sm-inline d-sm-none">Pr-id: {{ $oldProject->project_id }}</span>
                                 </th>
                                 <th class="narrow-cell">
-                                    <span class="d-none d-sm-inline">Date started: {{ $project->Date_started }}</span>
-                                    <span class="d-sm-inline d-sm-none">Ds: {{ $project->Date_started }}</span>
+                                    <span class="d-none d-sm-inline">Date started: {{ $oldProject->Date_started }}</span>
+                                    <span class="d-sm-inline d-sm-none">Ds: {{ $oldProject->Date_started }}</span>
                                 </th>
                             </tr>
                             <tr>
                                 <th>
-                                    <span class="d-none d-sm-inline">Location: {{ $project->location }}</span>
-                                    <span class="d-sm-inline d-sm-none">Loc: {{ $project->location }}</span>
+                                    <span class="d-none d-sm-inline">Location: {{ $oldProject->location }}</span>
+                                    <span class="d-sm-inline d-sm-none">Loc: {{ $oldProject->location }}</span>
                                 </th>
                                 <th class="narrow-cell">
-                                    <span class="d-none d-sm-inline">Date created: {{ $project->created_at->format('Y-m-d') }}</span>
-                                    <span class="d-sm-inline d-sm-none">Dc: {{ $project->created_at->format('Y-m-d') }}</span>
+                                    <span class="d-none d-sm-inline">Date created: {{ $oldProject->created_at->format('Y-m-d') }}</span>
+                                    <span class="d-sm-inline d-sm-none">Dc: {{ $oldProject->created_at->format('Y-m-d') }}</span>
                                 </th>
                             </tr>
                         </tbody>
@@ -58,7 +58,7 @@
                             </tr>
                             <tr>
                                 <td>Contract Price</td>
-                                <td>{{ $project->contract }}</td>
+                                <td>{{ $oldProject->contract }}</td>
                             </tr>
                             <tr>
                                 <td>Difference</td>
@@ -67,8 +67,6 @@
                         </tbody>
                     </table>
                     </div>
-
-                    <a href="{{ url('finish-project', ['id' => $project->id]) }}" class="btn btn-danger">Finish Project</a>
                     
                     <div class="table-responsive mt-5">
                         <table class="table table-bordered">
@@ -81,17 +79,17 @@
                             <tbody>
                                 <tr>
                                     <td>Client</td>
-                                    <td>{{ $project->client }}</td>
+                                    <td>{{ $oldProject->client }}</td>
                                 </tr>
                                 <tr>
                                     <td>Contact</td>
-                                    <td>{{ $project->contact }}</td>
+                                    <td>{{ $oldProject->contact }}</td>
                                 </tr>
                                 <tr>
                                     <td>Created by</td>
                                     <td>
                                         @php
-                                            $user = \App\Models\User::find($project->user_id);
+                                            $user = \App\Models\User::find($oldProject->user_id);
                                             echo $user ? $user->name : 'User not found';
                                         @endphp
                                     </td>
