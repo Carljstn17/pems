@@ -66,7 +66,8 @@ html {
     width: 20%;
 }
 
-input.no-border {
+input.no-border,
+select.no-border {
     border: none;
     outline: none;
     padding: 0;

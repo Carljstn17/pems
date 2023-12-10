@@ -147,4 +147,53 @@ class AuthController extends Controller
     {
         return view('staff.dashboard');
     }
+
+
+    //laborer auth    
+    public function showLaborerLoginForm()
+    {
+        return view('auth.laborer-login');
+    }
+
+    public function laborerLogin(Request $request)
+    {
+        $rules = [
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ];
+    
+        // Custom error messages
+        $messages = [
+            'username.required' => 'Incorrect Username',
+            'password.required' => 'Incorrect Password',
+        ];
+    
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules, $messages);
+    
+        // Check if the validation fails
+        if ($validator->fails()) {
+            return redirect('/laborer-login')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $credentials = $request->only('username', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $role = Auth::user()->role;
+
+            if ($role == 'laborer') {
+                return redirect()->intended('/laborer/profile');
+            }
+        }
+
+        return redirect('/laborer-login')->withErrors(['username' => 'Invalid credentials']);
+    }
+    public function showLaborerPanel()
+    {
+        $laborers = User::where('id', Auth::id())->get();
+
+        return view('laborer.profile', ['laborers' => $laborers]);
+    }
 }

@@ -67,7 +67,7 @@
                                     <td>{{ $user->contact }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->username }}</td>
-                                    <td>{{ Str::limit($user->password, 10) }}</td>
+                                    <td style="overflow: hidden; text-overflow: ellipsis;">{{ $user->password }}</td>
                                     <td class="d-flex justify-content-center gap-2">               
                                         <!-- Update Button -->
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success">Update</a>

@@ -47,12 +47,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('/staff/estimate') }}" class="nav-link align-middle px-0 link-dark">
+                            <a href="{{ route('staff.estimate') }}" class="nav-link align-middle px-0 link-dark">
                                 <i class="fs-4 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Estimates</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('/staff/receipt') }}" class="nav-link align-middle px-0 link-dark">
+                            <a href="{{ route('staff.receipt') }}" class="nav-link align-middle px-0 link-dark">
                                 <i class="fs-4 bi-receipt"></i> <span class="ms-1 d-sm-inline">Receipt</span>
                             </a>
                         </li>

@@ -22,7 +22,7 @@
                 <thead>
                     <tr>
                         <th>NO.</th>
-                        <th>NAME</th>
+                        <th class="col-md-2">NAME</th>
                         <th>RATE PER DAY</th>
                         <th>NO. OF DAYS</th>
                         <th>OT</th>
@@ -36,7 +36,15 @@
                 <tbody>
                     <tr>
                         <td>1</td>
-                        <td><input type="text" class="form-control no-border" name="name[]"></td>
+                        <td>
+                            <select class="form-select no-border px-2" name="selectedLaborer[]" value="{{ old('selectedLaborer') }}">
+                                @foreach($laborers as $laborer)
+                                    <option value="{{ $laborer->id }}">
+                                        {{ Str::limit($laborer->name, 14) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
                         <td><input type="number" class="form-control no-border" name="rate_per_day[]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
                         <td><input type="number" class="form-control no-border" name="no_of_days[]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
                         <td><input type="number" class="form-control no-border" name="ot[]"></td>
@@ -49,7 +57,7 @@
         
                 <tfoot> 
                     <tr>
-                        <td colspan="2"><strong>Total</strong></td>
+                        <td colspan="2"><strong>TOTAL</strong></td>
                         <td><input type="text" class="form-control no-border" id="totalRate" name="totalRate" readonly></td>
                         <td></td>
                         <td></td>
@@ -85,7 +93,13 @@
         cellNum.innerHTML = table.rows.length;
         
         var cellName = newRow.insertCell(1);
-        cellName.innerHTML = '<input type="text" class="form-control no-border" name="name[]">';
+        cellName.innerHTML = `<select class="form-select no-border px-2" name="selectedLaborer[]" value="{{ old('selectedLaborer') }}">
+                                @foreach($laborers as $laborer)
+                                    <option value="{{ $laborer->id }}">
+                                        {{ Str::limit($laborer->name, 14) }}
+                                    </option>
+                                @endforeach
+                            </select>`;
         
         var cellRate = newRow.insertCell(2);
         cellRate.innerHTML = '<input type="number" class="form-control no-border" name="rate_per_day[]" oninput="calculateAmount(this.parentElement.parentElement)">';

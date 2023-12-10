@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Payroll;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -23,8 +24,9 @@ class PayrollController extends Controller
     public function showPayrollNew()
     {
         $projects = Project::all();
-        
-        return view('payroll.new', compact('projects'));
+        $laborers = User::where('role', 'laborer')->get();
+
+        return view('payroll.new', compact('projects', 'laborers'));
     }
     public function showPayrollOngoing()
     {

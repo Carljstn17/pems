@@ -7,6 +7,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\EstimateController;
+use App\Http\Controllers\ReceiptController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,9 +71,24 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/payroll/on-going', [PayrollController::class, 'showPayrollOngoing']);
     // Route::get('/staff/payroll/show-latest/{id}', [ProjectController::class, 'showLatest'])->name('payroll.');
     // Route::get('/staff/payroll/all-ongoing/{id}', [ProjectController::class, 'showOngoing'])->name('payroll.');
+
+    Route::get('/staff/estimate', [EstimateController::class, 'showStaffEstimate'])->name('staff.estimate');
+    Route::get('/staff/estimate/latest', [EstimateController::class, 'showLatestEstimate']);
+    Route::get('/staff/estimate/new', [EstimateController::class, 'showNewEstimate']);
+    Route::get('/staff/estimate/old', [EstimateController::class, 'showOldEstimate']);
+    Route::post('/items', [EstimateController::class, 'store'])->name('estimate.store');
+
+    Route::get('/staff/receipt', [ReceiptController::class, 'showStaffReceipt'])->name('staff.receipt');
 });
 
-
+// laborer login
+Route::get('/laborer-login', [AuthController::class, 'showLaborerLoginForm'])->name('laborer-login');
+Route::post('/laborer/login', [AuthController::class, 'laborerLogin']);
+// laborer auth
+Route::middleware(['auth', CheckUserRole::class . ':laborer'])->group(function () {
+    // Routes accessible only to owners
+    Route::get('/laborer/profile', [AuthController::class, 'showLaborerPanel']);
+});
 
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

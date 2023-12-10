@@ -39,6 +39,9 @@
                 <div class="row">
                     <a href="{{ url('staff-login') }}" class="btn btn-dark">Staff</a>
                 </div>
+                <div class="row">
+                    <a href="{{ url('laborer-login') }}" class="btn btn-dark">Laborer</a>
+                </div>
             </div>
 
         </main>
