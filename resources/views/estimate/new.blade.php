@@ -37,8 +37,9 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5" class="text-right"><strong>Total:</strong></td>
-                            <td><input type="text" class="form-control no-border" id="total" readonly></td>
+                            <td colspan="4"></td>
+                            <td class="text-right"><strong>Total Amount:</strong></td>
+                            <td><input type="text" class="form-control no-border" name="total_amount" id="total" readonly></td>
                             <td></td>
                         </tr>
                     </tfoot>
@@ -101,6 +102,9 @@
                     total += amount;
                 });
 
+                $("input[name='total_amount']").val(formatNumber(total));
+
+                // Update the total cell in the footer
                 $("#total").val(formatNumber(total));
             }
 

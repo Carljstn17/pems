@@ -77,6 +77,9 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/estimate/new', [EstimateController::class, 'showNewEstimate']);
     Route::get('/staff/estimate/old', [EstimateController::class, 'showOldEstimate']);
     Route::post('/items', [EstimateController::class, 'store'])->name('estimate.store');
+    Route::get('/staff/estimate/form/{group_id}', [EstimateController::class, 'show'])->name('estimate.form');
+    Route::get('/estimates/{estimate}/edit', [EstimateController::class, 'edit'])->name('estimates.edit');
+    Route::put('/estimates/{estimate}/update', [EstimateController::class, 'update'])->name('estimates.update');
 
     Route::get('/staff/receipt', [ReceiptController::class, 'showStaffReceipt'])->name('staff.receipt');
 });
