@@ -1,0 +1,31 @@
+[90m= [39m[34;4mIlluminate\Support\Collection[39;24m {#6335
+    [34mall[39m: [
+      {#6333
+        +"[1mid[22m": [35m1[39m,
+        +"[1muser_id[22m": [35m2[39m,
+        +"[1mdescription[22m": "[32mGravel and sand[39m",
+        +"[1muom[22m": [36mnull[39m,
+        +"[1mquantity[22m": [35m4[39m,
+        +"[1munit_cost[22m": "[32m1600.00[39m",
+        +"[1mamount[22m": "[32m6400.00[39m",
+        +"[1mtotal_amount[22m": "[32m23200.00[39m",
+        +"[1mgroup_id[22m": "[32mEstimateID-00001[39m",
+        +"[1mcreated_at[22m": "[32m2023-12-10 20:27:23[39m",
+        +"[1mupdated_at[22m": "[32m2023-12-10 20:27:23[39m",
+      },
+      {#6325
+        +"[1mid[22m": [35m2[39m,
+        +"[1muser_id[22m": [35m2[39m,
+        +"[1mdescription[22m": "[32mGravel and sand[39m",
+        +"[1muom[22m": [36mnull[39m,
+        +"[1mquantity[22m": [35m12[39m,
+        +"[1munit_cost[22m": "[32m1400.00[39m",
+        +"[1mamount[22m": "[32m16800.00[39m",
+        +"[1mtotal_amount[22m": "[32m23200.00[39m",
+        +"[1mgroup_id[22m": "[32mEstimateID-00001[39m",
+        +"[1mcreated_at[22m": "[32m2023-12-10 20:27:23[39m",
+        +"[1mupdated_at[22m": "[32m2023-12-10 20:27:23[39m",
+      },
+    ],
+  }
+

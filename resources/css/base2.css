@@ -100,3 +100,7 @@ select.no-border {
 .custom-date-input input[type="date"] {
     padding-left: 80px; /* Adjust this value based on your design */
 }
+
+.col-width{
+    width: 15px;
+}

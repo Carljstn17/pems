@@ -2,10 +2,10 @@
 
     <x-slot name="content">
         <div class="py-2 mt-2">
-            <i class="fs-4 bi-card-checklist"></i> <span class="fs-4 d-sm-inline">Estimate | New</span>
+            <i class="fs-4 bi-card-checklist"></i> <span class="fs-4 d-sm-inline">Estimate | Create New</span>
         </div>
         
-        <div class="container mt-5">
+        <div class="container mt-4">
             <form action="{{ route('estimate.store') }}" method="post">
                 @csrf
                 <table class="table table-bordered">
@@ -29,9 +29,6 @@
                             <td><input type="number" class="form-control no-border" name="unit_cost[]" placeholder="per unit" oninput="calculateAmount(this)" required></td>
                             <td><input type="text" class="form-control no-border" name="amount[]" placeholder="0" readonly></td>
                             <td class="text-center">
-                                <button type="button" class="btn btn-danger btn-sm rounded-circle" onclick="removeRow(this)">
-                                    <i class="bi bi-x"></i>
-                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -84,6 +81,8 @@
                 updateTotal();
             }
 
+            ///////////////////////////////////////////////////////////////////////////////////////
+
             function calculateAmount(input) {
                 var row = $(input).closest("tr");
                 var quantity = parseFloat(row.find("input[name='quantity[]']").val()) || 0;
@@ -93,6 +92,8 @@
                 row.find("input[name='amount[]']").val(formatNumber(amount));
                 updateTotal();
             }
+
+            ////////////////////////////////////////////////////////////////////////////////////////
 
             function updateTotal() {
                 var total = 0;

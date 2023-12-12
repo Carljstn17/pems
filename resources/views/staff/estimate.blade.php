@@ -2,7 +2,7 @@
 
     <x-slot name="content">
         <div class="py-2 mt-2">
-            <i class="fs-4 bi-card-checklist"></i> <span class="fs-4 d-sm-inline">Estimate</span>
+            <i class="fs-4 bi-card-checklist"></i> <span class="fs-4 d-sm-inline">Estimate Page</span>
         </div>
         <main class="mx-auto margin p-2" style="width:350px;">
             <div class="d-grid gap-3">

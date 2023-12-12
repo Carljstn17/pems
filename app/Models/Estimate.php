@@ -2,23 +2,45 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Estimate extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
-    protected $fillable = ['group_id','user_id','description', 'uom', 'quantity', 'unit_cost', 'amount', 'total_amount','created_at',
-    'updated_at',];
+    protected $table = 'estimates';
 
-    public function group()
-    {
-        return $this->belongsTo(Group::class);
-    }
+    protected $fillable = [
+        'group_id',
+        'user_id',
+        'description', 
+        'uom', 
+        'quantity', 
+        'unit_cost', 
+        'created_at',
+        'updated_at',
+        'status',
+    ];
+
+    protected $dates = ['deleted_at'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getAmount() {
+        return $this->quantity * $this->unit_cost;
+    }
+
+    public function totalAmount($estimates) {
+        $totalAmount = 0;
+        foreach ($estimates as $estimate) {
+            $totalAmount += $estimate->getAmount();
+        }
+        return $totalAmount;
     }
 }

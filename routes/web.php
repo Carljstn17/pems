@@ -4,11 +4,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\EstimateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,13 +74,15 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     // Route::get('/staff/payroll/all-ongoing/{id}', [ProjectController::class, 'showOngoing'])->name('payroll.');
 
     Route::get('/staff/estimate', [EstimateController::class, 'showStaffEstimate'])->name('staff.estimate');
-    Route::get('/staff/estimate/latest', [EstimateController::class, 'showLatestEstimate']);
+    Route::get('/staff/estimate/latest', [EstimateController::class, 'showLatestEstimate'])->name('latest');
     Route::get('/staff/estimate/new', [EstimateController::class, 'showNewEstimate']);
     Route::get('/staff/estimate/old', [EstimateController::class, 'showOldEstimate']);
     Route::post('/items', [EstimateController::class, 'store'])->name('estimate.store');
     Route::get('/staff/estimate/form/{group_id}', [EstimateController::class, 'show'])->name('estimate.form');
-    Route::get('/estimates/{estimate}/edit', [EstimateController::class, 'edit'])->name('estimates.edit');
-    Route::put('/estimates/{estimate}/update', [EstimateController::class, 'update'])->name('estimates.update');
+    Route::get('/estiates/edit/{group_id}', [EstimateController::class, 'edit'])->name('estimate.edit');
+    Route::patch('/estimates/update/', [EstimateController::class, 'update'])->name('estimate.update');
+    Route::delete('/estimates/soft-delete/{groupId}', [EstimateController::class, 'softDelete'])->name('estimates.soft-delete');
+    Route::get('/search/estimate', [SearchController::class, 'searchEstimate'])->name('estimate.search');
 
     Route::get('/staff/receipt', [ReceiptController::class, 'showStaffReceipt'])->name('staff.receipt');
 });

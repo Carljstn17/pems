@@ -6,7 +6,9 @@ use App\Models\Estimate;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\EstimateTotal;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
 
 class EstimateController extends Controller
 {
@@ -86,68 +88,54 @@ class EstimateController extends Controller
                 'group_id' => $groupId,
             ]);
         }
-
-        // Calculate total amount
-        $totalAmount = Estimate::where('group_id', $groupId)->sum('amount');
-
-        // Update the total amount in the estimates table
-        Estimate::where('group_id', $groupId)->update(['total_amount' => $totalAmount]);
-
-        EstimateTotal::updateOrCreate(
-            ['group_id' => $groupId],
-            ['total_amount' => $totalAmount]
-        );
-
         // Redirect or perform any other actions as needed
-        return redirect()->route('staff.estimate')->with('success', 'Items added successfully.');
+        return redirect()->route('latest')->with('success', 'Items added successfully.');
     }
 
 
     ////////////////////////////////////////////////////////////////////////////////////
 
-    public function edit(Estimate $estimate)
+    public function edit($group_id)
     {
-        // Check if the user is authorized to update this estimate
-        $this->authorize('update', $estimate);
-
-        return view('estimates.edit', compact('estimate'));
+        $estimates = Estimate::where('group_id', $group_id)->get();
+        
+        return view('estimate.edit')->with('estimates', $estimates);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
 
-    public function update(Request $request, Estimate $estimate)
+    public function update(Request $request)
     {
-        // Validate the request
-        $request->validate([
-            'description' => 'required|string',
-            'uom' => 'nullable|string',
-            'quantity' => 'required|numeric',
-            'unit_cost' => 'required|numeric',
-        ]);
+            // Check if the user is authorized to update this estimate
+            // $this->authorize('update', $estimate);
 
-        // Check if the user is authorized to update this estimate
-        $this->authorize('update', $estimate);
+            $estimates = $request->input('estimateId');
+            $groupId = $request->input('groupId')[0];
 
-        // Update the estimate
-        $estimate->update($request->all());
+            foreach ($estimates as $estimateId) {
+                Estimate::where('id', $estimateId)->update([
+                    'description' => $request->input('description')[$estimateId],
+                    'uom' => $request->input('uom')[$estimateId],
+                    'quantity' => $request->input('quantity')[$estimateId],
+                    'unit_cost' => $request->input('unit_cost')[$estimateId],
+                    // Update other fields as needed
+                ]);
+            }
 
-        // Update the total amount in estimate_totals table
-        $this->updateTotalAmount($estimate->group_id);
-
-        return redirect()->route('estimates.index')->with('success', 'Estimate updated successfully.');
+            // Redirect with a success message
+            return redirect()->route('estimate.form', ['group_id' => $groupId])->with('success', 'Estimates within Group ID ' . $groupId . ' are updated successfully.');
     }
 
-    private function updateTotalAmount($groupId)
+    public function softDelete($groupId)
     {
-        $totalAmount = Estimate::where('group_id', $groupId)->sum('amount');
+        $deletedEstimates = Estimate::where('group_id', $groupId)->delete();
 
-        // Debugging statements
-        info('Total Amount:', ['total_amount' => $totalAmount]);
-
-        // Update or create the total in the estimate_totals table
-        EstimateTotal::updateOrCreate(
-            ['group_id' => $groupId],
-            ['total_amount' => $totalAmount]
-        );
+        if ($deletedEstimates > 0) {
+            return redirect()->route('latest')->with('alert', "Estimates with group_id $groupId soft deleted successfully");
+        } else {
+            return redirect()->back()->with('alert', "No estimates found with group_id $groupId");
+        }
     }
+
+
 }

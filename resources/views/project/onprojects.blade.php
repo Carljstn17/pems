@@ -8,7 +8,7 @@
            
             <div class="py-2">
                 <div class="d-flex justify-content-between border-bottom border-dark-subtle pb-3 gap-2">
-                        <a href="{{ url('/staff/add-projects') }}" class="btn btn-outline-primary mt-3" style="transition:0.8s;"">
+                        <a href="{{ url('/staff/estimate/new') }}" class="btn btn-outline-primary mt-3" style="transition:0.8s;"">
                             <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Add New Project</span>
                             <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add</span>
                         </a>
