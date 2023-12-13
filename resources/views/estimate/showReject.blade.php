@@ -2,7 +2,7 @@
 
     @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-5 bi-card-checklist"></i> <span class=" d-sm-inline">Estimate | Latest Form-view</span>
+            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate | Rejected Form-view</span>
         </div>
         
         <div class="mx-auto mt-4">
@@ -74,19 +74,6 @@
                         </tr>
                     </tfoot>
                 </table>   
-
-                <div class="d-flex justify-content-between">
-                    <form id="deleteEstimatesForm" action="{{ route('estimates.soft-delete', ['groupId' => $group_id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                    
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to soft delete estimates with group ID {{ $group_id }}?')">
-                            Delete Estimate
-                        </button>
-                    </form>
-
-                    <a href="{{ route('estimate.edit', $estimates->first()->group_id) }}" class="btn btn-primary float-end px-4">Edit</a>
-                </div>
             </div>
         </div>
 
@@ -125,7 +112,6 @@
                 alert(msg);
             }
         </script>
-
 @endsection
 
 

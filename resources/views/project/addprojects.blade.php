@@ -1,10 +1,10 @@
-<x-base2>
+@extends('layout.staff')
 
-    <x-slot name="content">
+    @section('content')
         <div class="container-fluid">
             <div class="mt-3">
                 <a href="{{ url()->previous() }}" class="link-dark text-decoration-none">
-                    <i class="fs-4 bi-backspace">back</i>
+                    <i class="fs-5 bi-backspace"> back</i>
                 </a>
             </div>
             <div class="py-12">
@@ -114,8 +114,6 @@
                 </div>
             </div>
         </div>
-    </x-slot>
-
-    </x-base2>
+@endsection
 
 

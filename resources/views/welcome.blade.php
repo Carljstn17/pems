@@ -34,13 +34,13 @@
 
             <div class="d-grid mt-5 container gap-3">
                 <div class="row">
-                    <a href="{{ url('owner-login') }}" class="btn btn-dark">Owner</a>
+                    <a href="{{ url('owner-login') }}" class="btn btn-dark py-2">Owner</a>
                 </div>
                 <div class="row">
-                    <a href="{{ url('staff-login') }}" class="btn btn-dark">Staff</a>
+                    <a href="{{ url('staff-login') }}" class="btn btn-dark py-2">Staff</a>
                 </div>
                 <div class="row">
-                    <a href="{{ url('laborer-login') }}" class="btn btn-dark">Laborer</a>
+                    <a href="{{ url('laborer-login') }}" class="btn btn-dark py-2">Laborer</a>
                 </div>
             </div>
 

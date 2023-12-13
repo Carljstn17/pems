@@ -1,8 +1,8 @@
-<x-base2>
+@extends('layout.staff')
 
-    <x-slot name="content">
+    @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-4 bi-wallet"></i> <span class="fs-4 d-sm-inline">Receipt Page</span>
+            <i class="fs-5 bi-wallet"></i> <span class="d-sm-inline">Receipt Page</span>
         </div>
         <main class="mx-auto margin p-2" style="width:350px;">
             <div class="d-grid gap-3">
@@ -17,8 +17,5 @@
                 </div>
             </div>
         </main>
-    </x-slot>
-
-    </x-base2>
-
+@endsection
 

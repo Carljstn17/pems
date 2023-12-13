@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PayrollController;
@@ -24,6 +25,10 @@ use App\Http\Controllers\EstimateController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/sample', function () {
+    return view('staff.sample');
 });
 
 //owner route
@@ -54,7 +59,7 @@ Route::post('/staff/login', [AuthController::class, 'staffLogin']);
 // staff auth
 Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () {
     // Routes accessible only to staff
-    Route::get('/staff/dashboard', [AuthController::class, 'showStaffPanel']);
+    Route::get('/staff/dashboard', [DashboardController::class, 'showDashboard']);
     Route::get('/staff/projects', [ProjectController::class, 'showStaffProject']);
     Route::get('/staff/ongoing-projects', [ProjectController::class, 'showOnProject']);
     Route::get('/staff/new-projects', [ProjectController::class, 'showNewProject']);
@@ -65,6 +70,8 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::post('/staff/store', [ProjectController::class, 'store']);
     Route::get('/staff/show/{id}', [ProjectController::class, 'show'])->name('project.showproject');
     Route::get('/search/project', [SearchController::class, 'searchProject'])->name('search');
+    Route::get('/search/project/old', [SearchController::class, 'searchOldProject'])->name('search.old');
+
 
     Route::get('/staff/payroll', [PayrollController::class, 'showStaffPayroll'])->name('staff.payroll');
     Route::get('/staff/payroll/latest', [PayrollController::class, 'showPayrollLatest']);
@@ -76,13 +83,15 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/estimate', [EstimateController::class, 'showStaffEstimate'])->name('staff.estimate');
     Route::get('/staff/estimate/latest', [EstimateController::class, 'showLatestEstimate'])->name('latest');
     Route::get('/staff/estimate/new', [EstimateController::class, 'showNewEstimate']);
-    Route::get('/staff/estimate/old', [EstimateController::class, 'showOldEstimate']);
+    Route::get('/staff/estimate/reject', [EstimateController::class, 'showRejectEstimate']);
     Route::post('/items', [EstimateController::class, 'store'])->name('estimate.store');
     Route::get('/staff/estimate/form/{group_id}', [EstimateController::class, 'show'])->name('estimate.form');
+    Route::get('/staff/estimate/reject/{group_id}', [EstimateController::class, 'showOld'])->name('show.reject');
     Route::get('/estiates/edit/{group_id}', [EstimateController::class, 'edit'])->name('estimate.edit');
     Route::patch('/estimates/update/', [EstimateController::class, 'update'])->name('estimate.update');
     Route::delete('/estimates/soft-delete/{groupId}', [EstimateController::class, 'softDelete'])->name('estimates.soft-delete');
     Route::get('/search/estimate', [SearchController::class, 'searchEstimate'])->name('estimate.search');
+    Route::get('/search/reject', [SearchController::class, 'searchRejectEstimate'])->name('search.reject');
 
     Route::get('/staff/receipt', [ReceiptController::class, 'showStaffReceipt'])->name('staff.receipt');
 });

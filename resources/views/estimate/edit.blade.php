@@ -1,9 +1,8 @@
-{{-- edit.blade.php --}}
-<x-base2>
+@extends('layout.staff')
 
-    <x-slot name="content">
+    @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-4 bi-card-checklist"></i> <span class="fs-4 d-sm-inline">Estimate | Latest Form-edit</span>
+            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate | Latest Form-edit</span>
         </div>
 
         <table class="table table-bordered mt-4">
@@ -137,7 +136,5 @@
     </script>
     
     
-    </x-slot>
-
-</x-base2>
+@endsection
 

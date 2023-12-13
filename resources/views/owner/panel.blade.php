@@ -1,10 +1,8 @@
-<x-base>
+@extends('layout.owner')
 
-<x-slot name="content">
+@section('content')
     <div>
         Dashboard
     </div>
-</x-slot>
-
-</x-base>
+@endsection
 

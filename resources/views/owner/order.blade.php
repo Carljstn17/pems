@@ -1,8 +1,9 @@
-<x-base>
-    <x-slot name="content">
+@extends('layout.owner')
+
+    @section('content')
         <div class="container-fluid mt-2">
             <div class="py-2">
-                <i class="fs-4 bi-card-checklist"></i> <span class="fs-4 d-sm-inline">Estimate</span>
+                <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate</span>
             </div>
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm rounded">
@@ -74,7 +75,5 @@
                 clickedLink.classList.add('active');
             }
         </script>
-    </x-slot>
-
-    </x-base>
+@endsection
 

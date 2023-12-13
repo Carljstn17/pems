@@ -1,8 +1,9 @@
-<x-base>
-    <x-slot name="content">
+@extends('layout.owner')
+
+    @section('content')
         <div class="container-fluid mt-2">
             <div class="py-2">
-                <i class="fs-4 bi-person-plus"></i> <span class="fs-4 d-sm-inline">Account</span>
+                <i class="fs-5 bi-person-plus"></i> <span class="d-sm-inline">Account</span>
             </div>
 
             <form method="POST" action="{{ url('/owner/register') }}" class="container-fluid bg-white rounded">
@@ -67,7 +68,7 @@
                                     <td>{{ $user->contact }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->username }}</td>
-                                    <td style="overflow: hidden; text-overflow: ellipsis;">{{ $user->password }}</td>
+                                    <td>{{ Str::limit($user->password, 10) }}</td>
                                     <td class="d-flex justify-content-center gap-2">               
                                         <!-- Update Button -->
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success">Update</a>
@@ -130,5 +131,4 @@
 
         </div>
 
-    </x-slot>
-</x-base>
+@endsection

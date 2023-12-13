@@ -2,7 +2,7 @@
 
     @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate | Latest</span>
+            <i class="fs-5 bi-card-checklist"></i> <span class=" d-sm-inline">Estimate | Rejected</span>
         </div>
 
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
@@ -11,13 +11,15 @@
                     <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add</span>
                 </a>
 
-                <form action="{{ route('estimate.search') }}" method="GET" class="mt-3">
+                <form action="{{ route('search.reject') }}" method="GET" class="mt-3">
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
                         <button type="submit" class="btn btn-outline-primary">Search</button>
                     </div>
                 </form>
             </div>
+
+            <h1 class="m-3">Search Results for "{{ $query }}"</h1>
         
         <div class="row p-2 mt-3 gap-2">
             @foreach($estimates as $group_id => $estimate)
@@ -46,4 +48,5 @@
         </div>
 
 @endsection
+
 

@@ -1,8 +1,8 @@
-<x-base2>
+@extends('layout.staff')
 
-    <x-slot name="content">
+    @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-4 bi-wallet"></i> <span class="fs-4 d-sm-inline">Payroll | Latest Entries</span>
+            <i class="fs-5 bi-wallet"></i> <span class="d-sm-inline">Payroll | Latest Entries</span>
         </div>
 
         <div class="p-2 mt-3">
@@ -46,8 +46,5 @@
             @endforelse --}}
         </div>               
        
-    </x-slot>
-
-    </x-base2>
-
+@endsection
 

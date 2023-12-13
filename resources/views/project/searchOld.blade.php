@@ -3,7 +3,7 @@
     @section('content')
         <div class="">
             <div class="mt-3">
-                <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline">Projects | On-going</span>
+                <i class="fs-4 bi-buildings"></i> <span class="fs-4 d-sm-inline">Projects | On-going</span>
             </div>
 
             <div class="d-flex justify-content-between border-bottom border-dark-subtle pb-3">
@@ -11,7 +11,7 @@
                     <a href="{{ url('/staff/add-projects') }}" class="nav-link">Add New Project</a>
                 </button>
 
-                <form action="{{ route('search') }}" method="GET">
+                <form action="{{ route('search.old') }}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
                         <button type="submit" class="btn btn-outline-primary">Search</button>

@@ -21,9 +21,9 @@ class EstimateController extends Controller
     
     public function showLatestEstimate()
     {
-        $groupedEstimates = Estimate::with('user')->get()->groupBy('group_id');
+        $estimates = Estimate::where('status', ['pending', 'new'])->get()->groupBy('group_id');
 
-        return view('estimate.latest', compact('groupedEstimates'));
+        return view('estimate.latest', compact('estimates'));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -37,11 +37,11 @@ class EstimateController extends Controller
 
     ////////////////////////////////////////////////////////////////////////////////////
     
-    public function showOldEstimate()
+    public function showRejectEstimate()
     {
-        // $allPayrolls = Payroll::all()
+        $estimatesReject = Estimate::where('status', 'rejected')->get();
 
-        return view('estimate.old');
+        return view('estimate.reject', compact('estimatesReject'));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +51,13 @@ class EstimateController extends Controller
         $estimates = Estimate::with('user')->where('group_id', $group_id)->get();
 
         return view('estimate.show', compact('estimates', 'group_id'));
+    }
+
+    public function showOld($group_id)
+    {
+        $estimates = Estimate::with('user')->where('group_id', $group_id)->get();
+
+        return view('estimate.showReject', compact('estimates', 'group_id'));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////

@@ -1,10 +1,10 @@
-<x-base2>
+@extends('layout.staff')
 
-    <x-slot name="content"> 
+    @section('content')
         <div class="">
             <div class="mt-3">
                 <a href="{{ url()->previous() }}" class="link-dark text-decoration-none">
-                    <i class="fs-4 bi-backspace"> back</i>
+                    <i class="fs-5 bi-backspace"> back</i>
                 </a>
             </div>
                 <div class="mx-auto mt-4 ">
@@ -67,6 +67,8 @@
                         </tbody>
                     </table>
                     </div>
+
+                    <a href="{{ url('delete-project', ['id' => $oldProject->id]) }}" class="btn btn-danger">Delete Project</a>
                     
                     <div class="table-responsive mt-5">
                         <table class="table table-bordered">
@@ -98,6 +100,4 @@
                         </table>
                 </div>
             </div>
-    </x-slot>
-
-</x-base2>
+@endsection

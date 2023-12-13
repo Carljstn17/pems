@@ -1,9 +1,9 @@
-<x-base2>
+@extends('layout.staff')
 
-    <x-slot name="content">
+    @section('content')
         <div class="">
             <div class="mt-3">
-                <i class="fs-4 bi-buildings"></i> <span class="fs-4 d-sm-inline">Projects | Add-new</span>
+                <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline">Projects | Add-new</span>
             </div>
             <div class="py-12">
                 <div class="card mx-auto p-4 mt-5" style="max-width: 1000px;">
@@ -116,8 +116,6 @@
                 </div>
             </div>
         </div>
-    </x-slot>
-
-    </x-base2>
+@endsection
 
 

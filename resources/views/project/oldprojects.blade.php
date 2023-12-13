@@ -1,19 +1,19 @@
-<x-base2>
+@extends('layout.staff')
 
-    <x-slot name="content">
+    @section('content')
         <div class="">
             <div class="mt-3">
-                <i class="fs-4 bi-buildings"></i> <span class="fs-4 d-sm-inline">Projects | Old/Finished</span>
+                <i class="fs-5 bi-buildings"></i> <span class="d-sm-inline">Projects | Old/Finished</span>
             </div>
            
             <div class="py-2">
-                <div class="d-flex justify-content-between border-bottom border-dark-subtle pb-3 gap-2">
+                <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
                         <a href="{{ url('/staff/add-projects') }}" class="btn btn-outline-primary mt-3" style="transition:0.8s;"">
                             <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Add New Project</span>
                             <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add</span>
                         </a>
 
-                    <form action="{{ route('search') }}" method="GET" class="mt-3">
+                    <form action="{{ route('search.old') }}" method="GET" class="mt-3">
                         <div class="input-group">
                             <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
                             <button type="submit" class="btn btn-outline-primary">Search</button>
@@ -22,7 +22,7 @@
 
                 </div>
                 
-                <div class="mt-3 border-bottom border-dark-subtle pb-3">
+                <div class="mt-3 border-bottom border-subtle pb-3">
                     <div class="row-container gap-3">
                         @forelse ($oldProjects as $oldProject)
                             <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
@@ -32,8 +32,8 @@
                                         <span class="fs-6 d-sm-inline d-sm-none ">ID: {{ $oldProject->project_id }}</span>
                                     </div>
                                     <div class="row p-2 text-light mx-auto text-center">
-                                        <span class="fs-1 d-none d-sm-inline">{{ Str::limit( $oldProject->project_dsc, 20) }}</span>
-                                        <span class="fs-1 d-sm-inline d-sm-none">  {{ Str::limit( $oldProject->project_dsc, 15) }}</span>
+                                        <span class="fs-4 d-none d-sm-inline dsc">{{ Str::limit( $oldProject->project_dsc, 20) }}</span>
+                                        <span class="fs-4 d-sm-inline d-sm-none dsc">  {{ Str::limit( $oldProject->project_dsc, 15) }}</span>
                                     </div>
                                     <div class="row text-secondary">
                                         <span class="fs-6 d-none d-sm-inline">Date: {{ $oldProject->created_at->diffForHumans() }}</span>
@@ -56,8 +56,6 @@
 
             </div>
         </div>
-    </x-slot>
-
-    </x-base2>
+@endsection
 
 

@@ -1,8 +1,8 @@
-<x-base2>
+@extends('layout.staff')
 
-    <x-slot name="content">
-        <div class="py-2 mt-2">
-            <i class="fs-4 bi-wallet"></i> <span class="fs-4 d-sm-inline">Payroll | New Entry</span>
+    @section('content')
+        <div class="py-2 mt-2 mb-3">
+            <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | New Entry</span>
         </div>
         
         <form action="/action_page.php" method="post" class="pb-5">
@@ -219,8 +219,6 @@
     }
 </script>
 
-    </x-slot>
-
-    </x-base2>
+@endsection
 
 

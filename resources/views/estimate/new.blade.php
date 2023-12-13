@@ -1,8 +1,8 @@
-<x-base2>
+@extends('layout.staff')
 
-    <x-slot name="content">
+    @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-4 bi-card-checklist"></i> <span class="fs-4 d-sm-inline">Estimate | Create New</span>
+            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate | Create New</span>
         </div>
         
         <div class="container mt-4">
@@ -118,6 +118,4 @@
                 updateTotal();
             });
         </script>
-    </x-slot>
-
-</x-base2>
+@endsection
