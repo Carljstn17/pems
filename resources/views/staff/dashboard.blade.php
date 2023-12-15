@@ -3,7 +3,7 @@
     @section('content')
 
         <div>
-            <div class="mt-3">
+            <div class="py-2 mt-2">
                 <i class="fs-5 bi-speedometer2"></i> <span class="d-sm-inline">Dashboard</span>
             </div>
 

@@ -5,14 +5,15 @@
             <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | New Entry</span>
         </div>
         
-        <form action="/action_page.php" method="post" class="pb-5">
+        <form action="" method="post" class="pb-5">
 
             <div class="">
-                <select name="project_id" id="project_id" class="form-select col col-md-2 col-sm-6 mb-1">
+                <select name="project_id" id="project_id" class="form-select col col-md-2 col-sm-6 mb-2">
+                    <option value="">Select a project</option>
                     @foreach($projects as $project)
                         <option value="{{ $project->id }}">
                             {{ $project->project_id }}
-                            <span>&nbsp;|&nbsp; {{ $project->project_dsc }}</span>
+                            <span>&nbsp;-&nbsp; {{ $project->project_dsc }}</span>
                         </option>
                     @endforeach
                 </select>
@@ -23,8 +24,8 @@
                     <tr>
                         <th>NO.</th>
                         <th class="col-md-2">NAME</th>
-                        <th>RATE PER DAY</th>
-                        <th>NO. OF DAYS</th>
+                        <th>RATE/   DAY</th>
+                        <th>DAYS</th>
                         <th>OT</th>
                         <th>OT TOTAL</th>
                         <th>AMOUNT</th>
@@ -37,7 +38,8 @@
                     <tr>
                         <td>1</td>
                         <td>
-                            <select class="form-select no-border px-2" name="selectedLaborer[]" value="{{ old('selectedLaborer') }}">
+                            <select class="form-select no-border px-2" name="user_id[]">
+                                <option value="">Select a laborer</option>
                                 @foreach($laborers as $laborer)
                                     <option value="{{ $laborer->id }}">
                                         {{ Str::limit($laborer->name, 14) }}
@@ -94,6 +96,7 @@
         
         var cellName = newRow.insertCell(1);
         cellName.innerHTML = `<select class="form-select no-border px-2" name="selectedLaborer[]" value="{{ old('selectedLaborer') }}">
+                                <option value="">Select a laborer</option>
                                 @foreach($laborers as $laborer)
                                     <option value="{{ $laborer->id }}">
                                         {{ Str::limit($laborer->name, 14) }}

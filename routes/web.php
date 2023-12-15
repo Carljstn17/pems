@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdvanceController;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckUserRole;
@@ -11,6 +12,9 @@ use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\EstimateController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ToolController;
+use App\Models\Supplier;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +29,6 @@ use App\Http\Controllers\EstimateController;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/sample', function () {
-    return view('staff.sample');
 });
 
 //owner route
@@ -59,9 +59,10 @@ Route::post('/staff/login', [AuthController::class, 'staffLogin']);
 // staff auth
 Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () {
     // Routes accessible only to staff
-    Route::get('/staff/dashboard', [DashboardController::class, 'showDashboard']);
-    Route::get('/staff/projects', [ProjectController::class, 'showStaffProject']);
-    Route::get('/staff/ongoing-projects', [ProjectController::class, 'showOnProject']);
+    Route::get('/staff/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard');
+
+    // Route::get('/staff/projects', [ProjectController::class, 'showStaffProject']);
+    Route::get('/staff/ongoing-projects', [ProjectController::class, 'showOnProject'])->name('ongoing-projects');
     Route::get('/staff/new-projects', [ProjectController::class, 'showNewProject']);
     Route::get('/finish-project/{id}', [ProjectController::class, 'finishProject'])->name('finish-project');
     Route::get('/staff/old-projects', [ProjectController::class, 'displayOldProject'])->name('old-projects');
@@ -74,16 +75,19 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
 
 
     Route::get('/staff/payroll', [PayrollController::class, 'showStaffPayroll'])->name('staff.payroll');
-    Route::get('/staff/payroll/latest', [PayrollController::class, 'showPayrollLatest']);
+    Route::get('/staff/payroll/latest', [PayrollController::class, 'showPayrollLatest'])->name('latest.payroll');
     Route::get('/staff/payroll/new', [PayrollController::class, 'showPayrollNew']);
-    Route::get('/staff/payroll/on-going', [PayrollController::class, 'showPayrollOngoing']);
+    Route::get('/staff/payroll/advance', [PayrollController::class, 'showPayrollAdvance']);
+    Route::post('/payroll/advances', [AdvanceController::class, 'storeAdvance']);
+    Route::get('/advance/list', [AdvanceController::class, 'advanceList'])->name('advance');
+    Route::get('/staff/payroll/on-going', [PayrollController::class, 'showPayrollOngoing'])->name('on.payroll');
     // Route::get('/staff/payroll/show-latest/{id}', [ProjectController::class, 'showLatest'])->name('payroll.');
     // Route::get('/staff/payroll/all-ongoing/{id}', [ProjectController::class, 'showOngoing'])->name('payroll.');
 
     Route::get('/staff/estimate', [EstimateController::class, 'showStaffEstimate'])->name('staff.estimate');
     Route::get('/staff/estimate/latest', [EstimateController::class, 'showLatestEstimate'])->name('latest');
     Route::get('/staff/estimate/new', [EstimateController::class, 'showNewEstimate']);
-    Route::get('/staff/estimate/reject', [EstimateController::class, 'showRejectEstimate']);
+    Route::get('/staff/estimate/reject', [EstimateController::class, 'showRejectEstimate'])->name('reject');
     Route::post('/items', [EstimateController::class, 'store'])->name('estimate.store');
     Route::get('/staff/estimate/form/{group_id}', [EstimateController::class, 'show'])->name('estimate.form');
     Route::get('/staff/estimate/reject/{group_id}', [EstimateController::class, 'showOld'])->name('show.reject');
@@ -93,7 +97,17 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/search/estimate', [SearchController::class, 'searchEstimate'])->name('estimate.search');
     Route::get('/search/reject', [SearchController::class, 'searchRejectEstimate'])->name('search.reject');
 
-    Route::get('/staff/receipt', [ReceiptController::class, 'showStaffReceipt'])->name('staff.receipt');
+    Route::get('/staff/receipt', [ReceiptController::class, 'showStaffReceipt'])->name('latest.receipt');
+    Route::get('/staff/receipt/on-going', [ReceiptController::class, 'showReceiptOngoing'])->name('on.receipt');
+    Route::get('/staff/receipt/new', [ReceiptController::class, 'showReceiptNew']);
+    Route::post('/receipt/create', [ReceiptController::class, 'createEntry'])->name('entry.create');
+    Route::get('/receipt/supplier', [SupplierController::class, 'supplierForm'])->name('supplier.form');
+    Route::get('/supplier/list', [SupplierController::class, 'supplierList'])->name('supplier');
+    Route::post('/suppliers', [SupplierController::class, 'store'])->name('supplier.store');
+    Route::get('/receipt/project/{project_id}', [ReceiptController::class, 'projectReceipt'])->name('project.receipt');
+    Route::get('/receipt/form/{id}', [ReceiptController::class, 'show'])->name('receipt.form');
+
+    Route::get('/staff/tool', [ToolController::class, 'allTool'])->name('staff.tool');
 });
 
 // laborer login

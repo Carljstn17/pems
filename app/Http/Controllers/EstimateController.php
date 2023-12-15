@@ -21,7 +21,12 @@ class EstimateController extends Controller
     
     public function showLatestEstimate()
     {
-        $estimates = Estimate::where('status', ['pending', 'new'])->get()->groupBy('group_id');
+        $estimates = Estimate::where('status', ['pending', 'new'])
+            ->groupBy('group_id')
+            ->selectRaw('group_id, MAX(id) as id, MAX(user_id) as user_id, MAX(description) as description, MAX(uom) as uom, SUM(quantity) as total_quantity, MAX(unit_cost) as unit_cost, MAX(created_at) as created_at, MAX(updated_at) as updated_at')
+            ->latest('created_at')
+            ->paginate(5);
+
 
         return view('estimate.latest', compact('estimates'));
     }
@@ -39,7 +44,11 @@ class EstimateController extends Controller
     
     public function showRejectEstimate()
     {
-        $estimatesReject = Estimate::where('status', 'rejected')->get();
+        $estimatesReject = Estimate::where('status', 'rejected')
+            ->groupBy('group_id')
+            ->selectRaw('group_id, MAX(id) as id, MAX(user_id) as user_id, MAX(description) as description, MAX(uom) as uom, SUM(quantity) as total_quantity, MAX(unit_cost) as unit_cost, MAX(created_at) as created_at, MAX(updated_at) as updated_at')
+            ->latest('created_at')
+            ->paginate(5);
 
         return view('estimate.reject', compact('estimatesReject'));
     }

@@ -11,25 +11,25 @@
                     <table class="table table-bordered">
                         <thead>
                             <th class="col-md-1">
-                                <span class="d-none d-sm-inline">Status:</span>
+                                <span class="d-none d-sm-inline bold">Status:</span>
                             </th>
                             <td class="col-md-2">
                                 <span>{{ $estimates->first()->status }}</span>
                             </td>
                             <th class="col-md-1">
-                                <span class="d-none d-sm-inline">Entry ID:</span>
+                                <span class="d-none d-sm-inline bold">Entry ID:</span>
                             </th>
                             <td class="col-md-2">
                                 <span>{{ $estimates->first()->group_id }}</span>
                             </td>
                             <th class="col-md-1">
-                                <span class="d-none d-sm-inline">Entry by:</span>
+                                <span class="d-none d-sm-inline bold">Entry by:</span>
                             </th>
                             <td class="col-md-2">
                                 <span>{{ $estimates->first()->user->username }}</span>
                             </td>
                             <th class="col-md-1">
-                                <span class="d-none d-sm-inline">Entry date: </span>
+                                <span class="d-none d-sm-inline bold">Entry date: </span>
                             </th>
                             <td class="col-md-2">
                                 <span>{{ $estimates->first()->created_at->diffForHumans() }}</span>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('project_dsc');
             $table->string('client');
-            $table->integer('contract');
+            $table->bigInteger('contract')->unsigned();
             $table->string('contact');
             $table->string('location');
             $table->date('Date_started');

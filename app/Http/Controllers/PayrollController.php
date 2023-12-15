@@ -15,12 +15,14 @@ class PayrollController extends Controller
     {
         return view('staff.payroll');
     }
+
     public function showPayrollLatest()
     {
         // $payrolls = Payroll::all();
 
         return view('payroll.latest');
     }
+
     public function showPayrollNew()
     {
         $projects = Project::all();
@@ -28,12 +30,23 @@ class PayrollController extends Controller
 
         return view('payroll.new', compact('projects', 'laborers'));
     }
+
+    public function showPayrollAdvance()
+    {
+        $projects = Project::all();
+        $laborers = User::where('role', 'laborer')->get();
+
+        return view('payroll.advance', compact('projects', 'laborers'));
+    }
+
     public function showPayrollOngoing()
     {
-        // $allPayrolls = Payroll::all()
+        $projects = Project::where('status', 'new')->latest()->paginate(6);
 
-        return view('payroll.ongoing');
+        return view('payroll.ongoing')->with('projects', $projects);
     }
+
+    
     // public function showLatest($id)
     // {
     //     try {

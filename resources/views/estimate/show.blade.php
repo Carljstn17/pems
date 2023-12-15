@@ -6,32 +6,36 @@
         </div>
         
         <div class="mx-auto mt-4">
-            <div class="">
 
+            <a href="{{ route('on.receipt') }}" class="btn btn-outline-secondary text-decoration-none px-3">
+                <i class="bi-backspace"> back</i>
+            </a>
+
+            <div class="mt-2">
                     <table class="table table-bordered">
                         <thead>
-                            <th class="col-md-1">
-                                <span class="d-none d-sm-inline">Status:</span>
+                            <th>
+                                <span class="d-none d-sm-inline bold">Status:</span>
                             </th>
-                            <td class="col-md-2">
+                            <td>
                                 <span>{{ $estimates->first()->status }}</span>
                             </td>
-                            <th class="col-md-1">
-                                <span class="d-none d-sm-inline">Entry ID:</span>
+                            <th>
+                                <span class="d-none d-sm-inline bold">Entry ID:</span>
                             </th>
-                            <td class="col-md-2">
+                            <td >
                                 <span>{{ $estimates->first()->group_id }}</span>
                             </td>
-                            <th class="col-md-1">
-                                <span class="d-none d-sm-inline">Entry by:</span>
+                            <th >
+                                <span class="d-none d-sm-inline bold">Entry by:</span>
                             </th>
-                            <td class="col-md-2">
+                            <td >
                                 <span>{{ $estimates->first()->user->username }}</span>
                             </td>
-                            <th class="col-md-1">
-                                <span class="d-none d-sm-inline">Entry date: </span>
+                            <th >
+                                <span class="d-none d-sm-inline bold">Entry date: </span>
                             </th>
-                            <td class="col-md-2">
+                            <td >
                                 <span>{{ $estimates->first()->created_at->diffForHumans() }}</span>
                             </td>
                         </thead>

@@ -2,18 +2,18 @@
 
     @section('content')
         <div class="">
-            <div class="mt-3">
+            <div class="py-2 mt-2">
                 <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline">Projects | On-going</span>
             </div>
            
-            <div class="py-2">
+            <div class="py-2 mt-3">
                 <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                        <a href="{{ url('/staff/add-projects') }}" class="btn btn-outline-primary mt-3" style="transition:0.8s;"">
+                        <a href="{{ url('/staff/new-projects') }}" class="btn btn-outline-primary" style="transition:0.8s;"">
                             <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Add New Project</span>
                             <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add New</span>
                         </a>
 
-                    <form action="{{ route('search') }}" method="GET" class="mt-3">
+                    <form action="{{ route('search') }}" method="GET" >
                         <div class="input-group">
                             <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
                             <button type="submit" class="btn btn-outline-primary">Search</button>
@@ -22,7 +22,7 @@
                 </div>
             </div>
                 
-                <div class="mt-3 border-bottom border-subtle pb-3">
+                <div class="mt-3 pb-3">
                     <div class="row-container gap-3">
                         @forelse ($projects as $project)
                             <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
@@ -47,13 +47,15 @@
                             <p>No on-going projects yet.</p>
                         </div>
                         @endforelse
-
-                        {{-- {{ $projects->links() }} --}}
                     </div>
                 </div>
 
-                <div class="mt-3">
-                    <a href="{{ url('/staff/old-projects') }}" class="text-decoration-none">View Old Project</a>
+                <div class="mt-1">
+                    {{ $projects->links('vendor.pagination.bootstrap-4') }}
+                </div>
+
+                <div class="mt-3 pt-2 border-top border-subtle">
+                    <a href="{{ url('/staff/old-projects') }}" class="text-decoration-none">View Old Project ></a>
                 </div>
 
             </div>

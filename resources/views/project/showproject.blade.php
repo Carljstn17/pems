@@ -45,15 +45,15 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Receipt</td>
+                                <td>Total Receipt </td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>Payroll</td>
+                                <td>Total Payroll </td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>Total</td>
+                                <td>Total Amount</td>
                                 <td></td>
                             </tr>
                             <tr>

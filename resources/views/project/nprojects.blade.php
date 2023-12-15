@@ -106,7 +106,7 @@
                             @enderror
                         </div>
 
-                        <a href="{{ url('/staff/projects') }}" class="btn btn-primary">
+                        <a href="{{ url('/staff/ongoing-projects') }}" class="btn btn-primary">
                             Cancel
                         </a>
                     

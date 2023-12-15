@@ -7,30 +7,34 @@
 
         <table class="table table-bordered mt-4">
             <thead>
-                <th class="col-md-1">
-                    <span class="d-none d-sm-inline">Status:</span>
-                </th>
-                <td class="col-md-2">
-                    <span>{{ $estimates->first()->status }}</span>
-                </td>
-                <th class="col-md-1">
-                    <span class="d-none d-sm-inline">Entry ID:</span>
-                </th>
-                <td class="col-md-2">
-                    <span>{{ $estimates->first()->group_id }}</span>
-                </td>
-                <th class="col-md-1">
-                    <span class="d-none d-sm-inline">Entry by:</span>
-                </th>
-                <td class="col-md-2">
-                    <span>{{ $estimates->first()->user->username }}</span>
-                </td>
-                <th class="col-md-1">
-                    <span class="d-none d-sm-inline">Entry date: </span>
-                </th>
-                <td class="col-md-2">
-                    <span>{{ $estimates->first()->created_at->diffForHumans() }}</span>
-                </td>
+                <tr>
+                    <th class="col-md-1">
+                        <span class="d-none d-sm-inline bold">Status:</span>
+                    </th>
+                    <td class="col-md-2">
+                        <span>{{ $estimates->first()->status }}</span>
+                    </td>
+                    <th class="col-md-1">
+                        <span class="d-none d-sm-inline bold">Entry ID:</span>
+                    </th>
+                    <td class="col-md-2">
+                        <span>{{ $estimates->first()->group_id }}</span>
+                    </td>
+                <tr>
+                <tr>
+                    <th class="col-md-1">
+                        <span class="d-none d-sm-inline bold">Entry by:</span>
+                    </th>
+                    <td class="col-md-2">
+                        <span>{{ $estimates->first()->user->username }}</span>
+                    </td>
+                    <th>
+                        <span class="d-none d-sm-inline bold">Entry date: </span>
+                    </th>
+                    <td class="col-md-2">
+                        <span>{{ $estimates->first()->created_at->diffForHumans() }}</span>
+                    </td>
+                </tr>
             </thead>
         </table>
         

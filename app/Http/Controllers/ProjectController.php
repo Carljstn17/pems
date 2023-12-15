@@ -11,7 +11,7 @@ class ProjectController extends Controller
 {
     public function showOnProject()
     {
-        $projects = Project::where('status', 'new')->get();
+        $projects = Project::where('status', 'new')->latest()->paginate(6);
 
         return view('project.onprojects')->with('projects', $projects);
     }
@@ -49,10 +49,10 @@ class ProjectController extends Controller
 
         return view('project.showproject')->with('project', $project);
     }
-    public function showStaffProject()
-    {
-        return view('staff.projects');
-    }
+    // public function showStaffProject()
+    // {
+    //     return view('staff.projects');
+    // }
     public function showNewProject()
     {
         return view('project.nprojects');
@@ -73,7 +73,7 @@ class ProjectController extends Controller
 
     public function displayOldProject()
     {
-        $oldProjects = Project::where('status', 'old')->get();
+        $oldProjects = Project::where('status', 'old')->latest()->paginate(6);
 
         return view('project.oldprojects', ['oldProjects' => $oldProjects]);
     }
