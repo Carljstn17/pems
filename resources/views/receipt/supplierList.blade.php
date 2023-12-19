@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="py-2 mt-2 mb-3">
-        <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | Advance List</span>
+        <i class="fs-5 bi-receipt"></i> <span class=" d-sm-inline">Receipt | Supplier List</span>
     </div>
 
     <div class="py-2 mt-3">

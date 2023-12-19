@@ -6,20 +6,24 @@
                 <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline">Projects | On-going</span>
             </div>
 
-            <div class="d-flex justify-content-between border-bottom border-dark-subtle pb-3">
-                <button class="btn btn-outline-primary py-2 px-3 mt-3" style="transition:0.5s;">
-                    <a href="{{ url('/staff/add-projects') }}" class="nav-link">Add New Project</a>
-                </button>
+            <div class="py-2 mt-3">
+                <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                        <span><i class="bi bi-plus"></i> Add New Project</span>
+                    </button>
 
-                <form action="{{ route('search') }}" method="GET">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
-                        <button type="submit" class="btn btn-outline-primary">Search</button>
-                    </div>
-                </form>
+                    <form action="{{ route('search') }}" method="GET">
+                        <div class="input-group">
+                            <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
+                            <button type="submit" class="btn btn-outline-primary">Search</button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <h1 class="m-3">Search Results for "{{ $query }}"</h1>
+            @include('project.nprojects')
+
+            <h1 class="p-3">Search Results for "{{ $query }}"</h1>
 
             <div class="mt-3">
                 <div class="row-container gap-3">

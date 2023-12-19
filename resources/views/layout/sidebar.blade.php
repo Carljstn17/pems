@@ -35,7 +35,7 @@
                 </a>
             </li>
             <li class="nav-item px-2 mb-3 ">
-                <a href="{{ url('/staff/machinery') }}" class="nav-link align-middle px-0 link-dark">
+                <a href="{{ route('staff.machinery') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-gear-wide"></i> <span class="ms-1 d-sm-inline">Machinery</span>
                 </a>
             </li>

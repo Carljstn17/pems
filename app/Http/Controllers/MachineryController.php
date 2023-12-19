@@ -2,30 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tool;
-use App\Models\ToolReport;
+use App\Models\Machinery;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\MachineryReport;
 use Illuminate\Support\Facades\Auth;
 
-class ToolController extends Controller
+class MachineryController extends Controller
 {
-    public function allTool(){
-        $tools_types = Tool::distinct()->get(['tool_type']);
-        $tools_names = Tool::distinct()->get(['tool_name']);
-        $tools = Tool::orderBy('tool_type')->paginate(10);
-        $toolsByType = $tools->sortBy('property')->groupBy('tool_type');
-        $toolReports = ToolReport::all();
+    public function allMachinery(){
+        $machinery_types = Machinery::distinct()->get(['machinery_type']);
+        $machinery_names = Machinery::distinct()->get(['machinery_name']);
+        $machineries = Machinery::orderBy('machinery_type')->paginate(10);
+        $machineriesByType = $machineries->sortBy('property')->groupBy('machinery_type');
+        $machineryReports = MachineryReport::all();
 
-        return view("tool.all", compact('tools_types', 'tools_names', 'toolsByType','tools','toolReports'));
+        return view("machinery.all", compact('machinery_types', 'machinery_names', 'machineriesByType', 'machineries', 'machineryReports'));
     }
 
     public function store(Request $request)
     {
         // Validate the form data
         $request->validate([
-            'tool_type' => 'required|string',
-            'tool_name' => 'required|string',
+            'machinery_type' => 'required|string',  // Update field name
+            'machinery_name' => 'required|string',  // Update field name
             'unit_cost' => 'required|numeric',
             'property' => 'required|string|max:5',
         ]);
@@ -34,33 +33,32 @@ class ToolController extends Controller
         $uniqueProperty = $this->generateUniqueProperty($request->input('property'));
 
         // Create a new instance of your model and save the data
-        $tool = Tool::create([
+        $machinery = Machinery::create([
             "user_id"=> Auth::id(),
-            'tool_type' => $request->input('tool_type'),
-            'tool_name' => $request->input('tool_name'),
+            'machinery_type' => $request->input('machinery_type'),  // Update field name
+            'machinery_name' => $request->input('machinery_name'),  // Update field name
             'unit_cost' => $request->input('unit_cost'),
             'property' => $uniqueProperty,
             // Add other fields as needed
         ]);
 
-        ToolReport::create([
+        MachineryReport::create([
             "user_id"=> Auth::id(),
-            'tool_id' => $tool->id,
+            'machinery_id' => $machinery->id,  // Update field name
             'status' => $request->input('status'),
             'whereabout' => $request->input('whereabout'),
         ]);
 
         // Redirect back or to a specific page after storing the data
-        return redirect()->back()->with('success', 'Tool data has been successfully stored!');
+        return redirect()->back()->with('success', 'Machinery data has been successfully stored!');
     }
-
 
     private function generateUniqueProperty($requestedProperty)
     {
         $baseProperty = 'GBG-' . date('Y') . '-' . $requestedProperty . '-' . date('m') . '-';
 
         // Check if a property with the same base exists
-        $latestProperty = Tool::where('property', 'like', $baseProperty . '%')
+        $latestProperty = Machinery::where('property', 'like', $baseProperty . '%')
             ->orderBy('property', 'desc')
             ->first();
 
@@ -76,7 +74,7 @@ class ToolController extends Controller
         return $baseProperty . '001';
     }
 
-    public function update(Request $request, Tool $tool)
+    public function update(Request $request, Machinery $machinery)
     {
         // Validate the form data
         $request->validate([
@@ -84,16 +82,14 @@ class ToolController extends Controller
             'whereabout' => 'required|string',
         ]);
 
-        // Create a new ToolReport record
-        $toolReport = new ToolReport([
+        $machineryReport = new MachineryReport([
             "user_id"=> Auth::id(),
             'status' => $request->input('status'),
             'whereabout' => $request->input('whereabout'),
         ]);
 
-        // Associate the ToolReport with the Tool and save both
-        $tool->toolReport()->save($toolReport);
+        $machinery->machineryReport()->save($machineryReport);
 
-        return redirect()->back()->with('success', 'Tool updated successfully');
+        return redirect()->back()->with('success', 'Machinery updated successfully');
     }
 }

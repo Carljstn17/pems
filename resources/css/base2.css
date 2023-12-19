@@ -140,3 +140,18 @@ select.no-border {
     flex: 0 0 80%; /* 80% width of the container */
     max-width: 80%; 
 }
+
+.navbar-toggler{
+    z-index: 1000;
+}
+
+.no-border{
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    font-size: 30px;
+}
+
+.bottom{
+    margin-bottom: 30rem;
+}

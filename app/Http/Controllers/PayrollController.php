@@ -18,14 +18,15 @@ class PayrollController extends Controller
 
     public function showPayrollLatest()
     {
-        // $payrolls = Payroll::all();
+        $projects = Project::where('status', 'new')->latest()->get();
+        $laborers = User::where('role', 'laborer')->get();
 
-        return view('payroll.latest');
+        return view('payroll.latest', compact('projects','laborers'));
     }
 
     public function showPayrollNew()
     {
-        $projects = Project::all();
+        $projects = Project::where('status', 'new')->latest()->get();
         $laborers = User::where('role', 'laborer')->get();
 
         return view('payroll.new', compact('projects', 'laborers'));

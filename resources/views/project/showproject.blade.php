@@ -46,7 +46,7 @@
                         <tbody>
                             <tr>
                                 <td>Total Receipt </td>
-                                <td></td>
+                                <td>{{ number_format($totalAmountsByProject[$project->id] ?? 0, 2) }}</td>
                             </tr>
                             <tr>
                                 <td>Total Payroll </td>
@@ -58,7 +58,7 @@
                             </tr>
                             <tr>
                                 <td>Contract Price</td>
-                                <td>{{ $project->contract }}</td>
+                                <td>{{ number_format($project->contract, 0, 2) }}</td>
                             </tr>
                             <tr>
                                 <td>Difference</td>

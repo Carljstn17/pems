@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tool;
 use App\Models\Project;
 use App\Models\Receipt;
 use App\Models\Supplier;

@@ -7,10 +7,6 @@
         
         <div class="mx-auto mt-4">
 
-            <a href="{{ route('on.receipt') }}" class="btn btn-outline-secondary text-decoration-none px-3">
-                <i class="bi-backspace"> back</i>
-            </a>
-
             <div class="mt-2">
                     <table class="table table-bordered">
                         <thead>

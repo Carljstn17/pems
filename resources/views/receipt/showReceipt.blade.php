@@ -17,7 +17,7 @@
             </div>
         
             <div class="mb-3 input-group">
-                <span class="input-group-text">Description:</span>
+                <span class="input-group-text">Category:</span>
                 <input type="text" class="form-control" value="{{ $receipts->description }}" readonly>
             </div>
         

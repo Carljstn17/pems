@@ -8,7 +8,7 @@
         <form action="" method="post" class="pb-5">
 
             <div class="">
-                <select name="project_id" id="project_id" class="form-select col col-md-2 col-sm-6 mb-2">
+                <select name="project_id" id="project_id" class="form-select col col-md-2 col-sm-6 mb-3">
                     <option value="">Select a project</option>
                     @foreach($projects as $project)
                         <option value="{{ $project->id }}">

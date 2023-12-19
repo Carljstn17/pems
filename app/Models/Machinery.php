@@ -6,22 +6,21 @@ use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Tool extends Model
+class Machinery extends Model
 {
     use HasFactory;
     use Searchable;
 
     protected $fillable = [
-        'tool_type',
-        'tool_name',
+        'machinery_type',
+        'machinery_name',
         'property',
-        'quantity',
         'unit_cost',
         'user_id',
     ];
 
-    public function toolReport()
+    public function machineryReport()
     {
-        return $this->hasOne(ToolReport::class)->latest();
+        return $this->hasOne(MachineryReport::class)->latest();
     }
 }

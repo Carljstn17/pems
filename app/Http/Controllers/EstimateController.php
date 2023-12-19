@@ -21,14 +21,20 @@ class EstimateController extends Controller
     
     public function showLatestEstimate()
     {
-        $estimates = Estimate::where('status', ['pending', 'new'])
-            ->groupBy('group_id')
-            ->selectRaw('group_id, MAX(id) as id, MAX(user_id) as user_id, MAX(description) as description, MAX(uom) as uom, SUM(quantity) as total_quantity, MAX(unit_cost) as unit_cost, MAX(created_at) as created_at, MAX(updated_at) as updated_at')
-            ->latest('created_at')
-            ->paginate(5);
-
+        $estimate = Estimate::latest('updated_at');
+        $estimates = $estimate->whereIn('status', ['pending', 'accepted'])->get()->groupBy('group_id');
 
         return view('estimate.latest', compact('estimates'));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    public function showLatestOwner()
+    {
+        $estimate = Estimate::latest('updated_at');
+        $estimates = $estimate->whereIn('status', ['pending', 'accepted'])->get()->groupBy('group_id');
+
+        return view('owner.estimate', compact('estimates'));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +114,52 @@ class EstimateController extends Controller
         return redirect()->route('latest')->with('success', 'Items added successfully.');
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    public function storeEstimateOwner(Request $request)
+    {
+        // Validation (you can customize based on your needs)
+        $request->validate([
+            'description.*' => 'required|string',
+            'uom.*' => 'nullable|string',
+            'quantity.*' => 'required|numeric',
+            'unit_cost.*' => 'required|numeric',
+        ]);
+
+        // Save items to the database
+        $latestGroupId = Estimate::max('group_id');
+        $groupIdCounter = (int) substr($latestGroupId, -5) + 1;
+        $groupId = 'EstimateID-' . str_pad($groupIdCounter, 5, '0', STR_PAD_LEFT);
+
+        foreach ($request->description as $key => $description) {
+            $quantity = $request->quantity[$key];
+            $unitCost = $request->unit_cost[$key];
+
+            // Calculate the amount
+            $amount = $quantity * $unitCost;
+
+            // Create Estimate with amount
+            $estimateData = [
+                'user_id' => Auth::id(),
+                'description' => $description,
+                'uom' => $request->uom[$key],
+                'quantity' => $quantity,
+                'unit_cost' => $unitCost,
+                'amount' => $amount, // Add the calculated amount
+                'group_id' => $groupId,
+            ];
+
+            // Set status to 'accepted' if the user's role is 'owner'
+            if (Auth::user()->role === 'owner') {
+                $estimateData['status'] = 'accepted';
+            }
+
+            Estimate::create($estimateData);
+        }
+
+        // Redirect or perform any other actions as needed
+        return redirect()->route('owner.estimate')->with('success', 'Items added successfully.');
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////
 

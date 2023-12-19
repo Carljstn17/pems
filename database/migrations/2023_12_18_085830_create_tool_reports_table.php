@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tools', function (Blueprint $table) {
+        Schema::create('tool_reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('tool_type');
-            $table->string('tool_name');
-            $table->string('unit_cost');
-            $table->string('property')->unique();
+            $table->foreignId('tool_id')->constrained();
+            $table->string('status')->nullable();
+            $table->string('whereabout');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tools');
+        Schema::dropIfExists('tool_reports');
     }
 };

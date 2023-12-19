@@ -6,44 +6,61 @@
                 <i class="fs-5 bi-person-plus"></i> <span class="d-sm-inline">Account</span>
             </div>
 
-            <form method="POST" action="{{ url('/owner/register') }}" class="container-fluid bg-white rounded">
-                @csrf
-                <div class="row p-3">
-                    <p class="fs-5">Register</p>
+        <div class="py-2 mt-3 border-bottom border-subtle pb-3">
+            <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#registerModal">
+                <span><i class="bi bi-plus"></i>Register Account</span>
+            </button>
+        </div>
 
-                    <div class="col-12 col-md-2 col-sm-6 mb-3">
-                        <select class="form-select" name="role" required>
-                            <option value="owner">Owner</option>
-                            <option value="staff">Staff</option>
-                            <option value="laborer">Laborer</option>
-                        </select>
-                    </div>
+            <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{{ url('/owner/register') }}" class="container-fluid bg-white rounded">
+                                @csrf
 
-                    <div class="col-12 col-md-5 mb-3">
-                        <input type="text" class="form-control" name="name" placeholder="Full Name" required>
-                    </div>
+                                    <div class="mb-3 input-group">
+                                        <label for="" class="input-group-text">Job</label>
+                                        <select class="form-select" name="role" required>
+                                            <option value="owner">Owner</option>
+                                            <option value="staff">Staff</option>
+                                            <option value="laborer">Laborer</option>
+                                        </select>
+                                    </div>
 
-                    <div class="col-12 col-md-5 mb-3">
-                        <input type="email" class="form-control" name="email" placeholder="Email" required>
-                    </div>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="name" placeholder="Full Name" required>
+                                    </div>
 
-                    <div class="col-12 col-md-3 mb-3">
-                        <input type="text" class="form-control" name="username" placeholder="Username" required>
-                    </div>
+                                    <div class="mb-3">
+                                        <input type="email" class="form-control" name="email" placeholder="Email" required>
+                                    </div>
 
-                    <div class="col-12 col-md-3 mb-3">
-                        <input type="text" class="form-control" name="contact" placeholder="Contact Number" required>
-                    </div>
+                                    <div class=" mb-3">
+                                        <input type="text" class="form-control" name="username" placeholder="Username" required>
+                                    </div>
 
-                    <div class="col-12 col-md-3 mb-3">
-                        <input type="password" class="form-control" name="password" placeholder="Create Password" id="passwordHelpBlock" required>
-                    </div>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="contact" placeholder="Contact Number" required>
+                                    </div>
 
-                    <div class="col-12 col-md-3 col-sm-6 mb-3 d-grid">
-                        <button type="submit" class="btn btn-primary">Register</button>
+                                    <div class="mb-3">
+                                        <input type="password" class="form-control" name="password" placeholder="Create Password" id="passwordHelpBlock" required>
+                                    </div>
+
+                                    <div class="">
+                                        <button type="submit" class="btn btn-primary float-end">Register</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </form>
+            </div>
 
             <div class="container-fluid mt-5">
                 <div class="table-responsive">
@@ -71,12 +88,16 @@
                                     <td>{{ Str::limit($user->password, 10) }}</td>
                                     <td class="d-flex justify-content-center gap-2">               
                                         <!-- Update Button -->
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success">Update</a>
+                                        <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
                                         <!-- Soft Delete Button -->
                                         <form method="POST" action="{{ url('/users/soft-delete/{user}', $user->id) }}>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                            <button type="submit" class="btn btn-outline-danger">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
                                         </form>
                                     </td>  
                                 </tr>
@@ -113,12 +134,16 @@
                                         <td>{{ Str::limit($user->password, 10) }}</td>
                                         <td class="d-flex justify-content-center gap-2">               
                                             <!-- Update Button -->
-                                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success">Update</a>
+                                            <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
                                             <!-- Soft Delete Button -->
                                             <form method="POST" action="{{ url('/users/soft-delete/{user}', $user->id) }}>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-outline-danger">
+                                                    <i class="bi bi-trash3"></i>
+                                                </button>
                                             </form>
                                         </td>  
                                     </tr>
@@ -128,7 +153,8 @@
                     </table>
                 </div>
             </div>
-
         </div>
+
+        @include('owner.update-modal')
 
 @endsection

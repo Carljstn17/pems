@@ -8,8 +8,7 @@
         <div class="py-2 mt-3">
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
                     <a href="{{ url('/staff/payroll/new') }}" class="btn btn-outline-primary" style="transition:0.8s;"">
-                        <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Create New Payroll</span>
-                        <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add New</span>
+                        <span><i class="bi bi-plus"></i>Create New Payroll</span>
                     </a>
 
                 <form action="" method="GET" >

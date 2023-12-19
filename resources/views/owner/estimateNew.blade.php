@@ -6,7 +6,7 @@
                 <h5 class="modal-title">Create New Estimate</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('estimate.store') }}" method="post" class="p-2">
+            <form action="{{ route('owner.storeEstimate') }}" method="post" class="p-2">
                 @csrf
                 <table class="table table-bordered">
                     <thead>

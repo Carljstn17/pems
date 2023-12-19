@@ -36,6 +36,11 @@
                     </div>
                     @endforelse
                 </div>
+
+                <div class="mt-1 float-end">
+                    {{ $projects->links('vendor.pagination.bootstrap-4') }}
+                </div>
+
             </div>
 
             <div class="p-2 mt-5 gap-2">
@@ -57,12 +62,13 @@
                                 <span class="bold">Entry by: &nbsp</span>{{ $firstEstimate->user->username }}
                             </div>
                             <div class="col">
-                                <span class="bold">Entry At: &nbsp</span>{{ $firstEstimate->created_at->diffForHumans() }}
+                                <span class="bold">Updated At: &nbsp</span>{{ $firstEstimate->updated_at->diffForHumans() }}
                             </div>
                         </div>
                     </a>
+                    @break
                 @endforeach
-    
+
             </div>
         </div>
         

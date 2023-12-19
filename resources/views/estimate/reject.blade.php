@@ -8,8 +8,7 @@
         <div class="py-2 mt-3">
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
                 <a href="{{ url('/staff/estimate/new') }}" class="btn btn-outline-primary" style="transition:0.8s;"">
-                    <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Add New Project</span>
-                    <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add</span>
+                    <span><i class="bi bi-plus"></i>Create New Estimate</span>
                 </a>
 
                 <form action="{{ route('search.reject') }}" method="GET">
@@ -22,7 +21,7 @@
         </div>
         
         <div class="mt-3 pb-1 px-3">
-            @foreach($estimatesReject as $group_id => $estimate)
+            @forelse($estimatesReject as $group_id => $estimate)
                 @php
                     $firstEstimate = $estimate;
                 @endphp
@@ -43,7 +42,9 @@
                         </div>
                     </div>
                 </a>
-            @endforeach
+            @empty
+            <p>No Reject Receipt yet.</p>
+            @endforelse
         </div>
 
         <div class="mt-1">

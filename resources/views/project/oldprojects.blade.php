@@ -8,10 +8,9 @@
            
             <div class="py-2 mt-3">
                 <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                        <a href="{{ url('/staff/new-projects') }}" class="btn btn-outline-primary" style="transition:0.8s;"">
-                            <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Add New Project</span>
-                            <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add</span>
-                        </a>
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                        <span><i class="bi bi-plus"></i> Add New Project</span>
+                    </button>
 
                     <form action="{{ route('search.old') }}" method="GET">
                         <div class="input-group">
@@ -21,6 +20,7 @@
                     </form>
                 </div>
             </div>
+            @include('project.nprojects')
                 
                 <div class="mt-3 pb-3">
                     <div class="row-container gap-3">

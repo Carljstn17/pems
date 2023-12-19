@@ -1,15 +1,15 @@
-@extends('layout.staff')
-
-    @section('content')
-        <div class="">
-            <div class="mt-3">
-                <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline">Projects | Add-new</span>
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createSupplierModalLabel">Add New Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="py-12">
-                <div class="card mx-auto p-4 mt-5" style="max-width: 1000px;">
+                <div class="modal-body">
                     <form action="{{ url('/staff/store') }}" method="POST">
                         @csrf
-                        <div class="mb-3">
+                        <div class="mb-3 input-group">
+                            <label for="project_id" class="input-group-text">Project ID</label>
                             <input 
                             type="text" 
                             class="form-control" 
@@ -24,7 +24,8 @@
                             @enderror
                         </div>
                     
-                        <div class="mb-3">
+                        <div class="mb-3 input-group">
+                            <label for="project_dsc" class="input-group-text">Description</label>
                             <input 
                             type="text" 
                             class="form-control" 
@@ -38,7 +39,8 @@
                             @enderror
                         </div>
                     
-                        <div class="mb-3">
+                        <div class="mb-3 input-group">
+                            <label for="contract" class="input-group-text">Contact</label>
                             <input 
                             type="number" 
                             class="form-control" 
@@ -52,7 +54,8 @@
                             @enderror
                         </div>
                     
-                        <div class="mb-3">
+                        <div class="mb-3 input-group">
+                            <label for="client" class="input-group-text">Client</label>
                             <input 
                             type="text" 
                             class="form-control" 
@@ -66,7 +69,8 @@
                             @enderror
                         </div>
                     
-                        <div class="mb-3">
+                        <div class="mb-3 input-group">
+                            <label for="contact" class="input-group-text">Contact</label>
                             <input 
                             type="text" 
                             class="form-control" 
@@ -80,7 +84,8 @@
                             @enderror
                         </div>
                     
-                        <div class="mb-3">
+                        <div class="mb-3 input-group">
+                            <label for="location" class="input-group-text">Location</label>
                             <input 
                             type="text" 
                             class="form-control" 
@@ -94,8 +99,8 @@
                             @enderror
                         </div>
                     
-                        <div class="mb-3">
-                            <label for="date_started">Date started:</label>
+                        <div class="mb-3 input-group">
+                            <label for="date_started" class="input-group-text">Date started</label>
                             <input 
                             type="date" 
                             class="form-control" 
@@ -114,8 +119,9 @@
                     </form>
                     
                 </div>
-            </div>
+
         </div>
-@endsection
+    </div>
+</div>
 
 

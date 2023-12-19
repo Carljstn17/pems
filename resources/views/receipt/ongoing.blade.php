@@ -50,9 +50,9 @@
                         </a>
                     </div>
                 @empty
-                <div class="text-center col-span">
+                <div class="text-center">
                     <i class="fs-1 bi bi-box"></i>
-                    <p>No on-going projects yet.</p>
+                    <p>No receipt for on-going projects yet.</p>
                 </div>
                 @endforelse
 

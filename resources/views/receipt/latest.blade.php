@@ -9,8 +9,7 @@
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
                 <div>
                     <button class="btn btn-outline-primary" style="transition:0.8s;"data-bs-toggle="modal" data-bs-target="#createReceiptModal">
-                        <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Add New Receipt</span>
-                        <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add New</span>
+                        <span><i class="bi bi-plus"></i>Add New Receipt</span>
                     </button>
 
                     <button class="btn btn-outline-success" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#createSupplierModal">
@@ -49,7 +48,7 @@
                     </div>
                 </a>
             @empty
-            <p>No Latest Payrolls yet.</p>
+            <p>No Latest Receipt yet.</p>
             @endforelse
         </div> 
 

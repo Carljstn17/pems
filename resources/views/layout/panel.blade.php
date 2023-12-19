@@ -1,27 +1,39 @@
-<div class="col-12 col-lg-auto sidebar" id="navbarNav">
+<div class="col-12 col-lg-auto sidebar collapse show" id="navbarNav">
     <div class="d-flex flex-column flex-shrink-0 pt-1 min-vh-100 bg-white">
-        <a href="{{ url('staff/dashboard') }}" class="d-flex flex-column align-items-center text-decoration-none link-dark">
-            <span class="fs-5 head py-5 minus">~/OWNER NAV</span>
-        </a>
+        <div class="justify-content-evenly">
+            <button class="d-lg-none no-border float-end" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle sidebar">
+                <i class="bi bi-x-circle float-end"></i>
+            </button>
+
+            <a href="{{ route('owner.dashboard') }}" class="d-flex flex-column align-items-center text-decoration-none link-dark">
+                <span class="fs-5 head py-5 minus">~/OWNER NAV</span>
+            </a>
+        </div>
+        
         <ul class="nav nav-pills flex-column mb-sm-auto px-3 pt-4 align-items-start gap-1 border-top" id="menu">
-            <li class="nav-item active px-2">
-                <a href="{{ url('owner/dashboard') }}" class="nav-link align-middle px-0 link-dark">
+            <li class="nav-item px-2 {{ request()->is('owner/dashboard') ? 'active' : '' }}">
+                <a href="{{ route('owner.dashboard') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-speedometer2"></i> <span class="ms-1 d-sm-inline">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 {{ request()->is('owner/accounts') ? 'active' : '' }}">
                 <a href="{{ url('owner/accounts') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-buildings"></i> <span class="ms-1 d-sm-inline">Account</span>
                 </a>
             </li>
             <li class="nav-item px-2">
-                <a href="{{ route('staff.payroll') }}" class="nav-link align-middle px-0 link-dark">
+                <a href="{{ route('owner.estimate') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-wallet"></i> <span class="ms-1 d-sm-inline">Estimate</span>
                 </a>
             </li>
             <li class="nav-item px-2">
-                <a href="{{ route('staff.estimate') }}" class="nav-link align-middle px-0 link-dark">
-                    <i class="fs-5 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Inventory</span>
+                <a href="" class="nav-link align-middle px-0 link-dark">
+                    <i class="fs-5 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Tool</span>
+                </a>
+            </li>
+            <li class="nav-item px-2">
+                <a href="" class="nav-link align-middle px-0 link-dark">
+                    <i class="fs-5 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Machinery</span>
                 </a>
             </li>
             <li class=" px-2 ">
@@ -30,18 +42,15 @@
                 </a>
                 <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu" style="width: 310px;">
                     <li class="nav-item">
+                        <a href="#" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Payroll</span> </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Receipt</span> </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Issue</span> </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Return</span> </a>
                     </li>
                 </ul>
             </li>
             <div class="border-top d-sm-inline" style="width: 310px;"></div>
-            <li class="px-2 mt-3" style="width: 310px;">
+            <li class="px-2 mt-3 bottom" style="width: 310px;">
                 @auth
                     <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
                         <i class="fs-5 bi-person-circle link-dark"></i> <span class="ms-1 d-sm-inline link-dark">{{ Auth::user()->username }}</span> 

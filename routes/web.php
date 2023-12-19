@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\AdvanceController;
+use App\Models\Supplier;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ToolController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AdvanceController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\ToolController;
-use App\Models\Supplier;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MachineryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,11 +41,14 @@ Route::post('/owner/login', [AuthController::class, 'ownerLogin']);
 //owner auth
 Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () {
     // Routes accessible only to owners
-    Route::get('/owner/dashboard', [AuthController::class, 'showOwnerPanel']);
+    Route::get('/owner/dashboard', [DashboardController::class, 'showPanel'])->name('owner.dashboard');
     Route::post('/owner/register', [AuthController::class, 'registerStaff']);
     Route::get('/owner/accounts', [AuthController::class, 'showAdminRegister'])->name('owner.register');
-    Route::get('/users/edit/{user}', [UserController::class, 'edit'])->name('users.edit');
+    Route::resource('users', UserController::class);
     Route::delete('/users/soft-delete/{user}', [UserController::class, 'softDelete']);
+
+    Route::get('/owner/estimate/', [EstimateController::class, 'showLatestOwner'])->name('owner.estimate');
+    Route::post('/owner/estimate/create', [EstimateController::class, 'storeEstimateOwner'])->name('owner.storeEstimate');
 
     Route::get('/order', [Controller::class, 'showOrder'])->name('order');
 });
@@ -108,6 +112,13 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/receipt/form/{id}', [ReceiptController::class, 'show'])->name('receipt.form');
 
     Route::get('/staff/tool', [ToolController::class, 'allTool'])->name('staff.tool');
+    Route::post('/store-tools', [ToolController::class, 'store'])->name('store.tools');
+    Route::put('/tools/{tool}', [ToolController::class, 'update'])->name('update.tool');
+
+    Route::get('/staff/machinery', [MachineryController::class, 'allMachinery'])->name('staff.machinery');
+    Route::post('/store-machinery', [MachineryController::class, 'store'])->name('store.machinery');
+    Route::put('/machineries/{machinery}', [MachineryController::class, 'update'])->name('update.machinery');
+    Route::get('/staff/machinery/search', [SearchController::class, 'searchMachinery'])->name('machinery.search');
 });
 
 // laborer login

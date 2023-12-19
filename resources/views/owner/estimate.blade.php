@@ -1,4 +1,4 @@
-@extends('layout.staff')
+@extends('layout.owner')
 
     @section('content')
         <div class="py-2 mt-2">
@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        @include('estimate.new')
+        @include('owner.estimateNew')
         
         <div class="mt-3 pb-1 px-3">
             @forelse($estimates as $group_id => $estimate)

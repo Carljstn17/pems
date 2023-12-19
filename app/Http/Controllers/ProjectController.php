@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Receipt;
 use Illuminate\Http\Request;
+use App\Utils\AmountCalculator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -40,14 +42,19 @@ class ProjectController extends Controller
         return redirect('/staff/ongoing-projects')->with('success', 'Employee registered successfully.');
     }
     public function show($id)
-    {
+    {      
         try {
             $project = Project::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
         } catch (ModelNotFoundException $e) {
             abort(404);
         }
 
-        return view('project.showproject')->with('project', $project);
+        $totalAmountsByProject = AmountCalculator::calculateTotalAmountsByProject();
+
+        // Retrieve the total amount for the specific project_id
+        $totalAmountForProject = $totalAmountsByProject[$project->id] ?? 0;
+
+        return view('project.showproject', compact('project', 'totalAmountsByProject'));
     }
     // public function showStaffProject()
     // {
