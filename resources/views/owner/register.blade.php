@@ -1,10 +1,10 @@
 @extends('layout.owner')
 
     @section('content')
-        <div class="container-fluid mt-2">
-            <div class="py-2">
-                <i class="fs-5 bi-person-plus"></i> <span class="d-sm-inline">Account</span>
-            </div>
+
+    <div class="py-2 mt-2">
+        <i class="fs-5 bi-person-plus"></i> <span class="d-sm-inline">Account</span>
+    </div>    
 
         <div class="py-2 mt-3 border-bottom border-subtle pb-3">
             <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#registerModal">
@@ -40,12 +40,12 @@
                                         <input type="email" class="form-control" name="email" placeholder="Email" required>
                                     </div>
 
-                                    <div class=" mb-3">
-                                        <input type="text" class="form-control" name="username" placeholder="Username" required>
-                                    </div>
-
                                     <div class="mb-3">
                                         <input type="text" class="form-control" name="contact" placeholder="Contact Number" required>
+                                    </div>
+
+                                    <div class=" mb-3">
+                                        <input type="text" class="form-control" name="username" placeholder="Username" required>
                                     </div>
 
                                     <div class="mb-3">
@@ -60,18 +60,18 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="container-fluid mt-5">
+
+            <div class="container-fluid mt-4">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th class="col-md-1">Role</th>
+                                <th class="col-md-1">Company</th>
                                 <th class="col-md-3">Email</th>
                                 <th class="col-md-1">Contact</th>
                                 <th class="col-md-2">Full Name</th>
-                                <th class="col-md-2">Username</th>
+                                <th class="col-md-1">Username</th>
                                 <th class="col-md-1">Password</th>
                                 <th class="col-md-1"></th>
                             </tr>
@@ -81,9 +81,9 @@
                             @if ($user->role === 'owner' || $user->role === 'staff')
                                 <tr>
                                     <td>{{ $user->role }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->contact }}</td>
-                                    <td>{{ $user->name }}</td>
+                                    <td>{{ Str::limit($user->email, 25) }}</td>
+                                    <td>{{ Str::limit($user->contact, 11) }}</td>
+                                    <td>{{ Str::limit($user->name, 20) }}</td>
                                     <td>{{ $user->username }}</td>
                                     <td>{{ Str::limit($user->password, 10) }}</td>
                                     <td class="d-flex justify-content-center gap-2">               
@@ -108,16 +108,16 @@
                 </div>
             </div>
 
-            <div class="container-fluid mt-5">
+            <div class="container-fluid mt-4">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th class="col-md-1">Role</th>
+                                <th class="col-md-1">Laborer</th>
                                 <th class="col-md-3">Email</th>
                                 <th class="col-md-1">Contact</th>
                                 <th class="col-md-2">Full Name</th>
-                                <th class="col-md-2">Username</th>
+                                <th class="col-md-1">Username</th>
                                 <th class="col-md-1">Password</th>
                                 <th class="col-md-1"></th>
                             </tr>
@@ -127,9 +127,9 @@
                                 @if ($user->role === 'laborer')
                                     <tr>
                                         <td>{{ $user->role }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->contact }}</td>
-                                        <td>{{ $user->name }}</td>
+                                        <td>{{ Str::limit($user->email, 25) }}</td>
+                                        <td>{{ Str::limit($user->contact, 11) }}</td>
+                                        <td>{{ Str::limit($user->name, 20) }}</td>
                                         <td>{{ $user->username }}</td>
                                         <td>{{ Str::limit($user->password, 10) }}</td>
                                         <td class="d-flex justify-content-center gap-2">               

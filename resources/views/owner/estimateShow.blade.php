@@ -1,4 +1,4 @@
-@extends('layout.staff')
+@extends('layout.owner')
 
     @section('content')
         <div class="py-2 mt-2">
@@ -75,18 +75,14 @@
                     </tfoot>
                 </table>   
 
-                <div class="d-flex justify-content-between">
-                    <form id="deleteEstimatesForm" action="{{ route('estimates.softDelete', ['groupId' => $group_id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                    
-                        <button type="submit" class="btn btn-danger float-end" onclick="return confirm('Are you sure you want to delete estimates with group ID {{ $group_id }}?')">
-                            Delete Estimate
-                        </button>
-                    </form>
-
-                    <a href="{{ route('estimate.edit', $estimates->first()->group_id) }}" class="btn btn-primary float-end px-4">Edit</a>
-                </div>
+                <form id="deleteEstimatesForm" action="{{ route('estimates.delete', ['groupId' => $group_id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                
+                    <button type="submit" class="btn btn-danger float-end" onclick="return confirm('Are you sure you want to delete estimates with group ID {{ $group_id }}?')">
+                        Delete Estimate
+                    </button>
+                </form>
             </div>
         </div>
 

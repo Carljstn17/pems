@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tool_reports', function (Blueprint $table) {
+        Schema::create('estimate_deletes', function (Blueprint $table) {
             $table->id();
+            $table->string('group_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('tool_id');
+            $table->foreign('group_id')->references('group_id')->on('estimates')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('tool_id')->references('id')->on('tools');
-            $table->string('status')->nullable();
-            $table->string('whereabout');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tool_reports');
+        Schema::dropIfExists('estimate_deletes');
     }
 };

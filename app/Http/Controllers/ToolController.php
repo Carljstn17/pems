@@ -20,6 +20,13 @@ class ToolController extends Controller
         return view("tool.all", compact('tools_types', 'tools_names', 'toolsByType','tools','toolReports'));
     }
 
+    public function allToolOwner(){
+        $tools = Tool::orderBy('tool_type')->paginate(10);
+        $toolsByType = $tools->sortBy('property')->groupBy('tool_type');
+
+        return view("owner.tool", compact('toolsByType','tools'));
+    }
+
     public function store(Request $request)
     {
         // Validate the form data

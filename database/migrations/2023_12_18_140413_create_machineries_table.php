@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('machineries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('machinery_type');
             $table->string('machinery_name');
             $table->string('unit_cost');

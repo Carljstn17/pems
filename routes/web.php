@@ -49,8 +49,12 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
 
     Route::get('/owner/estimate/', [EstimateController::class, 'showLatestOwner'])->name('owner.estimate');
     Route::post('/owner/estimate/create', [EstimateController::class, 'storeEstimateOwner'])->name('owner.storeEstimate');
+    Route::get('/owner/estimate/show/{group_id}', [EstimateController::class, 'showOwner'])->name('owner.estimateShow');
+    Route::get('/owner/estimate/showreject/{group_id}', [EstimateController::class, 'showRejectOwner'])->name('owner.estimateShowReject');
+    Route::delete('/estimates/{groupId}/soft-delete', [EstimateController::class, 'softDelete'])->name('estimates.delete');
 
-    Route::get('/order', [Controller::class, 'showOrder'])->name('order');
+    Route::get('/owner/tool', [ToolController::class, 'allToolOwner'])->name('owner.tool');
+    Route::get('/owner/machinery', [MachineryController::class, 'allMachineryOwner'])->name('owner.machinery');
 });
 
 
@@ -85,6 +89,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::post('/payroll/advances', [AdvanceController::class, 'storeAdvance']);
     Route::get('/advance/list', [AdvanceController::class, 'advanceList'])->name('advance');
     Route::get('/staff/payroll/on-going', [PayrollController::class, 'showPayrollOngoing'])->name('on.payroll');
+    Route::get('/get-advances/{user}', [PayrollController::class, 'getAdvances']);
     // Route::get('/staff/payroll/show-latest/{id}', [ProjectController::class, 'showLatest'])->name('payroll.');
     // Route::get('/staff/payroll/all-ongoing/{id}', [ProjectController::class, 'showOngoing'])->name('payroll.');
 
@@ -97,7 +102,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/estimate/reject/{group_id}', [EstimateController::class, 'showOld'])->name('show.reject');
     Route::get('/estiates/edit/{group_id}', [EstimateController::class, 'edit'])->name('estimate.edit');
     Route::patch('/estimates/update/', [EstimateController::class, 'update'])->name('estimate.update');
-    Route::delete('/estimates/soft-delete/{groupId}', [EstimateController::class, 'softDelete'])->name('estimates.soft-delete');
+    Route::delete('/estimates/{groupId}/delete', [EstimateController::class, 'softDeleteForStaff'])->name('estimates.softDelete');
     Route::get('/search/estimate', [SearchController::class, 'searchEstimate'])->name('estimate.search');
     Route::get('/search/reject', [SearchController::class, 'searchRejectEstimate'])->name('search.reject');
 

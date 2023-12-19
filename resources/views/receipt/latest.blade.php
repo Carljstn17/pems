@@ -48,7 +48,10 @@
                     </div>
                 </a>
             @empty
-            <p>No Latest Receipt yet.</p>
+            <div class="text-center my-5">
+                <i class="bi bi-box"></i>
+                <p class="no-text">No receipts yet.</p>
+            </div>
             @endforelse
         </div> 
 

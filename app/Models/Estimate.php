@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Estimate extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use Searchable;
 
     protected $table = 'estimates';
@@ -27,8 +26,6 @@ class Estimate extends Model
         'status',
     ];
 
-    protected $dates = ['deleted_at'];
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -44,5 +41,10 @@ class Estimate extends Model
             $totalAmount += $estimate->getAmount();
         }
         return $totalAmount;
+    }
+
+    public function deleteLogs()
+    {
+        return $this->hasMany(EstimateDelete::class);
     }
 }

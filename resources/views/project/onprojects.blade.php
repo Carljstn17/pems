@@ -25,8 +25,9 @@
             @include('project.nprojects')
                 
                 <div class="mt-3 pb-3">
-                    <div class="row-container gap-3">
-                        @forelse ($projects as $project)
+                    
+                    @forelse ($projects as $project)
+                        <div class="row-container gap-3">
                             <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
                                 <a href="{{ url('/staff/show', $project->id) }}" class="row text-decoration-none link-dark p-3">
                                     <div class="row text-light ">
@@ -43,13 +44,14 @@
                                     </div>
                                 </a>
                             </div>
-                        @empty
-                        <div class="text-center col-span">
-                            <i class="fs-1 bi bi-box"></i>
-                            <p>No on-going projects yet.</p>
                         </div>
-                        @endforelse
-                    </div>
+                        @empty
+                        <div class="text-center">
+                            <i class="bi bi-box"></i>
+                            <p class="no-text">No on-going projects yet.</p>
+                        </div>
+                    @endforelse
+                    
                 </div>
 
                 <div class="mt-1">

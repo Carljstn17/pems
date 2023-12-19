@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('estimates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('description');
             $table->string('uom')->nullable();
             $table->integer('quantity');
             $table->decimal('unit_cost', 8, 2);
-            $table->string('group_id');
+            $table->string('group_id')->index();
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

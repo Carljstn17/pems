@@ -13,15 +13,18 @@ return new class extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('project_id')->constrained();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('project_id');
+            $table->foreign('project_id')->references('id')->on('projects');
             $table->string('name');
             $table->integer('rate_per_day');
             $table->integer('no_of_days');
             $table->integer('ot');
             $table->integer('ot_total');
-            $table->integer('amount');
-            $table->integer('advance');
+            $table->integer('salary');
+            $table->unsignedBigInteger('advance_id')->nullable();
+            $table->foreign('advance_id')->references('id')->on('projects');
             $table->integer('net_amount');
             $table->integer('total_amount');
             $table->timestamps();

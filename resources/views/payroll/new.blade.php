@@ -28,7 +28,7 @@
                         <th>DAYS</th>
                         <th>OT</th>
                         <th>OT TOTAL</th>
-                        <th>AMOUNT</th>
+                        <th>SALARY</th>
                         <th>ADVANCES</th>
                         <th>NET AMOUNT</th>
                     </tr>
@@ -51,8 +51,13 @@
                         <td><input type="number" class="form-control no-border" name="no_of_days[]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
                         <td><input type="number" class="form-control no-border" name="ot[]"></td>
                         <td><input type="number" class="form-control no-border" name="ot_total[]"></td>
-                        <td><input type="number" class="form-control no-border" name="amount[]" readonly></td>
-                        <td><input type="number" class="form-control no-border" name="advances[]" oninput="updateNetAmount(this.parentElement.parentElement)"></td>
+                        <td><input type="number" class="form-control no-border" name="salary[]" readonly></td>
+                        {{-- <td><input type="number" class="form-control no-border" name="advances[]" oninput="updateNetAmount(this.parentElement.parentElement)"></td> --}}
+                        <td>
+                            <button type="button" class="btn btn-outline-primary rounded-circle" data-toggle="modal" data-target="#advanceModal">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </td>
                         <td><input type="number" class="form-control no-border" name="net_amount[]" readonly></td>
                     </tr>
                 </tbody>
@@ -76,11 +81,9 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <button type="button" class="btn btn-danger justify-content-end" onclick="clearForm()">Clear</button>
             </div>    
-        
         </form>
 
-
-
+        
         <!-- The form remains the same -->
 
 <script>
@@ -117,7 +120,7 @@
         cellOTTotal.innerHTML = '<input type="number" class="form-control no-border" name="ot_total[]" readonly>';
         
         var cellAmount = newRow.insertCell(6);
-        cellAmount.innerHTML = '<input type="number" class="form-control no-border" name="amount[]" readonly>';
+        cellAmount.innerHTML = '<input type="number" class="form-control no-border" name="salary[]" readonly>';
         
         var cellAdvances = newRow.insertCell(7);
         cellAdvances.innerHTML = '<input type="number" class="form-control no-border" name="advances[]" oninput="updateNetAmount(this.parentElement.parentElement)">';

@@ -43,7 +43,10 @@
                     </div>
                 </a>
             @empty
-            <p>No Reject Receipt yet.</p>
+            <div class="text-center my-5">
+                <i class="bi bi-box"></i>
+                <p class="no-text">No reject estimates yet.</p>
+            </div>
             @endforelse
         </div>
 

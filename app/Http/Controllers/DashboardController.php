@@ -30,7 +30,7 @@ class DashboardController extends Controller
 
         // Retrieve only the latest estimate group_id
         $estimate = Estimate::latest('updated_at');
-        $estimates = $estimate->where('status', ['pending', 'new'])
+        $estimates = $estimate->whereIn('status', ['pending', 'accepted'])
            ->latest('updated_at')->get()->groupBy('group_id');
 
         return view('owner.panel', compact('estimates', 'projects'));

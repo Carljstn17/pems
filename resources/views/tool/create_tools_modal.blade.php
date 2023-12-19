@@ -54,7 +54,7 @@
                         <input type="text" class="form-control" name="whereabout" placeholder="Enter whereabout" required>
                     </div>
         
-                    <button type="submit" class="btn btn-primary">Submit Category</button>
+                    <button type="submit" class="btn btn-primary float-end">Submit Category</button>
                 </form>
                 
             </div>

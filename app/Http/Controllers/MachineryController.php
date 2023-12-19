@@ -19,6 +19,13 @@ class MachineryController extends Controller
         return view("machinery.all", compact('machinery_types', 'machinery_names', 'machineriesByType', 'machineries', 'machineryReports'));
     }
 
+    public function allMachineryOwner(){
+        $machineries = Machinery::orderBy('machinery_type')->paginate(10);
+        $machineriesByType = $machineries->sortBy('property')->groupBy('machinery_type');
+
+        return view("owner.machinery", compact('machineriesByType', 'machineries'));
+    }
+
     public function store(Request $request)
     {
         // Validate the form data

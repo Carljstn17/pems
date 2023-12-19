@@ -21,18 +21,18 @@
                     <i class="fs-5 bi-buildings"></i> <span class="ms-1 d-sm-inline">Account</span>
                 </a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 {{ request()->is('owner/estimate', 'owner/estimate/create', 'owner/estimate/show/*', 'owner/estimate/showreject/', ) ? 'active' : '' }}">
                 <a href="{{ route('owner.estimate') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-wallet"></i> <span class="ms-1 d-sm-inline">Estimate</span>
                 </a>
             </li>
             <li class="nav-item px-2">
-                <a href="" class="nav-link align-middle px-0 link-dark">
+                <a href="{{ route('owner.tool') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Tool</span>
                 </a>
             </li>
             <li class="nav-item px-2">
-                <a href="" class="nav-link align-middle px-0 link-dark">
+                <a href="{{ route('owner.machinery') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Machinery</span>
                 </a>
             </li>

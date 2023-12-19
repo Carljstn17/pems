@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('advances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('name')->nullable();
             $table->integer('amount');
             $table->unsignedBigInteger('entry_by');
             $table->foreign('entry_by')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('payroll_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

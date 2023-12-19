@@ -23,10 +23,10 @@
         </div>
 
         @include('tool.create_tools_modal')
-        <div class="table table-responsive">
+        <div class="table table-responsive mt-3">
             <table class="table table-bordered">
                 <thead>
-                    <tr>
+                    <tr class="text-center">
                         <td><span class="bold">Tool Type</span></td>
                         <td><span class="bold">Property</span></td>
                         <td><span class="bold">Tool Name</span></td>
@@ -46,48 +46,48 @@
                                 <td>{{ $tool->unit_cost }}</td>
                                 <td class="text-success">{{ $tool->toolReport->status }}</td>
                                 <td>{{ $tool->toolReport->whereabout }}</td>
-                                <td>
-                                    <button class="rounded-circle bg-white" data-toggle="modal" data-target="#editToolModal{{ $tool->id }}">
-                                        <i class="bi bi-pencil-square"></i>
+                                <td class="text-center">
+                                    <button class="btn btn-outline-primary" data-toggle="modal" data-target="#editToolModal{{ $tool->id }}">
+                                        <i class="bi bi-pencil"></i>
                                     </button>                
-                                    
-                                    <div class="modal fade" id="editToolModal{{ $tool->id }}" tabindex="-1" role="dialog" aria-labelledby="editToolModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editToolModalLabel">Edit Tool - {{ $tool->property }}</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body mt-2">
-                                                    <!-- Your edit form goes here -->
-                                                    <form action="{{ route('update.tool', ['tool' => $tool->id]) }}" method="post">
-                                                        @csrf
-                                                        @method('PUT')
-                                    
-                                                        <!-- Input fields for editing -->
-                                                        <div class="mb-3">
-                                                            <label for="status" class="form-label">Status</label>
-                                                            <input type="text" class="form-control" name="status" value="{{ $tool->toolReport->status }}" required>
-                                                        </div>
-                                    
-                                                        <div class="mb-3">
-                                                            <label for="whereabout" class="form-label">Whereabout</label>
-                                                            <input type="text" class="form-control" name="whereabout" value="{{ $tool->toolReport->whereabout }}" required>
-                                                        </div>
-                                    
-                                                        <!-- Submit button -->
-                                                        <button type="submit" class="btn btn-primary">Update</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                         @endforeach
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <div class="modal fade" id="editToolModal{{ $tool->id }}" tabindex="-1" role="dialog" aria-labelledby="editToolModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editToolModalLabel">Edit Tool - {{ $tool->property }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body mt-2">
+                        <!-- Your edit form goes here -->
+                        <form action="{{ route('update.tool', ['tool' => $tool->id]) }}" method="post">
+                            @csrf
+                            @method('PUT')
+        
+                            <!-- Input fields for editing -->
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <input type="text" class="form-control" name="status" value="{{ $tool->toolReport->status }}" required>
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="whereabout" class="form-label">Whereabout</label>
+                                <input type="text" class="form-control" name="whereabout" value="{{ $tool->toolReport->whereabout }}" required>
+                            </div>
+        
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary my-2 float-end">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="mt-1 float-end">

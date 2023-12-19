@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estimate;
+use App\Models\EstimateDelete;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\EstimateTotal;
@@ -74,6 +75,23 @@ class EstimateController extends Controller
 
         return view('estimate.showReject', compact('estimates', 'group_id'));
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    public function showOwner($group_id)
+    {
+        $estimates = Estimate::with('user')->where('group_id', $group_id)->get();
+
+        return view('owner.estimateShow', compact('estimates', 'group_id'));
+    }
+
+    public function showRejectOwner($group_id)
+    {
+        $estimates = Estimate::with('user')->where('group_id', $group_id)->get();
+
+        return view('owner.estimateShowReject', compact('estimates', 'group_id'));
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////
 
@@ -196,14 +214,40 @@ class EstimateController extends Controller
 
     public function softDelete($groupId)
     {
-        $deletedEstimates = Estimate::where('group_id', $groupId)->delete();
 
-        if ($deletedEstimates > 0) {
-            return redirect()->route('latest')->with('alert', "Estimates with group_id $groupId soft deleted successfully");
-        } else {
-            return redirect()->back()->with('alert', "No estimates found with group_id $groupId");
+        $estimates = Estimate::where('group_id', $groupId)->get();
+    
+        // Log the soft delete
+        foreach ($estimates as $estimate) {
+            EstimateDelete::create([
+                'group_id' => $estimate->group_id,
+                'user_id' => auth()->id(),
+            ]);
+    
+            // Soft delete each estimate
+            $estimate->delete();
         }
-    }
+    
+        return redirect()->route('owner.estimate')->with('success', 'Estimate soft deleted successfully.');
+    }    
 
+    public function softDeleteForStaff($groupId)
+    {
+
+        $estimates = Estimate::where('group_id', $groupId)->get();
+    
+        // Log the soft delete
+        foreach ($estimates as $estimate) {
+            EstimateDelete::create([
+                'group_id' => $estimate->group_id,
+                'user_id' => auth()->id(),
+            ]);
+    
+            // Soft delete each estimate
+            $estimate->delete();
+        }
+    
+        return redirect()->route('latest')->with('success', 'Estimate soft deleted successfully.');
+    }  
 
 }

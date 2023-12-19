@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('machinery_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('machinery_id')->constrained();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('machinery_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('machinery_id')->references('id')->on('machineries');
             $table->string('status');
             $table->string('whereabout');
             $table->timestamps();

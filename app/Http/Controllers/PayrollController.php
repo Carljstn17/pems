@@ -47,6 +47,12 @@ class PayrollController extends Controller
         return view('payroll.ongoing')->with('projects', $projects);
     }
 
+    public function getAdvances(User $user)
+    {
+        $advances = $user->advances; // Assuming a relationship exists between User and Advance models
+
+        return response()->json($advances);
+    }
     
     // public function showLatest($id)
     // {

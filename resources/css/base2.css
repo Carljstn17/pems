@@ -1,5 +1,6 @@
 :root{
     --secondary-color:#e6f0ff;
+    --last-color:#a4b1c4;
     --font-family:'Montserrat', sans-serif;
 }
 
@@ -154,4 +155,13 @@ select.no-border {
 
 .bottom{
     margin-bottom: 30rem;
+}
+
+.bi-box{
+    font-size: 80px;
+    color: var(--last-color);
+}
+
+.no-text{
+    color: var(--last-color);
 }

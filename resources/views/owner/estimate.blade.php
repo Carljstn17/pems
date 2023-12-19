@@ -28,7 +28,7 @@
                     $firstEstimate = $estimate->first();
                 @endphp
             
-                <a href="{{ route('estimate.form', ['group_id' => $firstEstimate->group_id]) }}" class="link-dark text-decoration-none">
+                <a href="{{ route('owner.estimateShow', ['group_id' => $firstEstimate->group_id]) }}" class="link-dark text-decoration-none">
                     <div class="row p-4 d-flex justify-content-center rounded-2 border hover3 mb-2">
                         <div class="col">
                             <span class="bold">Status: &nbsp</span>{{ $firstEstimate->status }}
@@ -45,7 +45,10 @@
                     </div>
                 </a>
             @empty
-            <p>No Latest Estimate yet.</p>
+            <div class="text-center my-5">
+                <i class="bi bi-box"></i>
+                <p class="no-text">No estimates yet.</p>
+            </div>
             @endforelse
         </div>
 
