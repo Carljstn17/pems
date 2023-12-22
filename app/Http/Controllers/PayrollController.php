@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Advance;
 use App\Models\Payroll;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Models\CompanyAttribute;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -29,7 +31,9 @@ class PayrollController extends Controller
         $projects = Project::where('status', 'new')->latest()->get();
         $laborers = User::where('role', 'laborer')->get();
 
-        return view('payroll.new', compact('projects', 'laborers'));
+        $latestOtRate = CompanyAttribute::latest('created_at')->value('ot_rate');
+
+        return view('payroll.new', compact('projects', 'laborers', 'latestOtRate'));
     }
 
     public function showPayrollAdvance()

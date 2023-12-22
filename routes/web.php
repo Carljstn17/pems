@@ -7,6 +7,7 @@ use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OtRateController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdvanceController;
 use App\Http\Controllers\PayrollController;
@@ -84,12 +85,13 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
 
     Route::get('/staff/payroll', [PayrollController::class, 'showStaffPayroll'])->name('staff.payroll');
     Route::get('/staff/payroll/latest', [PayrollController::class, 'showPayrollLatest'])->name('latest.payroll');
-    Route::get('/staff/payroll/new', [PayrollController::class, 'showPayrollNew']);
+    Route::get('/staff/payroll/new/', [PayrollController::class, 'showPayrollNew'])->name('new.payroll');
+    Route::get('/get-advance/{id}', [AdvanceController::class, 'getAdvance']);
     Route::get('/staff/payroll/advance', [PayrollController::class, 'showPayrollAdvance']);
     Route::post('/payroll/advances', [AdvanceController::class, 'storeAdvance']);
     Route::get('/advance/list', [AdvanceController::class, 'advanceList'])->name('advance');
     Route::get('/staff/payroll/on-going', [PayrollController::class, 'showPayrollOngoing'])->name('on.payroll');
-    Route::get('/get-advances/{user}', [PayrollController::class, 'getAdvances']);
+    Route::post('/ot-rate/store', [OtRateController::class, 'storeNewRate'])->name('ot-rate.store');
     // Route::get('/staff/payroll/show-latest/{id}', [ProjectController::class, 'showLatest'])->name('payroll.');
     // Route::get('/staff/payroll/all-ongoing/{id}', [ProjectController::class, 'showOngoing'])->name('payroll.');
 

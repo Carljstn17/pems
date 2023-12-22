@@ -11,10 +11,6 @@ class AdvanceController extends Controller
 {
     public function storeAdvance(Request $request)
     {
-        $request->validate([
-            'totalAdvance' => 'nullable|numeric',
-        ]);
-
         $entryBy = Auth::id();
         // Process the form data and store it in the database
         foreach ($request->user_id as $key => $userId) {
@@ -37,5 +33,13 @@ class AdvanceController extends Controller
 
         // Pass the advances data to the view
         return view('payroll.advanceList', ['advances' => $advances]);
+    }
+
+    public function getAdvance($id)
+    {
+        // Fetch the advance for the selected laborer
+        $advance = Advance::where('user_id', $id)->first();
+
+        return response()->json($advance);
     }
 }

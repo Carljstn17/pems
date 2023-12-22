@@ -7,8 +7,8 @@
         
         <form action="" method="post" class="pb-5">
 
-            <div class="">
-                <select name="project_id" id="project_id" class="form-select col col-md-2 col-sm-6 mb-3">
+            <div class="d-flex justify-content-between mb-2">
+                <select name="project_id" id="project_id" class="form-select" style="width: 400px;">
                     <option value="">Select a project</option>
                     @foreach($projects as $project)
                         <option value="{{ $project->id }}">
@@ -17,6 +17,10 @@
                         </option>
                     @endforeach
                 </select>
+
+                <a class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createOtRateModal" style="transition: 0.8s;">
+                    <span class="d-none d-sm-inline"><i class="bi bi-plus"></i> OT Rate</span>
+                </a>
             </div>
 
             <table class="table table-bordered" id="dataTable">
@@ -31,110 +35,135 @@
                         <th>SALARY</th>
                         <th>ADVANCES</th>
                         <th>NET AMOUNT</th>
+                        <th></th>
                     </tr>
                 </thead>
 
                 <tbody>
+                    @foreach($laborers as $laborer)
                     <tr>
                         <td>1</td>
                         <td>
-                            <select class="form-select no-border px-2" name="user_id[]">
-                                <option value="">Select a laborer</option>
-                                @foreach($laborers as $laborer)
-                                    <option value="{{ $laborer->id }}">
-                                        {{ Str::limit($laborer->name, 14) }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <input type="text" class="form-control no-border" value="{{ $laborer->name }}" name="user_id[]{{ $laborer->id }}" oninput="calculateAmount(this.parentElement.parentElement)" readonly>
                         </td>
                         <td><input type="number" class="form-control no-border" name="rate_per_day[]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
                         <td><input type="number" class="form-control no-border" name="no_of_days[]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
-                        <td><input type="number" class="form-control no-border" name="ot[]"></td>
-                        <td><input type="number" class="form-control no-border" name="ot_total[]"></td>
+                        <input type="hidden" class="form-control no-border" name="rate_per_hour[]">
+                        <input type="hidden" class="form-control no-border" name="ot_amount_per_hour[]">
+                        <td><input type="number" class="form-control no-border" name="ot_hour[]"></td>
+                        <td><input type="number" class="form-control no-border" name="ot_total[]" readonly></td>
                         <td><input type="number" class="form-control no-border" name="salary[]" readonly></td>
-                        {{-- <td><input type="number" class="form-control no-border" name="advances[]" oninput="updateNetAmount(this.parentElement.parentElement)"></td> --}}
                         <td>
-                            <button type="button" class="btn btn-outline-primary rounded-circle" data-toggle="modal" data-target="#advanceModal">
-                                <i class="bi bi-plus-lg"></i>
-                            </button>
+                            <input type="text" class="form-control no-border" value="{{ number_format(optional($laborer->advances())->amount, 2, '.', ',') }}" name="advances_id[]" oninput="updateNetAmount(this.parentElement.parentElement)" data-bs-toggle="modal" data-bs-target="#advancesModal" readonly>
+
+                            @include('payroll.advance_modal')
                         </td>
                         <td><input type="number" class="form-control no-border" name="net_amount[]" readonly></td>
+                        <td><input type="checkbox" class="form-check-input" name="checklist[]" checked></td>
                     </tr>
+                    @endforeach
                 </tbody>
         
                 <tfoot> 
                     <tr>
-                        <td colspan="2"><strong>TOTAL</strong></td>
+                        <td colspan="2" class="text-end"><strong>TOTAL : </strong></td>
                         <td><input type="text" class="form-control no-border" id="totalRate" name="totalRate" readonly></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><input type="text" class="form-control no-border" id="totalAmount" name="totalAmount" readonly></td>
+                        <td><input type="text" class="form-control no-border" id="totalSalary" name="totalSalary" readonly></td>
                         <td><input type="text" class="form-control no-border" id="totalAdvance" name="totalAdvance" readonly></td>
                         <td><input type="text" class="form-control no-border" id="totalNetAmount" name="totalNetAmount" readonly></td>
+                        <td></td>
                     </tr>
                 </tfoot>
             </table>
 
-            <div class="d-flex gap-2">
-                <button type="button" class="btn btn-success" onclick="addRow()">+ Add Row</button>
+            <div class="d-flex justify-content-between gap-2">
+                {{-- <button type="button" class="btn btn-success" onclick="addRow()">+ Add Row</button> --}}
+                <button type="button" class="btn btn-danger" onclick="clearForm()">Clear</button>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="button" class="btn btn-danger justify-content-end" onclick="clearForm()">Clear</button>
             </div>    
         </form>
 
-        
+        @include('payroll.create_ot_rate')
         <!-- The form remains the same -->
 
 <script>
-       for (var i = 0; i < 9; i++) {
-                addRow();
-            }
-            function addRow() {
-        var table = document.getElementById("dataTable");
-        var newRow = table.getElementsByTagName('tbody')[0].insertRow(-1);
-        
-        var cellNum = newRow.insertCell(0);
-        cellNum.innerHTML = table.rows.length;
-        
-        var cellName = newRow.insertCell(1);
-        cellName.innerHTML = `<select class="form-select no-border px-2" name="selectedLaborer[]" value="{{ old('selectedLaborer') }}">
-                                <option value="">Select a laborer</option>
-                                @foreach($laborers as $laborer)
-                                    <option value="{{ $laborer->id }}">
-                                        {{ Str::limit($laborer->name, 14) }}
-                                    </option>
-                                @endforeach
-                            </select>`;
-        
-        var cellRate = newRow.insertCell(2);
-        cellRate.innerHTML = '<input type="number" class="form-control no-border" name="rate_per_day[]" oninput="calculateAmount(this.parentElement.parentElement)">';
-        
-        var cellDays = newRow.insertCell(3);
-        cellDays.innerHTML = '<input type="number" class="form-control no-border" name="no_of_days[]" oninput="calculateAmount(this.parentElement.parentElement)">';
-        
-        var cellOT = newRow.insertCell(4);
-        cellOT.innerHTML = '<input type="number" class="form-control no-border" name="ot[]" oninput="calculateOTTotal(this.parentElement.parentElement)">';
-        
-        var cellOTTotal = newRow.insertCell(5);
-        cellOTTotal.innerHTML = '<input type="number" class="form-control no-border" name="ot_total[]" readonly>';
-        
-        var cellAmount = newRow.insertCell(6);
-        cellAmount.innerHTML = '<input type="number" class="form-control no-border" name="salary[]" readonly>';
-        
-        var cellAdvances = newRow.insertCell(7);
-        cellAdvances.innerHTML = '<input type="number" class="form-control no-border" name="advances[]" oninput="updateNetAmount(this.parentElement.parentElement)">';
-        
-        var cellNetAmount = newRow.insertCell(8);
-        cellNetAmount.innerHTML = '<input type="number" class="form-control no-border" name="net_amount[]" readonly>';
 
-        updateTotalAmount();
-    }
+document.addEventListener('DOMContentLoaded', function () {
+        var otRate = {!! json_encode($latestOtRate) !!}; // Get the ot_rate directly from the Blade
+
+        function updateOtTotalAndSalary(row) {
+            var ratePerDay = parseFloat(row.querySelector('[name^="rate_per_day"]').value) || 0;
+            var noOfDays = parseFloat(row.querySelector('[name^="no_of_days"]').value) || 0;
+            var otHour = parseFloat(row.querySelector('[name^="ot_hour"]').value) || 0;
+
+            var ratePerHour = ratePerDay / noOfDays;
+            var otAmountPerHour = ratePerHour * otRate;
+            var otTotal = otAmountPerHour * otHour;
+
+            var otTotalField = row.querySelector('[name^="ot_total"]');
+            var salaryField = row.querySelector('[name^="salary"]');
+            var ratePerHourField = row.querySelector('[name^="rate_per_hour"]');
+            var otAmountPerHourField = row.querySelector('[name^="ot_amount_per_hour"]');
+
+            // Update hidden inputs
+            ratePerHourField.value = ratePerHour.toFixed(2);
+            otAmountPerHourField.value = otAmountPerHour.toFixed(2);
+
+            // Update ot_total field
+            otTotalField.value = otTotal.toFixed(2);
+
+            // Update salary field by adding ot_total
+            var existingSalary = parseFloat(salaryField.value) || 0;
+            var newSalary = existingSalary + otTotal;
+            salaryField.value = newSalary.toFixed(2);
+        }
+
+        // Handle input changes
+        document.querySelectorAll('[name^="rate_per_day"], [name^="no_of_days"], [name^="ot_hour"]').forEach(function (input) {
+            input.addEventListener('input', function () {
+                updateOtTotalAndSalary(input.parentElement.parentElement);
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkboxes = document.getElementsByName('checklist[]');
+        var totalAmountInput = document.querySelector('[name="advances_id[]"]');
+        
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                updateTotalCheckedAmount();
+            });
+        });
+
+        function updateTotalCheckedAmount() {
+            var totalAmount = 0;
+
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked && checkbox.hasAttribute('data-amount')) {
+                    totalAmount += parseFloat(checkbox.getAttribute('data-amount'));
+                }
+            });
+
+            totalAmountInput.value = isNaN(totalAmount) ? '0.00' : totalAmount.toFixed(2);
+
+            // Handle remarks
+            var remarksInput = document.getElementById('remarksInput'); // Change 'remarksInput' to the actual ID of your remarks input
+            var allChecked = Array.from(checkboxes).every(function (checkbox) {
+                return !checkbox.checked;
+            });
+
+            remarksInput.value = allChecked ? 'add' : 'deducted';
+        }
+    });
 
     function calculateAmount(row) {
         var ratePerDay = row.querySelector('[name="rate_per_day[]"]').value;
         var noOfDays = row.querySelector('[name="no_of_days[]"]').value;
-        var amountField = row.querySelector('[name="amount[]"]');
+        var amountField = row.querySelector('[name="salary[]"]');
 
         var amount = ratePerDay * noOfDays;
         amountField.value = amount.toFixed(2);
@@ -142,30 +171,9 @@
         updateTotalAmount();
     }
 
-    // function calculateOTTotal(row) {
-    //     var ot = row.querySelector('[name="ot[]"]').value;
-    //     var otTotalField = row.querySelector('[name="ot_total[]"]');
-        
-    //     var otTotal = ot * 1.5; // Assuming OT Total is 1.5 times OT
-    //     otTotalField.value = otTotal.toFixed(2);
-
-    //     updateTotalAmount();
-    // }
-
-    function updateNetAmount(row) {
-        var amount = parseFloat(row.querySelector('[name="amount[]"]').value) || 0;
-        var advances = parseFloat(row.querySelector('[name="advances[]"]').value) || 0;
-        var netAmountField = row.querySelector('[name="net_amount[]"]');
-        
-        var netAmount = amount - advances;
-        netAmountField.value = netAmount.toFixed(2);
-
-        updateTotalAmount();
-    }
-
     function updateTotalAmount() {
-        var totalAmountField = document.getElementById("totalAmount");
-        var amountFields = document.getElementsByName("amount[]");
+        var totalAmountField = document.getElementById("totalSalary");
+        var amountFields = document.getElementsByName("salary[]");
 
         var totalAmount = Array.from(amountFields).reduce(function (acc, field) {
             return acc + (parseFloat(field.value) || 0);
@@ -192,7 +200,7 @@
 
     function updateTotalAdvance() {
         var totalAdvanceField = document.getElementById("totalAdvance");
-        var advanceFields = document.getElementsByName("advances[]");
+        var advanceFields = document.getElementsByName("advance_id[]");
 
         var totalAdvance = Array.from(advanceFields).reduce(function (acc, field) {
             return acc + (parseFloat(field.value) || 0);
@@ -203,26 +211,42 @@
 
     function updateTotalNetAmount() {
         var totalNetAmountField = document.getElementById("totalNetAmount");
+        var salaryFields = document.getElementsByName("salary[]");
+        var advanceFields = document.getElementsByName("advances_id[]");
         var netAmountFields = document.getElementsByName("net_amount[]");
 
-        var totalNetAmount = Array.from(netAmountFields).reduce(function (acc, field) {
-            return acc + (parseFloat(field.value) || 0);
-        }, 0);
+        var totalNetAmount = 0;
+
+        // Iterate through each row
+        for (var i = 0; i < salaryFields.length; i++) {
+            var salary = parseFloat(salaryFields[i].value) || 0;
+            var advance = parseFloat(advanceFields[i].value) || 0;
+
+            // Calculate net amount for each row
+            var netAmount = salary - advance;
+
+            // Update net_amount field for each row
+            netAmountFields[i].value = netAmount.toFixed(2);
+
+            // Accumulate net amounts for total
+            totalNetAmount += netAmount;
+        }
 
         totalNetAmountField.value = totalNetAmount.toFixed(2);
     }
 
     function clearForm() {
-        var inputs = document.querySelectorAll('input[name^="name[]"], input[name^="rate_per_day[]"], input[name^="no_of_days[]"], input[name^="ot[]"], input[name^="ot_total[]"], input[name^="amount[]"], input[name^="advances[]"], input[name^="net_amount[]"]');
+        var inputs = document.querySelectorAll('input[name^="name[]"], input[name^="rate_per_day[]"], input[name^="no_of_days[]"], input[name^="ot[]"], input[name^="ot_total[]"], input[name^="salary[]"], input[name^="advance_id[]"], input[name^="net_amount[]"]');
         inputs.forEach(function (input) {
             input.value = '';
         });
 
         document.getElementById("totalRate").value = '';
-        document.getElementById("totalAmount").value = '';
+        document.getElementById("totalSalary").value = '';
         document.getElementById("totalAdvance").value = '';
         document.getElementById("totalNetAmount").value = '';
     }
+    
 </script>
 
 @endsection
