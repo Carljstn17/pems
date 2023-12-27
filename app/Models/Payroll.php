@@ -12,8 +12,26 @@ class Payroll extends Model
     use Searchable;
 
     protected $fillable = [
-        'amount',
         'user_id',
+        'project_id',
+        'name',
+        'rate_per_day',
+        'no_of_day',
+        'ot_rate',
+        'ot_hour',
+        'ot_amount',
+        'salary',
+        'advance_amount',
+        'net_amount',
+        'total_amount'
+
     ];
+
+    public function __get($rate_per_day) {
+        if(!empty($this->rate_per_day)){
+            return $this->rate_per_day;
+        }
+    return 500;     
+    }
 
 }

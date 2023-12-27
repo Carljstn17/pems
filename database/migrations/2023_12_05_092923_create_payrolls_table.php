@@ -20,11 +20,11 @@ return new class extends Migration
             $table->string('name');
             $table->integer('rate_per_day');
             $table->integer('no_of_days');
-            $table->integer('ot');
-            $table->integer('ot_total');
+            $table->integer('ot_rate');
+            $table->integer('ot_hour');
+            $table->integer('ot_amount');
             $table->integer('salary');
-            $table->unsignedBigInteger('advance_id')->nullable();
-            $table->foreign('advance_id')->references('id')->on('projects');
+            $table->integer('advance_amount')->nullable();
             $table->integer('net_amount');
             $table->integer('total_amount');
             $table->timestamps();

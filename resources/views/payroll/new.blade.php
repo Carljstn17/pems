@@ -46,7 +46,7 @@
                         <td>
                             <input type="text" class="form-control no-border" value="{{ $laborer->name }}" name="user_id[]{{ $laborer->id }}" oninput="calculateAmount(this.parentElement.parentElement)" readonly>
                         </td>
-                        <td><input type="number" class="form-control no-border" name="rate_per_day[]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
+                        <td><input type="number" class="form-control no-border" name="rate_per_day[]" value="{{ $laborer->payroll->rate_per_day }}" oninput="calculateAmount(this.parentElement.parentElement)"></td>
                         <td><input type="number" class="form-control no-border" name="no_of_days[]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
                         <input type="hidden" class="form-control no-border" name="rate_per_hour[]">
                         <input type="hidden" class="form-control no-border" name="ot_amount_per_hour[]">
@@ -90,44 +90,6 @@
         <!-- The form remains the same -->
 
 <script>
-
-document.addEventListener('DOMContentLoaded', function () {
-        var otRate = {!! json_encode($latestOtRate) !!}; // Get the ot_rate directly from the Blade
-
-        function updateOtTotalAndSalary(row) {
-            var ratePerDay = parseFloat(row.querySelector('[name^="rate_per_day"]').value) || 0;
-            var noOfDays = parseFloat(row.querySelector('[name^="no_of_days"]').value) || 0;
-            var otHour = parseFloat(row.querySelector('[name^="ot_hour"]').value) || 0;
-
-            var ratePerHour = ratePerDay / noOfDays;
-            var otAmountPerHour = ratePerHour * otRate;
-            var otTotal = otAmountPerHour * otHour;
-
-            var otTotalField = row.querySelector('[name^="ot_total"]');
-            var salaryField = row.querySelector('[name^="salary"]');
-            var ratePerHourField = row.querySelector('[name^="rate_per_hour"]');
-            var otAmountPerHourField = row.querySelector('[name^="ot_amount_per_hour"]');
-
-            // Update hidden inputs
-            ratePerHourField.value = ratePerHour.toFixed(2);
-            otAmountPerHourField.value = otAmountPerHour.toFixed(2);
-
-            // Update ot_total field
-            otTotalField.value = otTotal.toFixed(2);
-
-            // Update salary field by adding ot_total
-            var existingSalary = parseFloat(salaryField.value) || 0;
-            var newSalary = existingSalary + otTotal;
-            salaryField.value = newSalary.toFixed(2);
-        }
-
-        // Handle input changes
-        document.querySelectorAll('[name^="rate_per_day"], [name^="no_of_days"], [name^="ot_hour"]').forEach(function (input) {
-            input.addEventListener('input', function () {
-                updateOtTotalAndSalary(input.parentElement.parentElement);
-            });
-        });
-    });
 
     document.addEventListener('DOMContentLoaded', function () {
         var checkboxes = document.getElementsByName('checklist[]');

@@ -26,6 +26,7 @@ class User extends Authenticatable
         'username', 
         'birthdate', 
         'address',
+        'payroll',
     ];
 
     /**
@@ -36,6 +37,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        
     ];
 
     /**
@@ -43,6 +45,15 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+
+  
+    public function setPayroll($payroll){
+        $this->payroll = $payroll;
+    }
+    public function getPayroll(){
+        return $this->payroll;
+    }
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
@@ -51,5 +62,10 @@ class User extends Authenticatable
     public function advances()
     {
         return $this->hasMany(Advance::class);
+    }
+
+    public function payrollLatest()
+    {
+        return $this->hasOne(Payroll::class)->latest();
     }
 }

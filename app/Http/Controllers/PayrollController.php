@@ -31,9 +31,12 @@ class PayrollController extends Controller
         $projects = Project::where('status', 'new')->latest()->get();
         $laborers = User::where('role', 'laborer')->get();
 
-        $latestOtRate = CompanyAttribute::latest('created_at')->value('ot_rate');
+        foreach($laborers as $laborer) {
+            $payroll = new Payroll();
+            $laborer->setPayroll($payroll);
+        }
 
-        return view('payroll.new', compact('projects', 'laborers', 'latestOtRate'));
+        return view('payroll.new', compact('projects', 'laborers'));
     }
 
     public function showPayrollAdvance()

@@ -6,11 +6,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="otRateForm" action="{{ route('ot-rate.store') }}" method="post">
+                <form id="otRateForm" action="" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="otRate" class="form-label">OT Rate</label>
-                        <input type="number" class="form-control" id="otRate" name="ot_rate" step="0.01" value="{{ $latestOtRate }}" required>
+                        <input type="number" class="form-control" id="otRate" name="ot_rate" step="0.01" value="" required>
                     </div>
 
                     <button type="button" class="btn btn-primary" onclick="submitOtRateForm()">Submit</button>

@@ -42,9 +42,4 @@ class Estimate extends Model
         }
         return $totalAmount;
     }
-
-    public function deleteLogs()
-    {
-        return $this->hasMany(EstimateDelete::class);
-    }
 }
