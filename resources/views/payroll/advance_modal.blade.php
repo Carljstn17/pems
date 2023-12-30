@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="advancesModal" tabindex="-1" aria-labelledby="advancesModalLabel" aria-hidden="true">
+<div class="modal fade" id="advancesModal{{ $laborer->id }}" tabindex="-1" aria-labelledby="advancesModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -20,6 +20,7 @@
                     </thead>
                     <tbody>
                         @forelse($laborer->advances as $index => $advance)
+                            <h5>{{ $advance->name }}</h5>
                             <tr>
                                 <td>{{ $advance->created_at->format('Y-m-d') }}</td>
                                 <td>{{ $advance->amount }}</td>

@@ -18,15 +18,15 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
             $table->string('name');
-            $table->integer('rate_per_day');
+            $table->float('rate_per_day', 8, 2);
             $table->integer('no_of_days');
-            $table->integer('ot_rate');
+            $table->float('ot_rate', 2, 2);
             $table->integer('ot_hour');
-            $table->integer('ot_amount');
-            $table->integer('salary');
+            $table->float('ot_amount', 8, 2);
+            $table->float('salary', 8, 2);
             $table->integer('advance_amount')->nullable();
-            $table->integer('net_amount');
-            $table->integer('total_amount');
+            $table->float('net_amount', 8, 2);
+            $table->float('total_amount', 8, 2);
             $table->timestamps();
         });
     }

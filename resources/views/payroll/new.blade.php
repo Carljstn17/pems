@@ -18,23 +18,28 @@
                     @endforeach
                 </select>
 
-                <a class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createOtRateModal" style="transition: 0.8s;">
-                    <span class="d-none d-sm-inline"><i class="bi bi-plus"></i> OT Rate</span>
-                </a>
+                @foreach ($laborers as $laborer)
+                    <div class="input-group"  style="width: 200px;">
+                        <label for="ot_rate" class="input-group-text"><span class="bold">OT-RATE</span></label>
+                        <input type="number" class="form-control ot_rate" name="ot_rate" value="{{ $laborer->payroll->ot_rate }}">
+                    </div>    
+                    @break
+                @endforeach
+                
             </div>
 
             <table class="table table-bordered" id="dataTable">
                 <thead>
                     <tr>
-                        <th>NO.</th>
-                        <th class="col-md-2">NAME</th>
-                        <th>RATE/   DAY</th>
-                        <th>DAYS</th>
-                        <th>OT</th>
-                        <th>OT TOTAL</th>
-                        <th>SALARY</th>
-                        <th>ADVANCES</th>
-                        <th>NET AMOUNT</th>
+                        <th><span class="bold">NO.</span></th>
+                        <th class="col-md-2"><span class="bold">NAME</span></th>
+                        <th><span class="bold">RATE/DAY</span></th>
+                        <th><span class="bold">DAYS</span></th>
+                        <th><span class="bold">OT-HOUR</span></th>
+                        <th><span class="bold">OT-TOTAL</span></th>
+                        <th><span class="bold">SALARY</span></th>
+                        <th><span class="bold">ADVANCE</span></th>
+                        <th><span class="bold">NET $</span></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -48,15 +53,13 @@
                         </td>
                         <td><input type="number" class="form-control no-border" name="rate_per_day[]" value="{{ $laborer->payroll->rate_per_day }}" oninput="calculateAmount(this.parentElement.parentElement)"></td>
                         <td><input type="number" class="form-control no-border" name="no_of_days[]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
-                        <input type="hidden" class="form-control no-border" name="rate_per_hour[]">
-                        <input type="hidden" class="form-control no-border" name="ot_amount_per_hour[]">
                         <td><input type="number" class="form-control no-border" name="ot_hour[]"></td>
                         <td><input type="number" class="form-control no-border" name="ot_total[]" readonly></td>
                         <td><input type="number" class="form-control no-border" name="salary[]" readonly></td>
                         <td>
-                            <input type="text" class="form-control no-border" value="{{ number_format(optional($laborer->advances())->amount, 2, '.', ',') }}" name="advances_id[]" oninput="updateNetAmount(this.parentElement.parentElement)" data-bs-toggle="modal" data-bs-target="#advancesModal" readonly>
+                            <input type="text" class="form-control no-border" value="{{ number_format(optional($laborer->advances())->amount, 2, '.', ',') }}" name="advances_id[]" oninput="updateNetAmount(this.parentElement.parentElement)" data-bs-toggle="modal" data-bs-target="#advancesModal{{ $laborer->id }}" readonly>
 
-                            @include('payroll.advance_modal')
+                            @include('payroll.advance_modal', ['laborer' => $laborer])
                         </td>
                         <td><input type="number" class="form-control no-border" name="net_amount[]" readonly></td>
                         <td><input type="checkbox" class="form-check-input" name="checklist[]" checked></td>
@@ -66,7 +69,7 @@
         
                 <tfoot> 
                     <tr>
-                        <td colspan="2" class="text-end"><strong>TOTAL : </strong></td>
+                        <td colspan="2" class="text-end"><span class="bold">TOTAL : </span></td>
                         <td><input type="text" class="form-control no-border" id="totalRate" name="totalRate" readonly></td>
                         <td></td>
                         <td></td>
@@ -86,8 +89,6 @@
             </div>    
         </form>
 
-        @include('payroll.create_ot_rate')
-        <!-- The form remains the same -->
 
 <script>
 
@@ -123,34 +124,28 @@
     });
 
     function calculateAmount(row) {
-        var ratePerDay = row.querySelector('[name="rate_per_day[]"]').value;
-        var noOfDays = row.querySelector('[name="no_of_days[]"]').value;
-        var amountField = row.querySelector('[name="salary[]"]');
+        const ratePerDay = parseFloat(row.querySelector('[name="rate_per_day[]"]').value) || 0;
+        const noOfDays = parseFloat(row.querySelector('[name="no_of_days[]"]').value) || 0;
+        const amountField = row.querySelector('[name="salary[]"]');
 
-        var amount = ratePerDay * noOfDays;
+        const amount = ratePerDay * noOfDays;
         amountField.value = amount.toFixed(2);
 
         updateTotalAmount();
     }
 
     function updateTotalAmount() {
-        var totalAmountField = document.getElementById("totalSalary");
-        var amountFields = document.getElementsByName("salary[]");
+        const totalAmountField = document.getElementById("totalSalary");
+        const amountFields = document.getElementsByName("salary[]");
 
-        var totalAmount = Array.from(amountFields).reduce(function (acc, field) {
-            return acc + (parseFloat(field.value) || 0);
-        }, 0);
-
+        const totalAmount = Array.from(amountFields).reduce((acc, field) => acc + (parseFloat(field.value) || 0), 0);
         totalAmountField.value = totalAmount.toFixed(2);
 
         // Update Total Rate
-        var totalRateField = document.getElementById("totalRate");
-        var rateFields = document.getElementsByName("rate_per_day[]");
+        const totalRateField = document.getElementById("totalRate");
+        const rateFields = document.getElementsByName("rate_per_day[]");
 
-        var totalRate = Array.from(rateFields).reduce(function (acc, field) {
-            return acc + (parseFloat(field.value) || 0);
-        }, 0);
-
+        const totalRate = Array.from(rateFields).reduce((acc, field) => acc + (parseFloat(field.value) || 0), 0);
         totalRateField.value = totalRate.toFixed(2);
 
         // Update Total Advance
@@ -159,7 +154,7 @@
         // Update Total Net Amount
         updateTotalNetAmount();
     }
-
+    
     function updateTotalAdvance() {
         var totalAdvanceField = document.getElementById("totalAdvance");
         var advanceFields = document.getElementsByName("advance_id[]");

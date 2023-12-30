@@ -11,28 +11,29 @@ class AdvanceController extends Controller
 {
     public function storeAdvance(Request $request)
     {
-        $entryBy = Auth::id();
-        // Process the form data and store it in the database
-        foreach ($request->user_id as $key => $userId) {
-            $user = User::find($userId);
+        $user_id = $request->input('user_id');
+        $amount = $request->input('amount');
 
-            if ($user) {
-                $user->advances()->create([
-                    'amount' => $request->amount[$key],
-                    'name' => $user->name,
-                    'entry_by' => $entryBy,
-                ]);
-            }
-        }
+        $user = User::find($user_id);
+        $name = $user ? $user->name : null;
+
+        // Create a new Advance instance and save it to the database
+        Advance::create([
+            "entry_by"=> Auth::id(),
+            'user_id' => $user_id,
+            'name' => $name,
+            'amount' => $amount,
+        ]);
         // Redirect back or to a specific route after successful submission
         return redirect()->route('latest.payroll')->with('success', 'Advances added successfully!');
     }
 
     public function advanceList() {
         $advances = Advance::all();
+        $laborers = User::where('role', 'laborer')->get();
 
         // Pass the advances data to the view
-        return view('payroll.advanceList', ['advances' => $advances]);
+        return view('payroll.advanceList', compact('advances', 'laborers'));
     }
 
     public function getAdvance($id)

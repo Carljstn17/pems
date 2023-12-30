@@ -27,11 +27,26 @@ class Payroll extends Model
 
     ];
 
-    public function __get($rate_per_day) {
-        if(!empty($this->rate_per_day)){
-            return $this->rate_per_day;
+    // public function __get($rate_per_day) {
+    //     if(!empty($this->rate_per_day)){
+    //         return $this->rate_per_day;
+    //     }
+    // return 500;     
+    // }
+
+    private $rate_per_day = 500;
+    private $ot_rate = 1.25;
+
+    public function __get($payroll) {
+        switch ($payroll) {
+            case 'rate_per_day':
+                return !empty($this->rate_per_day) ? $this->rate_per_day : 500;
+            case 'ot_rate':
+                return !empty($this->ot_rate) ? $this->ot_rate : 1.25;
+            default:
+                // Handle unknown property access here, if needed
+                return null;
         }
-    return 500;     
     }
 
 }

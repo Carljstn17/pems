@@ -9,7 +9,7 @@
                     <form action="{{ url('/staff/store') }}" method="POST">
                         @csrf
                         <div class="mb-3 input-group">
-                            <label for="project_id" class="input-group-text">Project ID</label>
+                            <label for="project_id" class="input-group-text">Project Name</label>
                             <input 
                             type="text" 
                             class="form-control" 
@@ -40,7 +40,7 @@
                         </div>
                     
                         <div class="mb-3 input-group">
-                            <label for="contract" class="input-group-text">Contact</label>
+                            <label for="contract" class="input-group-text">Contract Price</label>
                             <input 
                             type="number" 
                             class="form-control" 

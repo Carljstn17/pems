@@ -53,44 +53,46 @@
                                 </button>
                             </td>
                         </tr>
+
+                        <div class="modal fade" id="editMachineryModal{{ $machinery->id }}" tabindex="-1" role="dialog" aria-labelledby="editMachineryModalLabel" aria-hidden="true">
+                            <!-- Update modal ID and label -->
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editMachineryModalLabel">Edit Machinery - {{ $machinery->property }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body mt-2">
+                                        <!-- Your edit form goes here -->
+                                        <form action="{{ route('update.machinery', ['machinery' => $machinery->id]) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                    
+                                            <!-- Input fields for editing -->
+                                            <div class="mb-3">
+                                                <label for="status" class="form-label">Status</label>
+                                                <input type="text" class="form-control" name="status" value="{{ $machinery->machineryReport->status }}" required>
+                                            </div>
+                    
+                                            <div class="mb-3">
+                                                <label for="whereabout" class="form-label">Whereabout</label>
+                                                <input type="text" class="form-control" name="whereabout" value="{{ $machinery->machineryReport->whereabout }}" required>
+                                            </div>
+                    
+                                            <!-- Submit button -->
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
                 @endforeach
             </tbody>
         </table>
     </div>
 
-    <div class="modal fade" id="editMachineryModal{{ $machinery->id }}" tabindex="-1" role="dialog" aria-labelledby="editMachineryModalLabel" aria-hidden="true">
-        <!-- Update modal ID and label -->
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editMachineryModalLabel">Edit Machinery - {{ $machinery->property }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body mt-2">
-                    <!-- Your edit form goes here -->
-                    <form action="{{ route('update.machinery', ['machinery' => $machinery->id]) }}" method="post">
-                        @csrf
-                        @method('PUT')
-
-                        <!-- Input fields for editing -->
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <input type="text" class="form-control" name="status" value="{{ $machinery->machineryReport->status }}" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="whereabout" class="form-label">Whereabout</label>
-                            <input type="text" class="form-control" name="whereabout" value="{{ $machinery->machineryReport->whereabout }}" required>
-                        </div>
-
-                        <!-- Submit button -->
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <div class="mt-1 float-end">
         {{ $machineries->links('vendor.pagination.bootstrap-4') }}

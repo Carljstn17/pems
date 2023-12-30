@@ -7,9 +7,9 @@
 
     <div class="py-2 mt-3">
         <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                <a href="{{ url('/staff/payroll/advance') }}" class="btn btn-outline-success" style="transition:0.8s;"">
-                    <span><i class="bi bi-plus"></i>Advance</span>
-                </a>
+            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createAdvanceModal" style="transition:0.8s;">
+                <span class="d-none d-sm-inline"><i class="bi bi-plus"></i> Advance</span>
+            </button>
 
             <form action="" method="GET" >
                 <div class="input-group">
@@ -19,6 +19,8 @@
             </form>
         </div>
     </div>
+
+    @include('payroll.advance')
 
     <table class="table table-bordered">
         <thead>
