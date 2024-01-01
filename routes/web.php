@@ -85,6 +85,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/payroll', [PayrollController::class, 'showStaffPayroll'])->name('staff.payroll');
     Route::get('/staff/payroll/latest', [PayrollController::class, 'showPayrollLatest'])->name('latest.payroll');
     Route::get('/staff/payroll/new/', [PayrollController::class, 'showPayrollNew'])->name('new.payroll');
+    Route::post('/staff/payroll/store/', [PayrollController::class, 'storePayroll'])->name('store.payroll');
     Route::get('/get-advance/{id}', [AdvanceController::class, 'getAdvance']);
     Route::get('/staff/payroll/advance', [PayrollController::class, 'showPayrollAdvance']);
     Route::post('/payroll/advances', [AdvanceController::class, 'storeAdvance']);

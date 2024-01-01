@@ -212,42 +212,4 @@ class EstimateController extends Controller
             return redirect()->route('estimate.form', ['group_id' => $groupId])->with('success', 'Estimates within Group ID ' . $groupId . ' are updated successfully.');
     }
 
-    public function softDelete($groupId)
-    {
-
-        $estimates = Estimate::where('group_id', $groupId)->get();
-    
-        // Log the soft delete
-        foreach ($estimates as $estimate) {
-            EstimateDelete::create([
-                'group_id' => $estimate->group_id,
-                'user_id' => auth()->id(),
-            ]);
-    
-            // Soft delete each estimate
-            $estimate->delete();
-        }
-    
-        return redirect()->route('owner.estimate')->with('success', 'Estimate soft deleted successfully.');
-    }    
-
-    public function softDeleteForStaff($groupId)
-    {
-
-        $estimates = Estimate::where('group_id', $groupId)->get();
-    
-        // Log the soft delete
-        foreach ($estimates as $estimate) {
-            EstimateDelete::create([
-                'group_id' => $estimate->group_id,
-                'user_id' => auth()->id(),
-            ]);
-    
-            // Soft delete each estimate
-            $estimate->delete();
-        }
-    
-        return redirect()->route('latest')->with('success', 'Estimate soft deleted successfully.');
-    }  
-
 }

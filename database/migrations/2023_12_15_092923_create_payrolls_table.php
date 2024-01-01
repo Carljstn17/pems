@@ -18,15 +18,17 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
             $table->string('name');
-            $table->float('rate_per_day', 8, 2);
+            $table->decimal('rate_per_day', 13, 4);
             $table->integer('no_of_days');
-            $table->float('ot_rate', 2, 2);
-            $table->integer('ot_hour');
-            $table->float('ot_amount', 8, 2);
-            $table->float('salary', 8, 2);
+            $table->decimal('ot_rate', 13, 4);
+            $table->integer('ot_hour')->nullable();
+            $table->decimal('ot_amount', 13, 4)->nullable();
+            $table->decimal('salary', 13, 4);
             $table->integer('advance_amount')->nullable();
-            $table->float('net_amount', 8, 2);
-            $table->float('total_amount', 8, 2);
+            $table->decimal('net_amount', 13, 4);
+            $table->decimal('totalSalary', 13, 4);
+            $table->unsignedBigInteger('entry_by');
+            $table->foreign('entry_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="advancesModalLabel">User Advances</h5>
+                <h5 class="modal-title" id="advancesModalLabel">User Advances   |   {{ $laborer->name }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -19,14 +19,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($laborer->advances as $index => $advance)
-                            <h5>{{ $advance->name }}</h5>
+                        @forelse($laborer->advances as $advance)
                             <tr>
                                 <td>{{ $advance->created_at->format('Y-m-d') }}</td>
                                 <td>{{ $advance->amount }}</td>
                                 <td style="color: {{ $advance->remarks === 'add' ? 'green' : 'red' }}">{{ $advance->remarks }}</td>
                                 <td class="text-center">
-                                    <input type="checkbox" class="form-check-input" name="checklist[]" data-amount="{{ $advance->amount }}">
+                                    <input type="checkbox" class="form-check-input checklist" name="checklist[{{ $advance->id }}]" data-amount="{{ $advance->amount }}" data-laborer-id="{{ $laborer->id }}">
                                 </td>
                             </tr>
                         @empty

@@ -16,35 +16,31 @@ class Payroll extends Model
         'project_id',
         'name',
         'rate_per_day',
-        'no_of_day',
+        'no_of_days',
         'ot_rate',
         'ot_hour',
         'ot_amount',
         'salary',
         'advance_amount',
         'net_amount',
-        'total_amount'
-
+        'totalSalary',
+        'entry_by',
     ];
 
-    // public function __get($rate_per_day) {
-    //     if(!empty($this->rate_per_day)){
-    //         return $this->rate_per_day;
-    //     }
-    // return 500;     
-    // }
+    public function entryBy()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-    private $rate_per_day = 500;
-    private $ot_rate = 1.25;
-
-    public function __get($payroll) {
-        switch ($payroll) {
+    public function __get($propertyName) {
+        switch ($propertyName) {
             case 'rate_per_day':
-                return !empty($this->rate_per_day) ? $this->rate_per_day : 500;
+                $rate_per_day_default_value = 500;
+                return !empty($this->rate_per_day) ? $this->rate_per_day : $rate_per_day_default_value;
             case 'ot_rate':
-                return !empty($this->ot_rate) ? $this->ot_rate : 1.25;
+                $ot_rate_default_value = 1.25;
+                return !empty($this->ot_rate) ? $this->ot_rate : $ot_rate_default_value;
             default:
-                // Handle unknown property access here, if needed
                 return null;
         }
     }

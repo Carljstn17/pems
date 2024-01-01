@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Payroll::class)->latest();
     }
+
+    public function payrolls()
+    {
+        return $this->hasMany(Payroll::class, 'user_id');
+    }
 }

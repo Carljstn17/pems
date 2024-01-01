@@ -28,16 +28,47 @@ class PayrollController extends Controller
 
     public function showPayrollNew()
     {
+        $ot_rate_default_value = 1.25;
         $projects = Project::where('status', 'new')->latest()->get();
         $laborers = User::where('role', 'laborer')->get();
 
-        foreach($laborers as $laborer) {
-            $payroll = new Payroll();
-            $laborer->setPayroll($payroll);
+        foreach ($laborers as $laborer) {
+            if (empty($laborer->payroll)) {
+                $payroll = new Payroll();
+                $laborer->setPayroll($payroll);
+            } else {
+                if ($ot_rate_default_value != $laborer->payroll->ot_rate) {
+                    $ot_rate_default_value = $laborer->payroll->ot_rate;
+                }
+            }
         }
 
-        return view('payroll.new', compact('projects', 'laborers'));
+        return view('payroll.new', compact('projects', 'laborers', 'ot_rate_default_value'));
     }
+
+    public function storePayroll(Request $request){
+        $users = $request->input('user_id');
+
+        foreach ($users as $userId) {
+            Payroll::create([
+                "entry_by" => Auth::id(),
+                'user_id' => $userId,
+                'rate_per_day' => $request->rate_per_day[$userId],
+                'no_of_days' => $request->no_of_days[$userId],
+                'name' => $request->name[$userId],
+                'ot_rate' => $request->ot_rate,
+                'ot_hour' => $request->ot_hour[$userId],
+                'ot_amount' => $request->ot_total[$userId],
+                'salary' => $request->salary[$userId],
+                'advance_amount' => $request->advance_amount[$userId],
+                'net_amount' => $request->net_salary[$userId],
+                'project_id' => $request->project_id,
+            ]);
+        }
+
+        return redirect()->route('latest.payroll')->with('success', 'Payroll record created successfully');
+    }
+    
 
     public function showPayrollAdvance()
     {
