@@ -20,7 +20,7 @@
 
                     <div class="input-group"  style="width: 200px;">
                         <label for="ot_rate" class="input-group-text"><span class="bold">OT-RATE</span></label>
-                        <input type="number" id="otRate" class="form-control ot_rate" name="ot_rate" value="{{ $ot_rate_default_value }}">
+                        <input type="text" id="otRate" class="form-control ot_rate" name="ot_rate" value="{{ number_format($ot_rate_default_value, 2) }}">
                     </div>    
                 
             </div>
@@ -50,18 +50,18 @@
                             <input type="text" class="form-control no-border" name="name[{{ $laborer->id }}]" value="{{ $laborer->name }}" oninput="calculateAmount(this.parentElement.parentElement)" readonly>
                         </td>
                         <td>
-                            <input type="number" class="form-control no-border" name="rate_per_day[{{ $laborer->id }}]" value="{{ $laborer->payroll->rate_per_day }}" oninput="calculateAmount(this.parentElement.parentElement)" required>
+                            <input type="number" class="form-control no-border" name="rate_per_day[{{ $laborer->id }}]" value="{{ number_format($laborer->payroll->rate_per_day, 2) }}" oninput="calculateAmount(this.parentElement.parentElement)" {{ isset($laborer->checklist) && !$laborer->checklist ? 'required' : '' }}>
                         </td>
-                        <td><input type="number" class="form-control no-border" name="no_of_days[{{ $laborer->id }}]" oninput="calculateAmount(this.parentElement.parentElement)" required></td>
+                        <td><input type="number" class="form-control no-border" name="no_of_days[{{ $laborer->id }}]" oninput="calculateAmount(this.parentElement.parentElement)" {{ isset($laborer->checklist) && !$laborer->checklist ? 'required' : '' }}></td>
                         <td><input type="number" class="form-control no-border" name="ot_hour[{{ $laborer->id }}]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
                         <td><input type="number" class="form-control no-border" name="ot_total[{{ $laborer->id }}]" readonly></td>
-                        <td><input type="number" class="form-control no-border" name="salary[{{ $laborer->id }}]" readonly></td>
+                        <td><input type="number" class="form-control no-border salary" name="salary[{{ $laborer->id }}]" readonly></td>
                         <td>
                             <input type="text" class="form-control no-border advance_amount" value="{{ number_format(optional($laborer->advances())->amount, 2, '.', ',') }}" name="advance_amount[{{ $laborer->id }}]" data-bs-toggle="modal" data-bs-target="#advancesModal{{ $laborer->id }}" readonly>
 
                             @include('payroll.advance_modal', ['laborer' => $laborer])
                         </td>
-                        <td><input type="number" class="form-control no-border" name="net_salary[{{ $laborer->id }}]" readonly></td>
+                        <td><input type="number" class="form-control no-border net_salary" name="net_salary[{{ $laborer->id }}]" readonly></td>
                         <td><input type="checkbox" class="form-check-input" name="checklist[{{ $laborer->id }}]" checked></td>
                     </tr>
                     @endforeach
@@ -74,9 +74,9 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><input type="text" class="form-control no-border" id="totalSalary" name="totalSalary" readonly></td>
-                        <td><input type="text" class="form-control no-border" id="totalAdvance" name="totalAdvance" readonly></td>
-                        <td><input type="text" class="form-control no-border" id="totalNetAmount" name="totalNetAmount" readonly></td>
+                        <td><input type="text" class="form-control no-border" id="total_salary" name="total_salary" readonly></td>
+                        <td><input type="text" class="form-control no-border" id="total_advance" name="total_advance" readonly></td>
+                        <td><input type="text" class="form-control no-border" id="total_net" name="total_net" readonly></td>
                         <td></td>
                     </tr>
                 </tfoot>
@@ -93,7 +93,7 @@
             document.addEventListener('DOMContentLoaded', function () {
                 var allCheckboxes = document.querySelectorAll('.checklist');
                 var inputFields = document.querySelectorAll('.advance_amount');
-                var totalAdvanceInput = document.getElementById('totalAdvance');
+                var total_advanceInput = document.getElementById('total_advance');
 
                 allCheckboxes.forEach(function (checkbox) {
                     checkbox.addEventListener('change', function () {
@@ -118,7 +118,7 @@
                         totalAmount += checkedAmount;
                     });
 
-                    totalAdvanceInput.value = isNaN(totalAmount) ? '0.00' : totalAmount.toFixed(2);
+                    total_advanceInput.value = isNaN(totalAmount) ? '0.00' : totalAmount.toFixed(2);
                 }
             });
         </script>
@@ -150,49 +150,41 @@
         const amount = ratePerDay * noOfDays + otTotal;
         amountField.value = amount.toFixed(2);
 
-        updateTotalAmount(userId);
+        updateTotalSalary(userId);
     }
 
 
 
-    function updateTotalAmount(userId) {
-        
-        const totalAmountField = document.getElementById("totalSalary");
-        const amountFields = document.getElementsByName('salary['+ userId +']');
+    function updateTotalSalary(userId) {
+        const totalAmountField = document.getElementById("total_salary");
+        const amountFields = document.getElementsByClassName('salary');
 
         const totalAmount = Array.from(amountFields).reduce((acc, field) => acc + (parseFloat(field.value) || 0), 0);
         totalAmountField.value = totalAmount.toFixed(2);
 
-        // Update Total Rate
-        const totalRateField = document.getElementById("totalRate");
-        const rateFields = document.getElementsByName('rate_per_day['+ userId +']');
-
-        const totalRate = Array.from(rateFields).reduce((acc, field) => acc + (parseFloat(field.value) || 0), 0);
-        totalRateField.value = totalRate.toFixed(2);
-
         // Update Total Advance
-        updateTotalAdvance(userId);
+        updatetotal_advance(userId);
 
         // Update Total Net Amount
         updateTotalNetAmount(userId);
     }
     
-    function updateTotalAdvance(userId) {
-        var totalAdvanceField = document.getElementById("totalAdvance");
-        var advanceFields = document.getElementsByName('advance_amount['+ userId +']');
+    function updatetotal_advance(userId) {
+        var total_advanceField = document.getElementById("total_advance");
+        var advanceFields = document.getElementsByClassName('advance_amount');
 
-        var totalAdvance = Array.from(advanceFields).reduce(function (acc, field) {
+        var total_advance = Array.from(advanceFields).reduce(function (acc, field) {
             return acc + (parseFloat(field.value) || 0);
         }, 0);
 
-        totalAdvanceField.value = totalAdvance.toFixed(2);
+        total_advanceField.value = total_advance.toFixed(2);
     }
 
     function updateTotalNetAmount(userId) {
-        var totalNetAmountField = document.getElementById("totalNetAmount");
-        var salaryFields = document.getElementsByName('salary['+ userId +']');
-        var advanceFields = document.getElementsByName('advance_amount['+ userId +']');
-        var netAmountFields = document.getElementsByName('net_salary['+ userId +']');
+        var totalNetAmountField = document.getElementById("total_net");
+        var salaryFields = document.getElementsByClassName('salary');
+        var advanceFields = document.getElementsByClassName('advance_amount');
+        var netAmountFields = document.getElementsByClassName('net_salary');
 
         var totalNetAmount = 0;
 
@@ -221,9 +213,9 @@
         });
 
         document.getElementById("totalRate").value = '';
-        document.getElementById("totalSalary").value = '';
-        document.getElementById("totalAdvance").value = '';
-        document.getElementById("totalNetAmount").value = '';
+        document.getElementById("total_salary").value = '';
+        document.getElementById("total_advance").value = '';
+        document.getElementById("total_net").value = '';
     }
     
 </script>

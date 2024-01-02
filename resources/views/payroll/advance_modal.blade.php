@@ -25,7 +25,7 @@
                                 <td>{{ $advance->amount }}</td>
                                 <td style="color: {{ $advance->remarks === 'add' ? 'green' : 'red' }}">{{ $advance->remarks }}</td>
                                 <td class="text-center">
-                                    <input type="checkbox" class="form-check-input checklist" name="checklist[{{ $advance->id }}]" data-amount="{{ $advance->amount }}" data-laborer-id="{{ $laborer->id }}">
+                                    <input type="checkbox" class="form-check-input checklist" name="advances[{{ $advance->id }}]" data-amount="{{ $advance->amount }}" data-laborer-id="{{ $laborer->id }}" value="{{ $advance->id }}">
                                 </td>
                             </tr>
                         @empty

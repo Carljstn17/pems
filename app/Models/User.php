@@ -26,7 +26,6 @@ class User extends Authenticatable
         'username', 
         'birthdate', 
         'address',
-        'payroll',
     ];
 
     /**
@@ -46,11 +45,13 @@ class User extends Authenticatable
      * @var array<string, string>
      */
 
-  
-    public function setPayroll($payroll){
+    private $payroll;
+
+    public function setPayroll($payroll) {
         $this->payroll = $payroll;
     }
-    public function getPayroll(){
+
+    public function getPayroll() {
         return $this->payroll;
     }
 
@@ -64,13 +65,10 @@ class User extends Authenticatable
         return $this->hasMany(Advance::class);
     }
 
-    public function payrollLatest()
-    {
-        return $this->hasOne(Payroll::class)->latest();
-    }
-
     public function payrolls()
     {
-        return $this->hasMany(Payroll::class, 'user_id');
+        return $this->hasMany(Payroll::class);
     }
+
+
 }

@@ -23,8 +23,8 @@ class Payroll extends Model
         'salary',
         'advance_amount',
         'net_amount',
-        'totalSalary',
         'entry_by',
+        'batch_id',
     ];
 
     public function entryBy()
@@ -43,6 +43,11 @@ class Payroll extends Model
             default:
                 return null;
         }
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }
