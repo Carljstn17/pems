@@ -1,7 +1,7 @@
-@extends('layout.staff')
+@extends('layout.owner')
 
     @section('content')
-        <div class="py-2 mt-2 mb-3">
+        <div class="py-2 mt-2 mb-4">
             <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | Project - 
                 @if ($payrolls->isNotEmpty())
                 {{ $payrolls->first()->project_id }}
@@ -69,6 +69,26 @@
             </tfoot>
         </table>
 
+        <form action="{{ route('updateBatchRemarks', $batch->id) }}" method="post" id="updateRemarksForm">
+            @csrf
+            @method('PUT')
+        
+            <button type="button" class="btn btn-danger float-end" onclick="confirmUpdateRemarks()">Incorrect</button>
+        </form>
+        
+        <script>
+            function confirmUpdateRemarks() {
+                var confirmation = confirm("Are you sure you want to update the remarks to 'invalid' for this batch and 'add' for advances?");
+        
+                if (confirmation) {
+                    document.getElementById('updateRemarksForm').submit();
+                } else {
+                    // Optionally, you can provide feedback to the user that the update was canceled.
+                    alert("Update canceled. Remarks remain unchanged.");
+                    return false;
+                }
+            }
+        </script>
 @endsection
 
 

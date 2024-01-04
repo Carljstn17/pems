@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('ot_rate', 13, 4);
             $table->unsignedBigInteger('entry_by');
             $table->foreign('entry_by')->references('id')->on('users');
+            $table->string('remarks')->default('valid');
             $table->timestamps();
         });
     }

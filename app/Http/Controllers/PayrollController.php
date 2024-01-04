@@ -28,6 +28,14 @@ class PayrollController extends Controller
         return view('payroll.latest', compact('payrollBatch','laborers'));
     }
 
+    public function ownerPayrollLatest()
+    {
+        $payrollBatch = PayrollBatch::latest('created_at')->paginate(5);
+        $laborers = User::where('role', 'laborer')->get();
+
+        return view('owner.payroll', compact('payrollBatch','laborers'));
+    }
+
     public function showPayrollNew()
     {
         $ot_rate_default_value = 1.25;
@@ -155,6 +163,29 @@ class PayrollController extends Controller
         $payrollBatch = PayrollBatch::where('project_id', $project_id)->latest('created_at')->paginate(5);
 
         return view('payroll.showProject', compact('projects', 'payrollBatch', 'laborers'));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function showOwnerPayroll($batchId)
+    {
+        $payrolls = DB::table('payrolls')->where('batch_id', $batchId)->get();
+        $batch = PayrollBatch::findOrFail($batchId);
+
+        return view('owner.payrollShow', compact('payrolls', 'batch'));
+    }
+
+    public function updateBatchRemarks($batchId)
+    {
+        PayrollBatch::where('id', $batchId)->update(['remarks' => 'invalid']);
+
+        // Update remarks in advance table
+        $userIds = DB::table('payrolls')->where('batch_id', $batchId)->pluck('user_id')->toArray();
+        
+        Advance::whereIn('user_id', $userIds)->update(['remarks' => 'add']);
+
+        // Redirect back or to any other page after update
+        return redirect()->back()->with('success', 'Remarks updated successfully!');
     }
 
     // public function showOngoing($id)

@@ -42,7 +42,7 @@
                 </a>
                 <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu" style="width: 310px;">
                     <li class="nav-item">
-                        <a href="#" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Payroll</span> </a>
+                        <a href="{{ route('owner.payroll') }}" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Payroll</span> </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Receipt</span> </a>

@@ -54,6 +54,10 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/estimate/showreject/{group_id}', [EstimateController::class, 'showRejectOwner'])->name('owner.estimateShowReject');
     Route::post('/estimates/{group_id}/update', [EstimateController::class, 'reject'])->name('statusAndRemarks');
 
+    Route::get('/owner/payroll/latest', [PayrollController::class, 'ownerPayrollLatest'])->name('owner.payroll');
+    Route::get('/owner/payroll/show-latest/{batchId}', [PayrollController::class, 'showOwnerPayroll'])->name('owner.showPayroll');
+    Route::put('/update-batch-remarks/{batchId}', [PayrollController::class, 'updateBatchRemarks'])->name('updateBatchRemarks');
+
     Route::get('/owner/tool', [ToolController::class, 'allToolOwner'])->name('owner.tool');
     Route::get('/owner/machinery', [MachineryController::class, 'allMachineryOwner'])->name('owner.machinery');
 });
