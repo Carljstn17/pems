@@ -22,10 +22,10 @@ class PayrollController extends Controller
 
     public function showPayrollLatest()
     {
-        $projects = Project::where('status', 'new')->latest()->get();
+        $payrollBatch = PayrollBatch::latest('created_at')->paginate(5);
         $laborers = User::where('role', 'laborer')->get();
 
-        return view('payroll.latest', compact('projects','laborers'));
+        return view('payroll.latest', compact('payrollBatch','laborers'));
     }
 
     public function showPayrollNew()
@@ -96,10 +96,19 @@ class PayrollController extends Controller
 
             $advances = $request->input('advances');
 
-            foreach($advances as $id) {
-                $advance = Advance::find($id);
-                $advance->payroll_id = $payrollBatch->id;
-                $advance->save();
+            if ($advances !== null) {
+                foreach ($advances as $id) {
+                    $advance = Advance::find($id);
+            
+                    if ($advance !== null) {
+                        $advance->payroll_id = $payrollBatch->id;
+                        $advance->remarks = 'added';
+                        $advance->save();
+                    }
+                }
+            } else {
+                // Handle the case where $advances is null, if needed
+                // For example, log an error, throw an exception, or provide a default behavior
             }
         }
 
@@ -131,16 +140,22 @@ class PayrollController extends Controller
         return response()->json($advances);
     }
     
-    // public function showLatest($id)
-    // {
-    //     try {
-    //         $payrolls = Payroll::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-    //     } catch (ModelNotFoundException $e) {
-    //         abort(404);
-    //     }
+    public function showPayroll($batchId)
+    {
+        $payrolls = DB::table('payrolls')->where('batch_id', $batchId)->get();
+        $batch = PayrollBatch::findOrFail($batchId);
 
-    //     return view('project.showproject')->with('payrolls', $payrolls);
-    // }
+        return view('payroll.showPayroll', compact('payrolls', 'batch'));
+    }
+
+    public function projectPayroll($project_id)
+    {
+        $projects = Project::all();
+        $laborers = User::where('role', 'laborer')->get();
+        $payrollBatch = PayrollBatch::where('project_id', $project_id)->latest('created_at')->paginate(5);
+
+        return view('payroll.showProject', compact('projects', 'payrollBatch', 'laborers'));
+    }
 
     // public function showOngoing($id)
     // {

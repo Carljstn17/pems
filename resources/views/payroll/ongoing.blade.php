@@ -2,7 +2,7 @@
 
     @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-5 bi-wallet"></i> <span class="d-sm-inline">Payroll | Latest Entries</span>
+            <i class="fs-5 bi-wallet"></i> <span class="d-sm-inline">Payroll | On-going Project Payroll</span>
         </div>
 
         <div class="py-2 mt-3">
@@ -24,7 +24,7 @@
             <div class="row-container gap-3">
                 @forelse ($projects as $project)
                     <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
-                        <a href="" class="row text-decoration-none link-dark p-3">
+                        <a href="{{ route('project.payroll', $project->id) }}" class="row text-decoration-none link-dark p-3">
                             <div class="row text-light ">
                                 <span class="fs-6 d-none d-sm-inline">ID: {{ $project->project_id }}</span>
                                 <span class="fs-6 d-sm-inline d-sm-none ">ID: {{ $project->project_id }}</span>
@@ -40,13 +40,11 @@
                         </a>
                     </div>
                 @empty
-                <div class="text-center col-span">
-                    <i class="fs-1 bi bi-box"></i>
-                    <p>No on-going projects yet.</p>
+                <div class="text-center">
+                    <i class="bi bi-box"></i>
+                    <p class="no-text">No payroll for on-going projects yet.</p>
                 </div>
                 @endforelse
-
-                {{-- {{ $projects->links() }} --}}
             </div>
         </div>       
         

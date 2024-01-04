@@ -27,6 +27,15 @@ class Payroll extends Model
         'batch_id',
     ];
 
+    protected $casts = [
+        'name' => 'string', // or other type
+    ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+
     public function entryBy()
     {
         return $this->belongsTo(User::class);
@@ -48,6 +57,11 @@ class Payroll extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function payrollBatch()
+    {
+        return $this->belongsTo(PayrollBatch::class, 'batch_id');
     }
 
 }

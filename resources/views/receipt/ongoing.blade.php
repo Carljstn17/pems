@@ -30,12 +30,11 @@
         @include('layout.create-receipt-modal')
         @include('layout.create-supplier-modal')
 
-        <div class="mt-3 pb-3 gap-2">
-            
-            @forelse ($projects as $project)
-                <div class="row-container gap-3">
+        <div class="mt-2 pb-3 gap-2 border-bottom border-subtle">
+            <div class="row-container gap-3">
+                @forelse ($projects as $project)
                     <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
-                        <a href="{{ route('project.receipt', $project->id) }}" class="row text-decoration-none link-dark p-3">
+                        <a href="{{ route('project.payroll', $project->id) }}" class="row text-decoration-none link-dark p-3">
                             <div class="row text-light ">
                                 <span class="fs-6 d-none d-sm-inline">ID: {{ $project->project_id }}</span>
                                 <span class="fs-6 d-sm-inline d-sm-none ">ID: {{ $project->project_id }}</span>
@@ -50,17 +49,14 @@
                             </div>
                         </a>
                     </div>
-                </div>
                 @empty
-                <div class="text-center my-5">
+                <div class="text-center">
                     <i class="bi bi-box"></i>
                     <p class="no-text">No receipt for on-going projects yet.</p>
                 </div>
-            @endforelse
-
-                {{-- {{ $projects->links() }} --}}
-           
-        </div>              
+                @endforelse
+            </div>
+        </div>           
         
         <div class="mt-3 pt-2 border-top border-subtle d-flex justify-content-between">
             <a href="{{ route('on.receipt') }}" class="text-decoration-none">Receipt for On-Going Projects</a>

@@ -57,7 +57,7 @@
         </div> --}}
 
         <div class="mt-3 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('reject') }}" class="text-decoration-none">View Rejected Estimate</a>
+            <a href="{{ route('owner.estimateReject') }}" class="text-decoration-none">View Rejected Estimate</a>
         </div>
 
 @endsection

@@ -8,7 +8,9 @@
 
      <!-- Styles -->
      @vite(['resources/css/base2.css', 'resources/sass/app.scss', 'resources/js/app.js', 'resources/css/sidebar.css',])
-     @livewireStyles
+
+     {{-- <link rel="stylesheet" href="/css/base2.css">
+     <link rel="stylesheet" href="/css/sidebar.css"> --}}
      <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400;1,500&display=swap" rel="stylesheet">
@@ -33,7 +35,5 @@
             </div>
         </div>
     </div>   
-    
-    @livewireScripts
 </body>
 </html>

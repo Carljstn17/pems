@@ -165,7 +165,3 @@ select.no-border {
 .no-text{
     color: var(--last-color);
 }
-
-textarea {
-    resize: none;
-  }

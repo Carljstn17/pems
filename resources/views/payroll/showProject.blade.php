@@ -2,7 +2,11 @@
 
     @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-5 bi-wallet"></i> <span class="d-sm-inline">Payroll | Latest Entries</span>
+            <i class="fs-5 bi-wallet"></i> <span class="d-sm-inline">Payroll | Project - 
+                @if ($payrollBatch->isNotEmpty())
+                {{ $payrollBatch->first()->project_id }}
+                @else
+                @endif</span>
         </div>
 
         <div class="py-2 mt-3">
@@ -60,9 +64,7 @@
         </div>
         
         <div class="mt-3 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('on.payroll') }}" class="text-decoration-none fst-italic">/Payroll for On-Going Projects</a>
-
-            <a href="{{ route('advance') }}" class="text-decoration-none fst-italic">/Advance list</a>
+            <a href="{{ route('on.payroll') }}" class="text-decoration-none fst-italic mt-2">/Payroll for On-Going Projects</a>
         </div>
  
 @endsection

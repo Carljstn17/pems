@@ -32,7 +32,7 @@
                                 <span class="d-none d-sm-inline bold">Entry date: </span>
                             </th>
                             <td >
-                                <span>{{ $estimates->first()->created_at->diffForHumans() }}</span>
+                                <span>{{ $estimates->first()->created_at->format('Y-m-d') }}</span>
                             </td>
                         </thead>
                     </table>
@@ -75,14 +75,27 @@
                     </tfoot>
                 </table>   
 
-                <form id="deleteEstimatesForm" action="{{ route('estimates.delete', ['groupId' => $group_id]) }}" method="POST">
+                <form action="{{ route('statusAndRemarks', $group_id) }}" method="post">
                     @csrf
-                    @method('DELETE')
+                                
+                    <div>
+                        <label for=""><span class="bold">Remarks</span></label>
+                        <textarea name="remarks" id="remarks" rows="5" class="border border-subtle" style="width:100%;resize:none;">{{ $estimates->first()->remarks }}</textarea>
+                    </div>
+                                
+                    <!-- Add a hidden field for the status -->
+                    <input type="hidden" name="status_accepted" value="accepted">
+                    <input type="hidden" name="status_rejected" value="rejected">
                 
-                    <button type="submit" class="btn btn-danger float-end" onclick="return confirm('Are you sure you want to delete estimates with group ID {{ $group_id }}?')">
-                        Delete Estimate
-                    </button>
+                    @if($estimates->first()->status !== 'rejected')
+                        <button type="submit" class="btn btn-primary float-end" name="status" value="accepted" onclick="confirmAction('accepted')">Accept</button>
+                        <button type="submit" class="btn btn-warning float-end mx-2" name="status" value="rejected" onclick="confirmAction('rejected')">Reject</button>
+                    @else
+                        <p>This estimate has already been rejected, and the buttons are not available.</p>
+                    @endif
                 </form>
+                
+
             </div>
         </div>
 
@@ -92,33 +105,23 @@
                     field.value = index + 1;
                 });
 
-            function confirmSoftDelete(groupId) {
-                // Prompt the user for confirmation
-                var confirmDelete = window.confirm('Are you sure you want to soft delete estimates with group ID ' + groupId + '?');
-                
-                if (confirmDelete) {
-                    // If confirmed, proceed with the soft deletion
-                    $.ajax({
-                        url: '/estimates/softDelete/' + groupId,
-                        type: 'POST',
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response.message);
-
-                        },
-                        error: function(error) {
-                            console.error('Error soft deleting estimates:', error);
-
-                        }
-                    });
-                }
-            }
-
             var msg = '{{ session('alert') }}';
             var exist = '{{ session()->has('alert') }}';
             
             if (exist) {
                 alert(msg);
+            }
+        </script>
+
+        <script>
+            function confirmAction(status) {
+                var confirmation = confirm("Are you sure you want to update the status to " + status + "?");
+
+                if (confirmation) {
+                    // If user confirms, submit the form
+                    document.getElementById('updateForm').elements['status'].value = status;
+                    document.getElementById('updateForm').submit();
+                }
             }
         </script>
 

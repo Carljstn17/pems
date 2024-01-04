@@ -1,8 +1,8 @@
-@extends('layout.staff')
+@extends('layout.owner')
 
     @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate | Latest</span>
+            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate | Reject</span>
         </div>
 
         <div class="py-2 mt-3">
@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        @include('estimate.new')
+        @include('owner.estimateNew')
         
         <div class="mt-3 pb-1 px-3">
             @forelse($estimates as $group_id => $estimate)
@@ -28,7 +28,7 @@
                     $firstEstimate = $estimate->first();
                 @endphp
             
-                <a href="{{ route('estimate.form', ['group_id' => $firstEstimate->group_id]) }}" class="link-dark text-decoration-none">
+                <a href="{{ route('owner.estimateShow', ['group_id' => $firstEstimate->group_id]) }}" class="link-dark text-decoration-none">
                     <div class="row p-4 d-flex justify-content-center rounded-2 border hover3 mb-2">
                         <div class="col">
                             <span class="bold">Status: &nbsp</span>{{ $firstEstimate->status }}
@@ -47,7 +47,7 @@
             @empty
             <div class="text-center my-5">
                 <i class="bi bi-box"></i>
-                <p class="no-text">No estimates yet.</p>
+                <p class="no-text">No rejected estimates yet.</p>
             </div>
             @endforelse
         </div>
@@ -57,7 +57,7 @@
         </div>
 
         <div class="mt-3 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('reject') }}" class="text-decoration-none">View Rejected Estimate</a>
+            <a href="{{ route('owner.estimate') }}" class="text-decoration-none">View Rejected Estimate</a>
         </div>
 
 @endsection

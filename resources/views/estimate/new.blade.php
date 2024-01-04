@@ -8,16 +8,17 @@
             </div>
             <form action="{{ route('estimate.store') }}" method="post" class="p-2">
                 @csrf
+                <button type="button" class="btn btn-outline-success mb-2" onclick="addRow()">+ Add Row</button>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Description</th>
-                            <th>UOM</th>
-                            <th>Quantity</th>
-                            <th>UnitCost</th>
-                            <th>Amount</th>
-                            <th>Action</th>
+                            <th><span class="bold">No</span></th>
+                            <th><span class="bold">Description</span></th>
+                            <th><span class="bold">UOM</span></th>
+                            <th><span class="bold">Quantity</span></th>
+                            <th><span class="bold">UnitCost</span></th>
+                            <th><span class="bold">Amount</span></th>
+                            <th><span class="bold">Action</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,7 +42,10 @@
                     </tfoot>
                 </table>
         
-                <button type="button" class="btn btn-success" onclick="addRow()">+ Add Row</button>
+                <div>
+                    <label for=""><span class="bold">Remarks</span></label>
+                    <textarea name="remarks" id="remarks"rows="5" class="border border-subtle" style="width:100%;resize:none;" required></textarea>
+                </div>
                 <button type="submit" class="btn btn-primary float-end">Submit</button>
             </form>
         </div>

@@ -24,41 +24,39 @@
 
             @include('project.nprojects')
                 
-                <div class="mt-3 pb-3">
-                    
+            <div class="mt-2 pb-3 gap-2 border-bottom border-subtle">
+                <div class="row-container gap-3">
                     @forelse ($projects as $project)
-                        <div class="row-container gap-3">
-                            <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
-                                <a href="{{ url('/staff/show', $project->id) }}" class="row text-decoration-none link-dark p-3">
-                                    <div class="row text-light ">
-                                        <span class="fs-6 d-none d-sm-inline">ID: {{ $project->project_id }}</span>
-                                        <span class="fs-6 d-sm-inline d-sm-none ">ID: {{ $project->project_id }}</span>
-                                    </div>
-                                    <div class="row p-2 text-light mx-auto text-center">
-                                        <span class="fs-4 d-none d-sm-inline">{{ Str::limit($project->project_dsc, 20) }}</span>
-                                        <span class="fs-4 d-sm-inline d-sm-none">  {{ Str::limit($project->project_dsc, 15) }}</span>
-                                    </div>
-                                    <div class="row text-secondary">
-                                        <span class="fs-6 d-none d-sm-inline">Date: {{ $project->created_at->diffForHumans() }}</span>
-                                        <span class="fs-6 d-sm-inline d-sm-none ">D: {{ $project->created_at->diffForHumans() }}</span>
-                                    </div>
-                                </a>
-                            </div>
+                        <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
+                            <a href="{{ route('project.payroll', $project->id) }}" class="row text-decoration-none link-dark p-3">
+                                <div class="row text-light ">
+                                    <span class="fs-6 d-none d-sm-inline">ID: {{ $project->project_id }}</span>
+                                    <span class="fs-6 d-sm-inline d-sm-none ">ID: {{ $project->project_id }}</span>
+                                </div>
+                                <div class="row p-2 text-light mx-auto text-center">
+                                    <span class="fs-4 d-none d-sm-inline">{{ Str::limit($project->project_dsc, 20) }}</span>
+                                    <span class="fs-4 d-sm-inline d-sm-none">  {{ Str::limit($project->project_dsc, 15) }}</span>
+                                </div>
+                                <div class="row text-secondary">
+                                    <span class="fs-6 d-none d-sm-inline">Date: {{ $project->created_at->diffForHumans() }}</span>
+                                    <span class="fs-6 d-sm-inline d-sm-none ">D: {{ $project->created_at->diffForHumans() }}</span>
+                                </div>
+                            </a>
                         </div>
-                        @empty
-                        <div class="text-center">
-                            <i class="bi bi-box"></i>
-                            <p class="no-text">No on-going projects yet.</p>
-                        </div>
+                    @empty
+                    <div class="text-center">
+                        <i class=" bi bi-box"></i>
+                        <p class="no-text">No on-going projects yet.</p>
+                    </div>
                     @endforelse
-                    
                 </div>
+            </div>  
 
                 <div class="mt-1">
                     {{ $projects->links('vendor.pagination.bootstrap-4') }}
                 </div>
 
-                <div class="mt-3 pt-2 border-top border-subtle">
+                <div class="mt-3">
                     <a href="{{ url('/staff/old-projects') }}" class="text-decoration-none">View Old Project ></a>
                 </div>
 

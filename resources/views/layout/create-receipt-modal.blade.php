@@ -46,7 +46,7 @@
                         </div>
             
                         <div class="mb-3">
-                            <input type="number" class="form-control" id="amount" name="amount" placeholder="Receipt Amount" required>
+                            <input type="number" class="form-control" id="amount" name="amount" placeholder="Receipt Amount" step=".01" required>
                         </div>
 
                         <div class="input-group mb-3">

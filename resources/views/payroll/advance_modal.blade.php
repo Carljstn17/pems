@@ -20,6 +20,7 @@
                     </thead>
                     <tbody>
                         @forelse($laborer->advances as $advance)
+                            @if ($advance->remarks === 'add')
                             <tr>
                                 <td>{{ $advance->created_at->format('Y-m-d') }}</td>
                                 <td>{{ $advance->amount }}</td>
@@ -28,6 +29,8 @@
                                     <input type="checkbox" class="form-check-input checklist" name="advances[{{ $advance->id }}]" data-amount="{{ $advance->amount }}" data-laborer-id="{{ $laborer->id }}" value="{{ $advance->id }}">
                                 </td>
                             </tr>
+                            @else
+                            @endif
                         @empty
                             <tr>
                                 <td colspan="3">No advances for this laborer</td>

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estimate;
-use App\Models\EstimateDelete;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\EstimateTotal;
+use App\Models\EstimateDelete;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EstimateController extends Controller
 {
@@ -22,8 +23,19 @@ class EstimateController extends Controller
     
     public function showLatestEstimate()
     {
-        $estimate = Estimate::latest('updated_at');
-        $estimates = $estimate->whereIn('status', ['pending', 'accepted'])->get()->groupBy('group_id');
+        $perPage = 5;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        
+        $estimates = Estimate::whereIn('status', ['accepted','pending'])
+            ->latest('updated_at')
+            ->get()
+            ->groupBy('group_id');
+
+        $results = $estimates->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $estimates = new LengthAwarePaginator($results, $estimates->count(), $perPage, $currentPage, [
+        'path' => LengthAwarePaginator::resolveCurrentPath(),
+    ]);
 
         return view('estimate.latest', compact('estimates'));
     }
@@ -32,8 +44,19 @@ class EstimateController extends Controller
 
     public function showLatestOwner()
     {
-        $estimate = Estimate::latest('updated_at');
-        $estimates = $estimate->whereIn('status', ['pending', 'accepted'])->get()->groupBy('group_id');
+        $perPage = 5;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        
+        $estimates = Estimate::whereIn('status', ['accepted','pending'])
+            ->latest('updated_at')
+            ->get()
+            ->groupBy('group_id');
+
+        $results = $estimates->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $estimates = new LengthAwarePaginator($results, $estimates->count(), $perPage, $currentPage, [
+        'path' => LengthAwarePaginator::resolveCurrentPath(),
+    ]);
 
         return view('owner.estimate', compact('estimates'));
     }
@@ -51,13 +74,40 @@ class EstimateController extends Controller
     
     public function showRejectEstimate()
     {
-        $estimatesReject = Estimate::where('status', 'rejected')
-            ->groupBy('group_id')
-            ->selectRaw('group_id, MAX(id) as id, MAX(user_id) as user_id, MAX(description) as description, MAX(uom) as uom, SUM(quantity) as total_quantity, MAX(unit_cost) as unit_cost, MAX(created_at) as created_at, MAX(updated_at) as updated_at')
-            ->latest('created_at')
-            ->paginate(5);
+        $perPage = 5;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        
+        $estimates = Estimate::where('status', 'rejected')
+            ->latest('updated_at')
+            ->get()
+            ->groupBy('group_id');
 
-        return view('estimate.reject', compact('estimatesReject'));
+        $results = $estimates->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $estimates = new LengthAwarePaginator($results, $estimates->count(), $perPage, $currentPage, [
+        'path' => LengthAwarePaginator::resolveCurrentPath(),
+    ]);
+
+        return view('estimate.reject', compact('estimates'));
+    }
+
+    public function rejectEstimate()
+    {
+        $perPage = 5;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        
+        $estimates = Estimate::where('status', 'rejected')
+            ->latest('updated_at')
+            ->get()
+            ->groupBy('group_id');
+
+        $results = $estimates->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        $estimates = new LengthAwarePaginator($results, $estimates->count(), $perPage, $currentPage, [
+        'path' => LengthAwarePaginator::resolveCurrentPath(),
+    ]);
+
+        return view('owner.estimateReject', compact('estimates'));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +153,7 @@ class EstimateController extends Controller
             'uom.*' => 'nullable|string',
             'quantity.*' => 'required|numeric',
             'unit_cost.*' => 'required|numeric',
+            'remarks' => 'required|string'
         ]);
 
         // Save items to the database
@@ -126,6 +177,7 @@ class EstimateController extends Controller
                 'unit_cost' => $unitCost,
                 'amount' => $amount, // Add the calculated amount
                 'group_id' => $groupId,
+                'remarks' => $request->remarks,
             ]);
         }
         // Redirect or perform any other actions as needed
@@ -165,6 +217,7 @@ class EstimateController extends Controller
                 'unit_cost' => $unitCost,
                 'amount' => $amount, // Add the calculated amount
                 'group_id' => $groupId,
+                'remarks' => $request->remarks,
             ];
 
             // Set status to 'accepted' if the user's role is 'owner'
@@ -204,6 +257,7 @@ class EstimateController extends Controller
                     'uom' => $request->input('uom')[$estimateId],
                     'quantity' => $request->input('quantity')[$estimateId],
                     'unit_cost' => $request->input('unit_cost')[$estimateId],
+                    'remarks' => $request->input('remarks'),
                     // Update other fields as needed
                 ]);
             }
@@ -212,4 +266,25 @@ class EstimateController extends Controller
             return redirect()->route('estimate.form', ['group_id' => $groupId])->with('success', 'Estimates within Group ID ' . $groupId . ' are updated successfully.');
     }
 
+
+    public function reject(Request $request, $group_id)
+    {
+        // Validate the request
+        $request->validate([
+            'remarks' => 'required|string',
+            'status' => 'required|string',
+        ]);
+
+        // Find the estimate by ID
+        $estimate = Estimate::find($group_id);
+
+        // Update the estimate with new data
+        Estimate::where('group_id', $group_id)->update([
+            'remarks' => $request->input('remarks'),
+            'status' => $request->input('status'),
+        ]);
+
+        // Redirect back or to any other page after update
+        return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
+    }
 }

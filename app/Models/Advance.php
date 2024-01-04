@@ -15,6 +15,7 @@ class Advance extends Model
         'name', 
         'entry_by',
         'payroll_id',
+        'remarks',
     ];
 
     public function user()

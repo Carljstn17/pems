@@ -24,6 +24,7 @@ class Estimate extends Model
         'created_at',
         'updated_at',
         'status',
+        'remarks',
     ];
 
     public function user()

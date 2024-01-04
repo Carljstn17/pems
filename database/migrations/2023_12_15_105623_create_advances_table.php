@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('amount');
             $table->unsignedBigInteger('entry_by');
             $table->foreign('entry_by')->references('id')->on('users')->onDelete('cascade');
+            $table->string('remarks')->default('add');
             $table->timestamps();
         });
     }

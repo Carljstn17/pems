@@ -8,6 +8,7 @@
             </div>
             <form action="{{ route('owner.storeEstimate') }}" method="post" class="p-2">
                 @csrf
+                <button type="button" class="btn btn-success mb-2" onclick="addRow()">+ Add Row</button>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -40,8 +41,11 @@
                         </tr>
                     </tfoot>
                 </table>
-        
-                <button type="button" class="btn btn-success" onclick="addRow()">+ Add Row</button>
+    
+                <div>
+                    <label for=""><span class="bold">Remarks</span></label>
+                    <textarea name="remarks" id="remarks"rows="5" class="border border-subtle" style="width:100%;resize:none;" required></textarea>
+                </div>
                 <button type="submit" class="btn btn-primary float-end">Submit</button>
             </form>
         </div>

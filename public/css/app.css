@@ -1,0 +1,19 @@
+main{
+    margin-top: 10rem;
+}
+
+.letter{
+    letter-spacing: -1px;
+}
+
+@media only screen and (max-width: 600px) {
+    .img-fluid{
+        width: 150px;
+        margin: auto;
+    }
+    main{
+        width: 100%;
+        padding: 2rem;
+        margin: 0;
+    }
+  }

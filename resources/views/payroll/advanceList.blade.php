@@ -25,10 +25,11 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Advance Amount</th>
-                <td>Remarks</td>
+                <th><span class="bold">Date</span></th>
+                <th><span class="bold">Name</span></th>
+                <th><span class="bold">Amount</span></th>
+                <td><span class="bold">Remark</span></td>
+                <td><span class="bold">Payroll-ID</span></td>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +38,7 @@
                     <td>{{ $advance->created_at->format('Y-m-d') }}</td>
                     <td>{{ $advance->name }}</td>
                     <td>{{ $advance->amount }}</td>
+                    <td style="color: {{ $advance->remarks === 'add' ? 'green' : 'red' }}">{{ $advance->remarks }}</td>
                     <td>{{ $advance->payroll_id }}</td>
                 </tr>
             @endforeach

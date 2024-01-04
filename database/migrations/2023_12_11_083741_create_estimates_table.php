@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('unit_cost', 8, 2);
             $table->string('group_id')->index();
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->longText('remarks');
             $table->timestamps();
         });
     }

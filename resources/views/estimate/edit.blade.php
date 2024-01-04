@@ -81,6 +81,8 @@
                 </tfoot>
             </table>
 
+            <label for=""><span class="bold">Remarks</span></label>
+            <textarea name="remarks" id="remarks"rows="5" class="border border-subtle" style="width:100%;resize:none;" value="">{{ $estimates->first()->remarks }}</textarea>
             <button type="submit" class="btn btn-primary float-end" onclick="confirmUpdate()">Save Update</button>
         </form>
     </div>

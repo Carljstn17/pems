@@ -21,9 +21,9 @@
         </div>
         
         <div class="mt-3 pb-1 px-3">
-            @forelse($estimatesReject as $group_id => $estimate)
+            @forelse($estimates as $group_id => $estimate)
                 @php
-                    $firstEstimate = $estimate;
+                    $firstEstimate = $estimate->first();
                 @endphp
             
                 <a href="{{ route('show.reject', ['group_id' => $firstEstimate->group_id]) }}" class="link-dark text-decoration-none">
@@ -51,7 +51,7 @@
         </div>
 
         <div class="mt-1">
-            {{ $estimatesReject->links('vendor.pagination.bootstrap-4') }}
+            {{ $estimates->links('vendor.pagination.bootstrap-4') }}
         </div>
 
         <div class="mt-3 pt-2 border-top border-subtle d-flex justify-content-between">

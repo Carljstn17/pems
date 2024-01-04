@@ -17,4 +17,9 @@ class PayrollBatch extends Model
         'ot_rate',
         'entry_by',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

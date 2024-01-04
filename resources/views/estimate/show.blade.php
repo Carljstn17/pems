@@ -73,18 +73,14 @@
                             </td>
                         </tr>
                     </tfoot>
-                </table>   
+                </table>
 
-                <div class="d-flex justify-content-between">
-                    <form id="deleteEstimatesForm" action="{{ route('estimates.softDelete', ['groupId' => $group_id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                    
-                        <button type="submit" class="btn btn-danger float-end" onclick="return confirm('Are you sure you want to delete estimates with group ID {{ $group_id }}?')">
-                            Delete Estimate
-                        </button>
-                    </form>
+                <div>
+                    <label for=""><span class="bold">Remarks</span></label>
+                    <textarea name="remarks" id="remarks"rows="5" class="border border-subtle" style="width:100%;resize:none;" value="" readonly>{{ $estimates->first()->remarks }}</textarea>
+                </div>
 
+                <div class="d-flex justify-content-end">
                     <a href="{{ route('estimate.edit', $estimates->first()->group_id) }}" class="btn btn-primary float-end px-4">Edit</a>
                 </div>
             </div>
