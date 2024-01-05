@@ -23,8 +23,9 @@ return new class extends Migration
             $table->date('receipt_date');
             $table->string('si_or_no');
             $table->string('description');
-            $table->decimal('amount', 10, 2);
+            $table->decimal('amount', 13, 4);
             $table->binary('receipt_photo');
+            $table->string('remarks')->default('valid');
             $table->timestamps();
         });
     }

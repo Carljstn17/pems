@@ -23,9 +23,9 @@
             @include('project.nprojects')
                 
                 <div class="mt-3 pb-3">
-            
+                    <div class="row-container gap-3">
                     @forelse ($oldProjects as $oldProject)
-                        <div class="row-container gap-3">
+
                             <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
                                 <a href="{{ route('show-old', $oldProject->id) }}" class="row text-decoration-none link-dark p-3">
                                     <div class="row text-light ">
@@ -42,14 +42,14 @@
                                     </div>
                                 </a>
                             </div>
-                        </div>
+                        
                         @empty
                         <div class="text-center">
                             <i class="bi bi-box"></i>
                             <p class="no-text">No on-going projects yet.</p>
                         </div>
                     @endforelse
-
+                </div>
                         {{-- {{ $projects->links() }} --}}
                     
                 </div>

@@ -20,6 +20,7 @@ class Receipt extends Model
         'description',
         'amount',
         'receipt_photo',
+        'remarks',
     ];
 
     public function supplier()

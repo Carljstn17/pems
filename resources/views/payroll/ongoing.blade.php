@@ -53,7 +53,7 @@
         </div>
         
         <div class="mt-3">
-            <a href="{{ route('latest.payroll') }}" class="text-decoration-none">Payroll for On-Going Projects</a>
+            <a href="{{ route('latest.payroll') }}" class="text-decoration-none mt-2">/View latest Payroll</a>
         </div>
        
 @endsection

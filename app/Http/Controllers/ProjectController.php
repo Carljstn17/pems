@@ -44,17 +44,55 @@ class ProjectController extends Controller
     public function show($id)
     {      
         try {
-            $project = Project::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+            $project = Project::where('id', $id)->firstOrFail();
         } catch (ModelNotFoundException $e) {
             abort(404);
         }
 
-        $totalAmountsByProject = AmountCalculator::calculateTotalAmountsByProject();
-
+        $totalAmountsReceiptByProject = AmountCalculator::calculateTotalAmountsReceiptByProject();
         // Retrieve the total amount for the specific project_id
-        $totalAmountForProject = $totalAmountsByProject[$project->id] ?? 0;
+        $totalAmountReceiptByProject = $totalAmountsReceiptByProject[$project->id] ?? 0;
 
-        return view('project.showproject', compact('project', 'totalAmountsByProject'));
+        $totalAmountsPayrollByProject = AmountCalculator::calculateTotalAmountsPayrollByProject();
+        // Retrieve the total amount for the specific project_id
+        $totalAmountPayrollByProject = $totalAmountsPayrollByProject[$project->id] ?? 0;
+
+        $totalAmountByProject = $totalAmountReceiptByProject + $totalAmountPayrollByProject;
+        $projectContract = $project->contract;
+
+        $totalAmountAndContractDifference = $totalAmountByProject - $projectContract;
+
+        $colorStyle = ($projectContract > $totalAmountByProject) ? 'color: green;' : 'color: red;';
+        // Make it negative if $totalAmountByProject is larger
+
+        return view('project.showproject', compact('project', 'totalAmountsReceiptByProject', 'totalAmountsPayrollByProject', 'totalAmountByProject', 'totalAmountAndContractDifference', 'colorStyle', 'projectContract'));
+    }
+
+    public function showProjectOwner($id)
+    {      
+        try {
+            $project = Project::where('id', $id)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            abort(404);
+        }
+
+        $totalAmountsReceiptByProject = AmountCalculator::calculateTotalAmountsReceiptByProject();
+        // Retrieve the total amount for the specific project_id
+        $totalAmountReceiptByProject = $totalAmountsReceiptByProject[$project->id] ?? 0;
+
+        $totalAmountsPayrollByProject = AmountCalculator::calculateTotalAmountsPayrollByProject();
+        // Retrieve the total amount for the specific project_id
+        $totalAmountPayrollByProject = $totalAmountsPayrollByProject[$project->id] ?? 0;
+
+        $totalAmountByProject = $totalAmountReceiptByProject + $totalAmountPayrollByProject;
+        $projectContract = $project->contract;
+
+        $totalAmountAndContractDifference = $totalAmountByProject - $projectContract;
+
+        $colorStyle = ($projectContract > $totalAmountByProject) ? 'color: green;' : 'color: red;';
+        // Make it negative if $totalAmountByProject is larger
+
+        return view('owner.project', compact('project', 'totalAmountsReceiptByProject', 'totalAmountsPayrollByProject', 'totalAmountByProject', 'totalAmountAndContractDifference', 'colorStyle', 'projectContract'));
     }
     // public function showStaffProject()
     // {

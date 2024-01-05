@@ -69,6 +69,29 @@
             </tfoot>
         </table>
 
+        @if(Auth::user() && Auth::user()->id == $batch->entry_by)
+            <form action="{{ route('updateBatchRemarks', $batch->id) }}" method="post" id="updateRemarksForm">
+                @csrf
+                @method('PUT')
+            
+                <button type="button" class="btn btn-danger float-end" onclick="confirmUpdateRemarks()">Incorrect</button>
+            </form>
+        @endif
+        
+        <script>
+            function confirmUpdateRemarks() {
+                var confirmation = confirm("Are you sure you want to update the remarks to 'invalid' for this batch and 'add' for advances?");
+        
+                if (confirmation) {
+                    document.getElementById('updateRemarksForm').submit();
+                } else {
+                    // Optionally, you can provide feedback to the user that the update was canceled.
+                    alert("Update canceled. Remarks remain unchanged.");
+                    return false;
+                }
+            }
+        </script>
+
 @endsection
 
 

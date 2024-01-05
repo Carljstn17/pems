@@ -47,6 +47,8 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::resource('users', UserController::class);
     Route::delete('/users/soft-delete/{user}', [UserController::class, 'softDelete']);
 
+    Route::get('/owner/show/{id}', [ProjectController::class, 'showProjectOwner'])->name('owner.showproject');
+
     Route::get('/owner/estimate/', [EstimateController::class, 'showLatestOwner'])->name('owner.estimate');
     Route::post('/owner/estimate/create', [EstimateController::class, 'storeEstimateOwner'])->name('owner.storeEstimate');
     Route::get('/owner/estimate/show/{group_id}', [EstimateController::class, 'showOwner'])->name('owner.estimateShow');
@@ -60,6 +62,12 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
 
     Route::get('/owner/tool', [ToolController::class, 'allToolOwner'])->name('owner.tool');
     Route::get('/owner/machinery', [MachineryController::class, 'allMachineryOwner'])->name('owner.machinery');
+
+    Route::get('/owner/receipt', [ReceiptController::class, 'showOwnerReceipt'])->name('owner.receipt');
+    Route::get('/owner/receipt/{id}', [ReceiptController::class, 'showForOwner'])->name('owner.showReceipt');
+    Route::get('/owner/receiptt/on-going', [ReceiptController::class, 'ownerOngoingReceipt'])->name('ongoing.Receipt');
+    Route::get('/owner/supplier/list', [SupplierController::class, 'ownerSupplierList'])->name('owner.supplier');
+    Route::get('/owner/receipt/project/{project_id}', [ReceiptController::class, 'ownerProjectReceipt'])->name('owner.projectReceipt');
 });
 
 
@@ -98,6 +106,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/payroll/on-going', [PayrollController::class, 'showPayrollOngoing'])->name('on.payroll');
     Route::get('/staff/payroll/show-latest/{batchId}', [PayrollController::class, 'showPayroll'])->name('show.payroll');
     Route::get('/payroll/project/{project_id}', [PayrollController::class, 'projectPayroll'])->name('project.payroll');
+    Route::put('/staff/update-batch-remarks/{batchId}', [PayrollController::class, 'updateBatchRemarks'])->name('staff.updateBatchRemarks');
 
     Route::get('/staff/estimate', [EstimateController::class, 'showStaffEstimate'])->name('staff.estimate');
     Route::get('/staff/estimate/latest', [EstimateController::class, 'showLatestEstimate'])->name('latest');

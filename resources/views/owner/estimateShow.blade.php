@@ -75,7 +75,7 @@
                     </tfoot>
                 </table>   
 
-                <form action="{{ route('statusAndRemarks', $group_id) }}" method="post">
+                <form action="{{ route('statusAndRemarks', $group_id) }}" method="post" id="updateForm">
                     @csrf
                                 
                     <div>
@@ -91,7 +91,7 @@
                         <button type="submit" class="btn btn-primary float-end" name="status" value="accepted" onclick="confirmAction('accepted')">Accept</button>
                         <button type="submit" class="btn btn-warning float-end mx-2" name="status" value="rejected" onclick="confirmAction('rejected')">Reject</button>
                     @else
-                        <p>This estimate has already been rejected, and the buttons are not available.</p>
+                        <p class="text-danger">This estimate has already been rejected, and the buttons are not available.</p>
                     @endif
                 </form>
                 
@@ -118,9 +118,12 @@
                 var confirmation = confirm("Are you sure you want to update the status to " + status + "?");
 
                 if (confirmation) {
-                    // If user confirms, submit the form
+                    // If user confirms, set the status value and submit the form
                     document.getElementById('updateForm').elements['status'].value = status;
                     document.getElementById('updateForm').submit();
+                } else {
+                    // Optionally, you can provide feedback to the user that the update was canceled.
+                    alert("Update canceled. Remarks and status remain unchanged.");
                 }
             }
         </script>

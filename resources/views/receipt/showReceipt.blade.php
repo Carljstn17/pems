@@ -41,9 +41,14 @@
                 <input type="date" class="form-control" value="{{ $receipts->receipt_date }}" readonly>
             </div>
         
-            <div class="mb-3 input-group">
-                <img src="{{ asset('storage/' . $receipts->receipt_photo) }}" alt="Receipt Photo">
+            <div class="input-group">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#imageModal">
+                    View Receipt Photo
+                </button>
+                
             </div>
+
+            @include('receipt.image-modal')
         </div>        
     </div>
 @endsection

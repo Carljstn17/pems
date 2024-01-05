@@ -28,7 +28,7 @@
                 <div class="row-container gap-3">
                     @forelse ($projects as $project)
                         <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
-                            <a href="{{ route('project.payroll', $project->id) }}" class="row text-decoration-none link-dark p-3">
+                            <a href="{{ route('project.showproject', $project->id) }}" class="row text-decoration-none link-dark p-3">
                                 <div class="row text-light ">
                                     <span class="fs-6 d-none d-sm-inline">ID: {{ $project->project_id }}</span>
                                     <span class="fs-6 d-sm-inline d-sm-none ">ID: {{ $project->project_id }}</span>

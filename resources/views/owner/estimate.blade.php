@@ -52,9 +52,9 @@
             @endforelse
         </div>
 
-        {{-- <div class="mt-1">
+        <div class="mt-1">
             {{ $estimates->links('vendor.pagination.bootstrap-4') }}
-        </div> --}}
+        </div>
 
         <div class="mt-3 border-top border-subtle d-flex justify-content-between">
             <a href="{{ route('owner.estimateReject') }}" class="text-decoration-none">View Rejected Estimate</a>

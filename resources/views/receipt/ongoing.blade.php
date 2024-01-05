@@ -30,7 +30,7 @@
         @include('layout.create-receipt-modal')
         @include('layout.create-supplier-modal')
 
-        <div class="mt-2 pb-3 gap-2 border-bottom border-subtle">
+        <div class="mt-3 pb-1 px-3">
             <div class="row-container gap-3">
                 @forelse ($projects as $project)
                     <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">

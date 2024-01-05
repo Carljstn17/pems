@@ -1,4 +1,4 @@
-@extends('layout.staff')
+@extends('layout.owner')
 
     @section('content')
         <div class="">
@@ -13,22 +13,22 @@
                         <tbody class="table-light">
                             <tr>
                                 <th>
-                                    <span class="d-none d-sm-inline">PR ID: {{ $oldProject->project_id }}</span>
-                                    <span class="d-sm-inline d-sm-none">Pr-id: {{ $oldProject->project_id }}</span>
+                                    <span class="d-none d-sm-inline">PR ID: {{ $project->project_id }}</span>
+                                    <span class="d-sm-inline d-sm-none">Pr-id: {{ $project->project_id }}</span>
                                 </th>
                                 <th class="narrow-cell">
-                                    <span class="d-none d-sm-inline">Date started: {{ $oldProject->Date_started }}</span>
-                                    <span class="d-sm-inline d-sm-none">Ds: {{ $oldProject->Date_started }}</span>
+                                    <span class="d-none d-sm-inline">Date started: {{ $project->Date_started }}</span>
+                                    <span class="d-sm-inline d-sm-none">Ds: {{ $project->Date_started }}</span>
                                 </th>
                             </tr>
                             <tr>
                                 <th>
-                                    <span class="d-none d-sm-inline">Location: {{ $oldProject->location }}</span>
-                                    <span class="d-sm-inline d-sm-none">Loc: {{ $oldProject->location }}</span>
+                                    <span class="d-none d-sm-inline">Location: {{ $project->location }}</span>
+                                    <span class="d-sm-inline d-sm-none">Loc: {{ $project->location }}</span>
                                 </th>
                                 <th class="narrow-cell">
-                                    <span class="d-none d-sm-inline">Date created: {{ $oldProject->created_at->format('Y-m-d') }}</span>
-                                    <span class="d-sm-inline d-sm-none">Dc: {{ $oldProject->created_at->format('Y-m-d') }}</span>
+                                    <span class="d-none d-sm-inline">Date created: {{ $project->created_at->format('Y-m-d') }}</span>
+                                    <span class="d-sm-inline d-sm-none">Dc: {{ $project->created_at->format('Y-m-d') }}</span>
                                 </th>
                             </tr>
                         </tbody>
@@ -45,30 +45,32 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Receipt</td>
-                                <td></td>
+                                <td>Total Receipt </td>
+                                <td>{{ number_format($totalAmountsReceiptByProject[$project->id] ?? 0, 2) }}</td>
                             </tr>
                             <tr>
-                                <td>Payroll</td>
-                                <td></td>
+                                <td>Total Payroll </td>
+                                <td>{{ number_format($totalAmountsPayrollByProject[$project->id] ?? 0, 2) }}</td>
                             </tr>
                             <tr>
-                                <td>Total</td>
-                                <td></td>
+                                <td>Total Amount</td>
+                                <td>{{ number_format(round($totalAmountByProject, 2), 2) }}</td>
                             </tr>
                             <tr>
                                 <td>Contract Price</td>
-                                <td>{{ $oldProject->contract }}</td>
+                                <td>{{ number_format($projectContract, 2) }}</td>
                             </tr>
                             <tr>
                                 <td>Difference</td>
-                                <td class="text-danger">-</td>
+                                <td style="{{ $colorStyle }}">-{{ number_format(round($totalAmountAndContractDifference, 2), 2) }}</td>
                             </tr>
                         </tbody>
                     </table>
                     </div>
 
-                    <div class="text-danger">The project is already finished.</div>
+                    @if(Auth::user() && Auth::user()->id == $project->user_id)
+                        <a href="{{ url('finish-project', ['id' => $project->id]) }}" class="btn btn-danger">Finish Project</a>
+                    @endif
                     
                     <div class="table-responsive mt-5">
                         <table class="table table-bordered">
@@ -81,18 +83,18 @@
                             <tbody>
                                 <tr>
                                     <td>Client</td>
-                                    <td>{{ $oldProject->client }}</td>
+                                    <td>{{ $project->client }}</td>
                                 </tr>
                                 <tr>
                                     <td>Contact</td>
-                                    <td>{{ $oldProject->contact }}</td>
+                                    <td>{{ $project->contact }}</td>
                                 </tr>
                                 <tr>
                                     <td>Created by</td>
                                     <td>
                                         @php
-                                            $user = \App\Models\User::find($oldProject->user_id);
-                                            echo $user ? $user->name : 'User not found';
+                                            $user = \App\Models\User::find($project->user_id);
+                                            echo $user ? $user->username : 'User not found';
                                         @endphp
                                     </td>
                                 </tr>

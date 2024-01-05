@@ -274,16 +274,20 @@ class EstimateController extends Controller
             'remarks' => 'required|string',
             'status' => 'required|string',
         ]);
-
+    
         // Find the estimate by ID
-        $estimate = Estimate::find($group_id);
-
-        // Update the estimate with new data
-        Estimate::where('group_id', $group_id)->update([
-            'remarks' => $request->input('remarks'),
-            'status' => $request->input('status'),
-        ]);
-
+        $estimate = Estimate::where('group_id', $group_id)->first();
+    
+        if ($estimate) {
+            // Update the estimate with new data
+            $estimate->update([
+                'remarks' => $request->input('remarks'),
+                'status' => $request->input('status'),
+            ]);
+    
+            // Redirect back or to any other page after update
+            return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
+        }
         // Redirect back or to any other page after update
         return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
     }

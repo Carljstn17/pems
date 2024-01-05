@@ -46,29 +46,31 @@
                         <tbody>
                             <tr>
                                 <td>Total Receipt </td>
-                                <td>{{ number_format($totalAmountsByProject[$project->id] ?? 0, 2) }}</td>
+                                <td>{{ number_format($totalAmountsReceiptByProject[$project->id] ?? 0, 2) }}</td>
                             </tr>
                             <tr>
                                 <td>Total Payroll </td>
-                                <td></td>
+                                <td>{{ number_format($totalAmountsPayrollByProject[$project->id] ?? 0, 2) }}</td>
                             </tr>
                             <tr>
                                 <td>Total Amount</td>
-                                <td></td>
+                                <td>{{ number_format(round($totalAmountByProject, 2), 2) }}</td>
                             </tr>
                             <tr>
                                 <td>Contract Price</td>
-                                <td>{{ number_format($project->contract, 0, 2) }}</td>
+                                <td>{{ number_format($projectContract, 2) }}</td>
                             </tr>
                             <tr>
                                 <td>Difference</td>
-                                <td class="text-danger">-</td>
+                                <td style="{{ $colorStyle }}">-{{ number_format(round($totalAmountAndContractDifference, 2), 2) }}</td>
                             </tr>
                         </tbody>
                     </table>
                     </div>
 
-                    <a href="{{ url('finish-project', ['id' => $project->id]) }}" class="btn btn-danger">Finish Project</a>
+                    @if(Auth::user() && Auth::user()->id == $project->user_id)
+                        <a href="#" class="btn btn-danger" onclick="confirmFinishProject('{{ url('finish-project', ['id' => $project->id]) }}')">Finish Project</a>
+                    @endif
                     
                     <div class="table-responsive mt-5">
                         <table class="table table-bordered">
@@ -92,7 +94,7 @@
                                     <td>
                                         @php
                                             $user = \App\Models\User::find($project->user_id);
-                                            echo $user ? $user->name : 'User not found';
+                                            echo $user ? $user->username : 'User not found';
                                         @endphp
                                     </td>
                                 </tr>
@@ -100,4 +102,13 @@
                         </table>
                 </div>
             </div>
+            <script>
+                function confirmFinishProject(route) {
+                    var confirmation = confirm('Are you sure you want to finish this project?');
+        
+                    if (confirmation) {
+                        window.location.href = route; // Proceed with the route
+                    }
+                }
+            </script>
 @endsection

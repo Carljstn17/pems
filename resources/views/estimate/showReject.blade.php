@@ -78,6 +78,12 @@
                         </tr>
                     </tfoot>
                 </table>   
+
+                <div>
+                    <label for=""><span class="bold">Remarks</span></label>
+                    <textarea name="remarks" id="remarks"rows="5" class="border border-subtle" style="width:100%;resize:none;" value="" readonly>{{ $estimates->first()->remarks }}</textarea>
+                </div>
+                
             </div>
         </div>
 

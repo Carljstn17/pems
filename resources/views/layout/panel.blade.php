@@ -21,17 +21,17 @@
                     <i class="fs-5 bi-buildings"></i> <span class="ms-1 d-sm-inline">Account</span>
                 </a>
             </li>
-            <li class="nav-item px-2 {{ request()->is('owner/estimate', 'owner/estimate/create', 'owner/estimate/show/*', 'owner/estimate/showreject/', ) ? 'active' : '' }}">
+            <li class="nav-item px-2 {{ request()->is('owner/estimate', 'owner/estimate/create', 'owner/estimate/show/*', 'owner/estimate/showreject/*', 'owner/estimate/reject',  ) ? 'active' : '' }}">
                 <a href="{{ route('owner.estimate') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-wallet"></i> <span class="ms-1 d-sm-inline">Estimate</span>
                 </a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 {{ request()->is('owner/tool') ? 'active' : '' }}">
                 <a href="{{ route('owner.tool') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Tool</span>
                 </a>
             </li>
-            <li class="nav-item px-2">
+            <li class="nav-item px-2 {{ request()->is('owner/machinery') ? 'active' : '' }}">
                 <a href="{{ route('owner.machinery') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Machinery</span>
                 </a>
@@ -41,11 +41,11 @@
                     <i class="fs-4 bi-archive link-dark"></i> <span class="ms-1 d-sm-inline link-dark">Transct History</span> 
                 </a>
                 <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu" style="width: 310px;">
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->is('owner/payroll/latest') ? 'active' : '' }}">
                         <a href="{{ route('owner.payroll') }}" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Payroll</span> </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Receipt</span> </a>
+                    <li class="nav-item {{ request()->is('owner/receipt') ? 'active' : '' }}">
+                        <a href="{{ route('owner.receipt') }}" class="nav-link px-0 link-dark"> <span class=" d-sm-inline px-2">Receipt</span> </a>
                     </li>
                 </ul>
             </li>

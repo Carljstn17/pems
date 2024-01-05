@@ -60,9 +60,9 @@
         </div>
         
         <div class="mt-3 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('on.payroll') }}" class="text-decoration-none fst-italic">/Payroll for On-Going Projects</a>
+            <a href="{{ route('on.payroll') }}" class="text-decoration-none fst-italic mt-2">/Payroll for On-Going Projects</a>
 
-            <a href="{{ route('advance') }}" class="text-decoration-none fst-italic">/Advance list</a>
+            <a href="{{ route('advance') }}" class="text-decoration-none fst-italic mt-2">/Advance list</a>
         </div>
  
 @endsection

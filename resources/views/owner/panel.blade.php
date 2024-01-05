@@ -13,7 +13,7 @@
                 <div class="row-container gap-3">
                     @forelse ($projects as $project)
                         <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
-                            <a href="{{ route('project.payroll', $project->id) }}" class="row text-decoration-none link-dark p-3">
+                            <a href="{{ route('owner.showproject', $project->id) }}" class="row text-decoration-none link-dark p-3">
                                 <div class="row text-light ">
                                     <span class="fs-6 d-none d-sm-inline">ID: {{ $project->project_id }}</span>
                                     <span class="fs-6 d-sm-inline d-sm-none ">ID: {{ $project->project_id }}</span>
@@ -50,7 +50,7 @@
                         $firstEstimate = $estimate->first();
                     @endphp
                 
-                    <a href="{{ route('estimate.form', ['group_id' => $firstEstimate->group_id]) }}" class="link-dark text-decoration-none">
+                    <a href="{{ route('owner.estimateShow', ['group_id' => $firstEstimate->group_id]) }}" class="link-dark text-decoration-none">
                         <div class="row p-4 d-flex justify-content-center rounded-2 border border-subtle hover3">
                             <div class="col">
                                 <span class="bold">Status: &nbsp</span>{{ $firstEstimate->status }}

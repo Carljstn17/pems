@@ -21,6 +21,15 @@ class ReceiptController extends Controller
         return view('receipt.latest', compact('receipts','projects', 'suppliers'));
     }
 
+    public function showOwnerReceipt()
+    {
+        $receipts = Receipt::latest()->paginate(4);
+        $projects = Project::where('status', 'new')->latest()->get();
+        $suppliers = Supplier::all();
+
+        return view('owner.receipt', compact('receipts','projects', 'suppliers'));
+    }
+
     public function showReceiptOngoing()
     {
         $receipts = Receipt::all();
@@ -28,6 +37,15 @@ class ReceiptController extends Controller
         $suppliers = Supplier::all();
 
         return view('receipt.ongoing', compact('receipts','projects', 'suppliers'));
+    }
+
+    public function ownerOngoingReceipt()
+    {
+        $receipts = Receipt::all();
+        $projects = Project::where('status', 'new')->latest()->paginate(6);
+        $suppliers = Supplier::all();
+
+        return view('owner.payrolLOngoing', compact('receipts','projects', 'suppliers'));
     }
 
     public function projectReceipt($project_id)
@@ -38,6 +56,16 @@ class ReceiptController extends Controller
         $receipts = Receipt::where('project_id', $project_id)->latest()->paginate(4);
 
         return view('receipt.showProject', compact('receipts', 'projects', 'suppliers'));
+    }
+
+    public function ownerProjectReceipt($project_id)
+    {
+        $projects = Project::all();
+        $suppliers = Supplier::all(); 
+
+        $receipts = Receipt::where('project_id', $project_id)->latest()->paginate(4);
+
+        return view('owner.receiptProject', compact('receipts', 'projects', 'suppliers'));
     }
     // public function showReceiptNew()
     // {
@@ -68,7 +96,7 @@ class ReceiptController extends Controller
     }
 
     public function show($id) {
-        $receipts = Receipt::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $receipts = Receipt::where('id', $id)->firstOrFail();
         $projects = Project::where('status', 'new')->latest()->get();
         $suppliers = Supplier::all();
 
@@ -76,5 +104,13 @@ class ReceiptController extends Controller
         return view('receipt.showReceipt', compact('receipts','projects', 'suppliers'));
     }
 
+    public function showForOwner($id) {
+        $receipts = Receipt::where('id', $id)->firstOrFail();
+        $projects = Project::where('status', 'new')->latest()->get();
+        $suppliers = Supplier::all();
+
+        Log::info('Photo Path:', [$receipts->photo_path]);
+        return view('receipt.showReceipt', compact('receipts','projects', 'suppliers'));
+    }
 
 }
