@@ -88,7 +88,7 @@
                                     <td>{{ Str::limit($user->password, 10) }}</td>
                                     <td class="d-flex justify-content-center gap-2">               
                                         <!-- Update Button -->
-                                        <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                        <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#updateModal{{ $user->id }}">
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                         <!-- Soft Delete Button -->
@@ -101,6 +101,7 @@
                                         </form>
                                     </td>  
                                 </tr>
+                                @include('owner.update-modal', ['user' => $user])
                                 @endif
                             @endforeach
                         </tbody>
@@ -134,9 +135,10 @@
                                         <td>{{ Str::limit($user->password, 10) }}</td>
                                         <td class="d-flex justify-content-center gap-2">               
                                             <!-- Update Button -->
-                                            <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                            <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#updateModal{{ $user->id }}">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
+
                                             <!-- Soft Delete Button -->
                                             <form method="POST" action="{{ url('/users/soft-delete/{user}', $user->id) }}>
                                                 @csrf
@@ -147,6 +149,9 @@
                                             </form>
                                         </td>  
                                     </tr>
+
+                                    @include('owner.update-modal', ['user' => $user])
+
                                 @endif
                             @endforeach
                         </tbody>
@@ -154,7 +159,4 @@
                 </div>
             </div>
         </div>
-
-        @include('owner.update-modal')
-
 @endsection
