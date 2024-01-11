@@ -13,6 +13,13 @@ class SupplierController extends Controller
         return view('receipt.supplier');
     }
 
+    public function ownerSupplierList() {
+        $suppliers = Supplier::all();
+
+        // Pass the advances data to the view
+        return view('owner.supplier', compact('suppliers'));
+    }
+
     public function supplierList() {
         $suppliers = Supplier::all();
 

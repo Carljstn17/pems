@@ -18,7 +18,7 @@
             </li>
             <li class="nav-item px-2 {{ request()->is('owner/accounts') ? 'active' : '' }}">
                 <a href="{{ url('owner/accounts') }}" class="nav-link align-middle px-0 link-dark">
-                    <i class="fs-5 bi-buildings"></i> <span class="ms-1 d-sm-inline">Account</span>
+                    <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Account</span>
                 </a>
             </li>
             <li class="nav-item px-2 {{ request()->is('owner/estimate', 'owner/estimate/create', 'owner/estimate/show/*', 'owner/estimate/showreject/*', 'owner/estimate/reject',  ) ? 'active' : '' }}">

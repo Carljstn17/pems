@@ -29,14 +29,19 @@
                     <i class="fs-5 bi-receipt"></i> <span class="ms-1 d-sm-inline">Receipt</span>
                 </a>
             </li>
-            <li class="nav-item px-2 ">
+            <li class="nav-item px-2 {{ request()->routeIs('staff.tool') ? 'active' : '' }}">
                 <a href="{{ route('staff.tool') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-tools"></i> <span class="ms-1 d-sm-inline">Tools</span>
                 </a>
             </li>
-            <li class="nav-item px-2 mb-3 ">
+            <li class="nav-item px-2 {{ request()->routeIs('staff.machinery') ? 'active' : '' }}">
                 <a href="{{ route('staff.machinery') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-gear-wide"></i> <span class="ms-1 d-sm-inline">Machinery</span>
+                </a>
+            </li>
+            <li class="nav-item px-2 mb-3 {{ request()->routeIs('staff.laborer') ? 'active' : '' }}">
+                <a href="{{ route('staff.laborer') }}" class="nav-link align-middle px-0 link-dark">
+                    <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Register</span>
                 </a>
             </li>
             <div class="border-top d-sm-inline" style="width: 310px;"></div>

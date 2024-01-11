@@ -11,6 +11,7 @@ class AddInformationToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->date('birthdate')->nullable();
             $table->string('address')->nullable();
+            $table->binary('image')->nullable();
         });
     }
 
@@ -19,6 +20,7 @@ class AddInformationToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('birthdate');
             $table->dropColumn('address');
+            $table->dropColumn('image');
         });
     }
 }

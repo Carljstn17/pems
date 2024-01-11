@@ -25,17 +25,17 @@
                         <div class="mb-3">
                             <select class="form-select" id="description" name="description" required>
                                 <option value="material">Material</option>
-                                <option value="tools">Tools</option>
-                                <option value="machinery">Machinery</option>
+                                <option value="permit">Permit</option>
+                                <option value="machinery">Gas</option>
                             </select>
                         </div>
             
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="si_or_no" name="si_or_no" placeholder="SI/OR NO." required>
+                            <input type="text" class="form-control" id="si_or_no" name="si_or_no" placeholder="SI/OR NO.">
                         </div>
             
                         <div class="mb-3">
-                            <select class="form-select" id="supplier" name="supplier_id" required>
+                            <select class="form-select" id="supplier" name="supplier_id">
                                 <option value="">Select a supplier</option>
                                     @foreach($suppliers as $supplier)
                                         <option value="{{ $supplier->id }}">
@@ -55,7 +55,7 @@
                         </div>
             
                         <div class="mb-3">
-                            <input type="file" class="form-control" id="receipt_photo" name="receipt_photo" accept="image/*" required>
+                            <input type="file" class="form-control" id="receipt_photo" name="receipt_photo" accept="image/*">
                         </div>
             
                         <button type="submit" class="btn btn-primary">Submit Entry</button>

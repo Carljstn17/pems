@@ -44,8 +44,8 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/dashboard', [DashboardController::class, 'showPanel'])->name('owner.dashboard');
     Route::post('/owner/register', [AuthController::class, 'registerStaff']);
     Route::get('/owner/accounts', [AuthController::class, 'showAdminRegister'])->name('owner.register');
-    Route::resource('users', UserController::class);
-    Route::delete('/users/soft-delete/{user}', [UserController::class, 'softDelete']);
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/soft-delete/{user}', [UserController::class, 'softDelete'])->name('owner.user-delete');
 
     Route::get('/owner/show/{id}', [ProjectController::class, 'showProjectOwner'])->name('owner.showproject');
 
@@ -65,7 +65,6 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
 
     Route::get('/owner/receipt', [ReceiptController::class, 'showOwnerReceipt'])->name('owner.receipt');
     Route::get('/owner/receipt/{id}', [ReceiptController::class, 'showForOwner'])->name('owner.showReceipt');
-    Route::get('/owner/receiptt/on-going', [ReceiptController::class, 'ownerOngoingReceipt'])->name('ongoing.Receipt');
     Route::get('/owner/supplier/list', [SupplierController::class, 'ownerSupplierList'])->name('owner.supplier');
     Route::get('/owner/receipt/project/{project_id}', [ReceiptController::class, 'ownerProjectReceipt'])->name('owner.projectReceipt');
 });
@@ -130,6 +129,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::post('/suppliers', [SupplierController::class, 'store'])->name('supplier.store');
     Route::get('/receipt/project/{project_id}', [ReceiptController::class, 'projectReceipt'])->name('project.receipt');
     Route::get('/receipt/form/{id}', [ReceiptController::class, 'show'])->name('receipt.form');
+    Route::put('update-receipt-remarks/{receiptId}', [ReceiptController::class, 'updateReceiptRemarks'])->name('updateReceiptRemarks');
 
     Route::get('/staff/tool', [ToolController::class, 'allTool'])->name('staff.tool');
     Route::post('/store-tools', [ToolController::class, 'store'])->name('store.tools');
@@ -139,6 +139,11 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::post('/store-machinery', [MachineryController::class, 'store'])->name('store.machinery');
     Route::put('/machineries/{machinery}', [MachineryController::class, 'update'])->name('update.machinery');
     Route::get('/staff/machinery/search', [SearchController::class, 'searchMachinery'])->name('machinery.search');
+
+    Route::get('/staff/laborer', [AuthController::class, 'showStaffLaborer'])->name('staff.laborer');
+    Route::post('/staff/register', [AuthController::class, 'registerLaborer'])->name('staff.register');
+    Route::put('/staff/{user}', [UserController::class, 'updateLaborer'])->name('staff.editLaborer');
+    Route::delete('/staff/laborer-soft-delete/{user}', [UserController::class, 'softDeleteLaborer'])->name('staff.laborer-soft-delete');
 });
 
 // laborer login
@@ -147,7 +152,11 @@ Route::post('/laborer/login', [AuthController::class, 'laborerLogin']);
 // laborer auth
 Route::middleware(['auth', CheckUserRole::class . ':laborer'])->group(function () {
     // Routes accessible only to owners
-    Route::get('/laborer/profile', [AuthController::class, 'showLaborerPanel']);
+    Route::get('/laborer/dashboard', [AuthController::class, 'showLaborerPanel'])->name('laborer.dashboard');
+    Route::get('/laborer/profile', [AuthController::class, 'showLaborerInfo'])->name('laborer.profile');
+    Route::put('/update-info/{user}', [UserController::class, 'updateInfo'])->name('laborer.updateInfo');
+    Route::get('/laborer/payroll', [PayrollController::class, 'laborerPayroll'])->name('laborer.payroll');
+    Route::get('/laborer/payroll/show/{payrollId}', [PayrollController::class, 'laborerShowPayroll'])->name('laborer.showPayroll');
 });
 
 

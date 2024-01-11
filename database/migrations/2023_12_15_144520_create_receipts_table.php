@@ -16,12 +16,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('project_id');
-            $table->unsignedBigInteger('supplier_id');
+            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('project_id')->references('id')->on('projects');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->date('receipt_date');
-            $table->string('si_or_no');
+            $table->string('si_or_no')->nullable();
             $table->string('description');
             $table->decimal('amount', 13, 4);
             $table->binary('receipt_photo');

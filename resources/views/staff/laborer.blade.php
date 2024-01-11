@@ -1,4 +1,4 @@
-@extends('layout.owner')
+@extends('layout.staff')
 
     @section('content')
 
@@ -20,14 +20,12 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form method="POST" action="{{ url('/owner/register') }}" class="container-fluid bg-white rounded">
+                            <form method="POST" action="{{ route('staff.register') }}" class="container-fluid bg-white rounded">
                                 @csrf
 
                                     <div class="mb-3 input-group">
                                         <label for="" class="input-group-text">Job</label>
-                                        <select class="form-select" name="role" required>
-                                            <option value="owner">Owner</option>
-                                            <option value="staff">Staff</option>
+                                        <select class="form-select" name="role" readonly>
                                             <option value="laborer">Laborer</option>
                                         </select>
                                     </div>
@@ -61,54 +59,6 @@
                     </div>
                 </div>
 
-
-            <div class="container-fluid mt-4">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="col-md-1">Company</th>
-                                <th class="col-md-3">Email</th>
-                                <th class="col-md-1">Contact</th>
-                                <th class="col-md-2">Full Name</th>
-                                <th class="col-md-1">Username</th>
-                                <th class="col-md-1">Password</th>
-                                <th class="col-md-1"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($users as $user)
-                            @if ($user->role === 'owner' || $user->role === 'staff')
-                                <tr>
-                                    <td>{{ $user->role }}</td>
-                                    <td>{{ Str::limit($user->email, 25) }}</td>
-                                    <td>{{ Str::limit($user->contact, 11) }}</td>
-                                    <td>{{ Str::limit($user->name, 20) }}</td>
-                                    <td>{{ $user->username }}</td>
-                                    <td>{{ Str::limit($user->password, 10) }}</td>
-                                    <td class="d-flex justify-content-center gap-2">               
-                                        <!-- Update Button -->
-                                        <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#updateModal{{ $user->id }}">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <!-- Soft Delete Button -->
-                                        <form id="deleteStaffForm{{ $user->id }}" method="POST" action="{{ route('owner.user-delete', ['user' => $user->id]) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-outline-danger" onclick="confirmDeleteStaff({{ $user->id }})">
-                                                <i class="bi bi-trash3"></i>
-                                            </button>
-                                        </form>
-                                    </td>  
-                                </tr>
-                                @include('owner.update-modal', ['user' => $user])
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <div class="container-fluid mt-4">
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -125,7 +75,6 @@
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
-                                @if ($user->role === 'laborer')
                                     <tr>
                                         <td>{{ $user->role }}</td>
                                         <td>{{ Str::limit($user->email, 25) }}</td>
@@ -140,19 +89,17 @@
                                             </button>
 
                                             <!-- Soft Delete Button -->
-                                            <form id="deleteLaborerForm{{ $user->id }}" method="POST" action="{{ route('owner.user-delete', $user->id) }}">
+                                            <form id="deleteForm{{ $user->id }}" method="POST" action="{{ route('staff.laborer-soft-delete', ['user' => $user->id]) }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-outline-danger" onclick="confirmDeleteLaborer({{ $user->id }})">
+                                                <button type="button" class="btn btn-outline-danger" onclick="confirmDelete({{ $user->id }})">
                                                     <i class="bi bi-trash3"></i>
                                                 </button>
                                             </form>
                                         </td>  
                                     </tr>
 
-                                    @include('owner.update-modal', ['user' => $user])
-
-                                @endif
+                                    @include('staff.update-modal', ['user' => $user])
                             @endforeach
                         </tbody>
                     </table>
@@ -161,24 +108,12 @@
         </div>
 
         <script>
-            function confirmDeleteStaff(userId) {
+            function confirmDelete(userId) {
                 var confirmation = confirm('Are you sure you want to delete this user?');
         
                 if (confirmation) {
                     // Proceed with the form submission
-                    document.getElementById('deleteStaffForm' + userId).submit();
-                } else {
-                    // Cancelled, do not proceed
-                    console.log('Deletion cancelled');
-                }
-            }
-
-            function confirmDeleteLaborer(userId) {
-                var confirmation = confirm('Are you sure you want to delete this user?');
-        
-                if (confirmation) {
-                    // Proceed with the form submission
-                    document.getElementById('deleteLaborerForm' + userId).submit();
+                    document.getElementById('deleteForm' + userId).submit();
                 } else {
                     // Cancelled, do not proceed
                     console.log('Deletion cancelled');

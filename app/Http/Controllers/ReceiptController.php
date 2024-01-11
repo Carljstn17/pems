@@ -110,7 +110,14 @@ class ReceiptController extends Controller
         $suppliers = Supplier::all();
 
         Log::info('Photo Path:', [$receipts->photo_path]);
-        return view('receipt.showReceipt', compact('receipts','projects', 'suppliers'));
+        return view('owner.receiptShow', compact('receipts','projects', 'suppliers'));
     }
 
+    public function updateReceiptRemarks($receiptId)
+    {
+        Receipt::where('id', $receiptId)->update(['remarks' => 'invalid']);
+
+        // Redirect back or to any other page after update
+        return redirect()->back()->with('success', 'Remarks updated successfully!');
+    }
 }

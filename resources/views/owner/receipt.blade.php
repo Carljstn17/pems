@@ -30,7 +30,7 @@
                             <span class="bold">Project ID: &nbsp</span>{{ Str::limit($receipt->project->project_id, 14) }}
                         </div>
                         <div class="col">
-                            <span class="bold">Entry By: &nbsp</span>{{ $receipt->user->username }}
+                            <span class="bold">Entry By: &nbsp</span>{{ optional($receipt->user)->username }}
                         </div>
                         <div class="col">
                             <span class="bold">Entry Date: &nbsp</span>{{ $receipt->created_at->diffForHumans() }}
@@ -49,10 +49,8 @@
             {{ $receipts->links('vendor.pagination.bootstrap-4') }}
         </div>
         
-        <div class="mt-3 pt-2 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('ongoing.Receipt') }}" class="text-decoration-none">/Receipt for On-Going Projects</a>
-
-            <a href="{{ route('supplier') }}" class="text-decoration-none fst-italic">/Supplier list</a>
+        <div class="mt-3 pt-2 border-top border-subtle d-flex justify-content-end">
+            <a href="{{ route('owner.supplier') }}" class="text-decoration-none fst-italic">/Supplier list</a>
         </div>
 
        

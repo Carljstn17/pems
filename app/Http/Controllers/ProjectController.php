@@ -43,11 +43,7 @@ class ProjectController extends Controller
     }
     public function show($id)
     {      
-        try {
-            $project = Project::where('id', $id)->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            abort(404);
-        }
+        $project = Project::where('id', $id)->firstOrFail();
 
         $totalAmountsReceiptByProject = AmountCalculator::calculateTotalAmountsReceiptByProject();
         // Retrieve the total amount for the specific project_id
@@ -70,11 +66,7 @@ class ProjectController extends Controller
 
     public function showProjectOwner($id)
     {      
-        try {
-            $project = Project::where('id', $id)->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            abort(404);
-        }
+        $project = Project::where('id', $id)->firstOrFail();
 
         $totalAmountsReceiptByProject = AmountCalculator::calculateTotalAmountsReceiptByProject();
         // Retrieve the total amount for the specific project_id

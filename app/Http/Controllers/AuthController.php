@@ -78,6 +78,39 @@ class AuthController extends Controller
         return redirect('/owner/accounts')->with('success', 'Employee registered successfully.');
     }
 
+    public function registerLaborer(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'name' => 'required|string|max:50',
+            'email' => 'required|email|unique:users|max:255',
+            'contact' => 'required',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:owner,staff,laborer',
+        ]);
+
+
+        User::create([
+            'username' => $request->input('username'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'contact' => $request->input('contact'),
+            'password' => bcrypt($request->input('password')),
+            'role' => $request->input('role'),
+        ]);
+
+        return view('staff.laborer')->with('success', 'Employee registered successfully.');
+    }
+
+    public function showStaffLaborer()
+    {
+        $users = User::where('role', 'laborer')->get();
+
+        return view('staff.laborer', ['users' => $users]);
+    }
+
+
     public function showAdminRegister()
     {
         $users = User::all();
@@ -192,8 +225,15 @@ class AuthController extends Controller
     }
     public function showLaborerPanel()
     {
-        $laborers = User::where('id', Auth::id())->get();
+        $laborers = User::where('id', Auth::id())->first();
 
-        return view('laborer.profile', ['laborers' => $laborers]);
+        return view('laborer.dashboard', ['laborers' => $laborers]);
+    }
+
+    public function showLaborerInfo()
+    {
+        $laborers = User::where('id', Auth::id())->first();
+
+        return view('laborer.profile', compact('laborers'));
     }
 }

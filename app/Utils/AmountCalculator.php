@@ -16,7 +16,7 @@ class AmountCalculator
      */
     public static function calculateTotalAmountsReceiptByProject()
     {
-        $receipts = Receipt::all();
+        $receipts = Receipt::where('remarks', 'valid')->get();
 
         $totalAmountsReceiptByProject = [];
 

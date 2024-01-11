@@ -1,4 +1,4 @@
-@extends('layout.staff')
+@extends('layout.owner')
 
 @section('content')
     <div class="py-2 mt-2">
@@ -49,16 +49,13 @@
                     </button>
                 </div>
     
-                @if(Auth::user() && Auth::user()->id == $receipts->user_id)
-                    <form action="{{ route('updateReceiptRemarks', $receipts->id) }}" method="post" id="updateRemarksForm">
-                        @csrf
-                        @method('PUT')
-                    
-                        <button type="button" class="btn btn-danger" onclick="confirmUpdateRemarks()">Incorrect</button>
-                    </form>
-                @endif
+                <form action="{{ route('updateReceiptRemarks', $receipts->id) }}" method="post" id="updateRemarksForm">
+                    @csrf
+                    @method('PUT')
+                
+                    <button type="button" class="btn btn-danger" onclick="confirmUpdateRemarks()">Incorrect</button>
+                </form>
             </div>
-            
 
             @include('receipt.image-modal')
         </div>        

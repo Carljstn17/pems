@@ -188,14 +188,22 @@ class PayrollController extends Controller
         return redirect()->back()->with('success', 'Remarks updated successfully!');
     }
 
-    // public function showOngoing($id)
-    // {
-    //     try {
-    //         $allPayrolls = Payroll::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-    //     } catch (ModelNotFoundException $e) {
-    //         abort(404);
-    //     }
+    public function laborerPayroll()
+    {
+        $userId = Auth::id();
 
-    //     return view('project.showproject')->with('payrolls', $allPayrolls);
-    // }
+        $payrolls = DB::table('payrolls')->where('user_id', $userId)
+            ->latest('created_at')
+            ->paginate(5);
+
+        return view('laborer.payroll', compact('payrolls'));
+    }
+
+    public function laborerShowPayroll($payrollId)
+    {
+        $payrolls = DB::table('payrolls')->where('id', $payrollId)->get();
+        dd($payrolls);
+
+        return view('owner.payrollShow', compact('payrolls', ));
+    }
 }
