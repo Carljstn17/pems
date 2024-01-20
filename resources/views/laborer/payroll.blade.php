@@ -18,17 +18,16 @@
 
         <div class="mt-3 pb-1 px-3">
             @forelse ($payrolls as $payroll)
-                <a href="" class="link-dark text-decoration-none">
+                <a href="{{ route('laborer.showPayroll', ['payrollId' => $payroll->id]) }}" class="link-dark text-decoration-none">
                     <div class="row p-4 d-flex justify-content-center rounded-2 border hover3 mb-2">
                         <div class="col">
-                            <span class="bold">Project: &nbsp</span>
-                            @php
-                                $project = \App\Models\Project::where('project_id', $payroll->project_id)->first();
-                            @endphp
-
+                            <span class="bold">Project: &nbsp</span>{{ Str::limit($payroll->project_id, 15) }}
                         </div>
                         <div class="col">
                             <span class="bold">Salary: &nbsp</span>{{ number_format($payroll->salary,2) }}
+                        </div>
+                        <div class="col">
+                            <span class="bold">Net $: &nbsp</span>{{ number_format($payroll->net_amount,2) }}
                         </div>
                         <div class="col">
                             <span class="bold">Created At: &nbsp</span>{{ \Carbon\Carbon::parse($payroll->created_at)->diffForHumans() }}
@@ -44,10 +43,8 @@
             {{ $payrolls->links('vendor.pagination.bootstrap-4') }}
         </div>
         
-        <div class="mt-3 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('on.payroll') }}" class="text-decoration-none fst-italic mt-2">/Payroll for On-Going Projects</a>
-
-            <a href="{{ route('advance') }}" class="text-decoration-none fst-italic mt-2">/Advance list</a>
+        <div class="mt-3 border-top border-subtle d-flex justify-content-end">
+            <a href="{{ route('laborer.advanceList') }}" class="text-decoration-none fst-italic mt-2">/Advance list</a>
         </div>
  
 @endsection

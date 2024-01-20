@@ -20,4 +20,14 @@ class ToolReport extends Model
     {
         return $this->belongsTo(Tool::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
+    public function toolLog()
+    {
+        return $this->belongsTo(Tool::class, 'tool_id');
+    }
 }

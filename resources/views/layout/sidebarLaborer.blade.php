@@ -21,7 +21,7 @@
                     <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Account</span>
                 </a>
             </li>
-            <li class="nav-item px-2 {{ request()->routeIs('laborer.payroll') ? 'active' : '' }}"">
+            <li class="nav-item px-2 {{ request()->routeIs('laborer.payroll', 'laborer.advanceList') ? 'active' : '' }}"">
                 <a href="{{ route('laborer.payroll') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-wallet"></i> <span class="ms-1 d-sm-inline">Payroll</span>
                 </a>

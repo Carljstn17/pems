@@ -15,7 +15,7 @@
             </form>
 
             <div>
-                <button class="btn btn-outline-primary">LOGS</button>
+                <a href="{{ route('owner.machineryLogs') }}" class="btn btn-outline-primary">LOGS</a>
             </div>
         </div>
     </div>

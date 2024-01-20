@@ -20,5 +20,15 @@ class MachineryReport extends Model
     {
         return $this->belongsTo(Machinery::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
+    public function machineryLog()
+    {
+        return $this->belongsTo(Machinery::class, 'machinery_id');
+    }
 }
 

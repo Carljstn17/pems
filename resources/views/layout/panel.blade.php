@@ -26,12 +26,12 @@
                     <i class="fs-5 bi-wallet"></i> <span class="ms-1 d-sm-inline">Estimate</span>
                 </a>
             </li>
-            <li class="nav-item px-2 {{ request()->is('owner/tool') ? 'active' : '' }}">
+            <li class="nav-item px-2 {{ request()->is('owner/tool', 'owner/tool/report') ? 'active' : '' }}">
                 <a href="{{ route('owner.tool') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Tool</span>
                 </a>
             </li>
-            <li class="nav-item px-2 {{ request()->is('owner/machinery') ? 'active' : '' }}">
+            <li class="nav-item px-2 {{ request()->is('owner/machinery', 'owner/machinery/report') ? 'active' : '' }}">
                 <a href="{{ route('owner.machinery') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-card-checklist"></i> <span class="ms-1 d-sm-inline">Machinery</span>
                 </a>

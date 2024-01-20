@@ -192,18 +192,27 @@ class PayrollController extends Controller
     {
         $userId = Auth::id();
 
-        $payrolls = DB::table('payrolls')->where('user_id', $userId)
-            ->latest('created_at')
-            ->paginate(5);
+        $payrolls = DB::table('payrolls')
+        ->join('projects', 'payrolls.project_id', '=', 'projects.id')
+        ->join('payroll_batches', 'payrolls.batch_id', '=', 'payroll_batches.id')
+        ->select('payrolls.*', 'projects.project_id')
+        ->where('payrolls.user_id', $userId)
+        ->where('payroll_batches.remarks', 'valid') // Filter based on remarks from payroll_batches table
+        ->latest('payrolls.created_at')
+        ->paginate(5);
 
         return view('laborer.payroll', compact('payrolls'));
     }
 
     public function laborerShowPayroll($payrollId)
     {
-        $payrolls = DB::table('payrolls')->where('id', $payrollId)->get();
-        dd($payrolls);
+        $payrolls = DB::table('payrolls')
+        ->join('projects', 'payrolls.project_id', '=', 'projects.id')
+        ->join('users', 'payrolls.entry_by', '=', 'users.id')
+        ->where('payrolls.id', $payrollId)
+        ->select('payrolls.*', 'projects.project_dsc', 'users.name as entry_by')
+        ->first();
 
-        return view('owner.payrollShow', compact('payrolls', ));
+        return view('laborer.payrollShow', compact('payrolls', ));
     }
 }

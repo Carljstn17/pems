@@ -43,4 +43,12 @@ class AdvanceController extends Controller
 
         return response()->json($advance);
     }
+
+    public function laborerAdvanceList() {
+        $userId = Auth::id();
+        $advances = Advance::where('user_id', $userId)->get();
+
+        // Pass the advances data to the view
+        return view('laborer.advanceList', compact('advances'));
+    }
 }

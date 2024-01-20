@@ -24,4 +24,9 @@ class Tool extends Model
     {
         return $this->hasOne(ToolReport::class)->latest();
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

@@ -61,7 +61,9 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::put('/update-batch-remarks/{batchId}', [PayrollController::class, 'updateBatchRemarks'])->name('updateBatchRemarks');
 
     Route::get('/owner/tool', [ToolController::class, 'allToolOwner'])->name('owner.tool');
+    Route::get('/owner/tool/report', [ToolController::class, 'toolLogs'])->name('owner.toolLogs');
     Route::get('/owner/machinery', [MachineryController::class, 'allMachineryOwner'])->name('owner.machinery');
+    Route::get('/owner/machinery/report', [MachineryController::class, 'machineryLogs'])->name('owner.machineryLogs');
 
     Route::get('/owner/receipt', [ReceiptController::class, 'showOwnerReceipt'])->name('owner.receipt');
     Route::get('/owner/receipt/{id}', [ReceiptController::class, 'showForOwner'])->name('owner.showReceipt');
@@ -157,6 +159,7 @@ Route::middleware(['auth', CheckUserRole::class . ':laborer'])->group(function (
     Route::put('/update-info/{user}', [UserController::class, 'updateInfo'])->name('laborer.updateInfo');
     Route::get('/laborer/payroll', [PayrollController::class, 'laborerPayroll'])->name('laborer.payroll');
     Route::get('/laborer/payroll/show/{payrollId}', [PayrollController::class, 'laborerShowPayroll'])->name('laborer.showPayroll');
+    Route::get('/laborer/advance-list', [AdvanceController::class, 'laborerAdvanceList'])->name('laborer.advanceList');
 });
 
 

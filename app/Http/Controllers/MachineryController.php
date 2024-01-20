@@ -99,4 +99,11 @@ class MachineryController extends Controller
 
         return redirect()->back()->with('success', 'Machinery updated successfully');
     }
+
+    public function machineryLogs()
+    {
+        $machineryLogs = MachineryReport::with('user', 'machineryLog')->orderBy('updated_at')->paginate(15);
+
+        return view('owner.machineryLogs', compact('machineryLogs'));
+    }
 }

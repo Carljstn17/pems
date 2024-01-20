@@ -103,4 +103,11 @@ class ToolController extends Controller
 
         return redirect()->back()->with('success', 'Tool updated successfully');
     }
+
+    public function toolLogs()
+    {
+        $toolLogs = ToolReport::with('user', 'toolLog')->orderBy('updated_at')->paginate(15);
+
+        return view('owner.toolLogs', compact('toolLogs'));
+    }
 }
