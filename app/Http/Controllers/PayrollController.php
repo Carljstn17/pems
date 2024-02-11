@@ -175,6 +175,19 @@ class PayrollController extends Controller
         return view('owner.payrollShow', compact('payrolls', 'batch'));
     }
 
+    public function ownerBatchRemarks($batchId)
+    {
+        PayrollBatch::where('id', $batchId)->update(['remarks' => 'invalid']);
+
+        // Update remarks in advance table
+        $userIds = DB::table('payrolls')->where('batch_id', $batchId)->pluck('user_id')->toArray();
+        
+        Advance::whereIn('user_id', $userIds)->update(['remarks' => 'add']);
+
+        // Redirect back or to any other page after update
+        return redirect()->back()->with('success', 'Remarks updated successfully!');
+    }
+
     public function updateBatchRemarks($batchId)
     {
         PayrollBatch::where('id', $batchId)->update(['remarks' => 'invalid']);

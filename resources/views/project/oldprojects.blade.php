@@ -22,7 +22,7 @@
             </div>
             @include('project.nprojects')
                 
-                <div class="mt-3 pb-3">
+                <div class="mt-2 pb-3 gap-2 border-bottom border-subtle">
                     <div class="row-container gap-3">
                     @forelse ($oldProjects as $oldProject)
 
@@ -58,7 +58,7 @@
                     {{ $oldProjects->links('vendor.pagination.bootstrap-4') }}
                 </div>
 
-                <div class="mt-3 pt-2 border-top border-subtle">
+                <div class="mt-3 px-3">
                     <a href="{{ url('/staff/ongoing-projects') }}" class="text-decoration-none">View On-going Projects</a>
                 </div>
 

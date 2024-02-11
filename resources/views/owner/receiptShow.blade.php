@@ -2,14 +2,17 @@
 
 @section('content')
     <div class="py-2 mt-2">
+        <div class="border-bottom mb-3 d-sm-none">
+            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary text-decoration-none  mb-3">
+                <i class="bi-backspace"></i> Back
+            </a>
+        </div>
+
         <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline">Receipt | ID: {{ $receipts->id }}</span>
         <span style="color: {{ $receipts->remarks === 'valid' ? 'green' : 'red' }}"> | {{ $receipts->remarks }}</span>
     </div>
 
     <div class="mt-4">
-        <a href="{{ url()->previous() }}" class="btn btn-outline-secondary text-decoration-none px-3">
-            <i class="bi-backspace"> back</i>
-        </a>
         <div class="border mt-2 p-4 rounded">
             
             <div class="mb-3 input-group">
@@ -49,12 +52,36 @@
                     </button>
                 </div>
     
-                <form action="{{ route('updateReceiptRemarks', $receipts->id) }}" method="post" id="updateRemarksForm">
-                    @csrf
-                    @method('PUT')
-                
-                    <button type="button" class="btn btn-danger" onclick="confirmUpdateRemarks()">Incorrect</button>
-                </form>
+                @if($receipts->remarks !== 'invalid')
+                    <form action="{{ route('updateReceiptRemarks', $receipts->id) }}" method="post" id="updateRemarksForm">
+                        @csrf
+                        @method('PUT')
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Incorrect</button>
+                    </form>
+                @else
+                    <span class="text-danger" >This receipt is invalid.</span>
+                @endif
+
+
+                <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to update the remarks to 
+                                <span class="bold text-danger">'invalid'</span>  for this receipt id 
+                                <span class="bold">"{{ $receipts->id }}"</span>?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" onclick="updateReceiptRemarks()">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             @include('receipt.image-modal')
@@ -62,16 +89,8 @@
     </div>
 
     <script>
-        function confirmUpdateRemarks() {
-            var confirmation = confirm("Are you sure you want to update the remarks to 'invalid' for this batch and 'add' for advances?");
-    
-            if (confirmation) {
-                document.getElementById('updateRemarksForm').submit();
-            } else {
-                // Optionally, you can provide feedback to the user that the update was canceled.
-                alert("Update canceled. Remarks remain unchanged.");
-                return false;
-            }
+        function updateReceiptRemarks() {
+            document.getElementById('updateRemarksForm').submit();
         }
     </script>
 @endsection

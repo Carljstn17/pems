@@ -27,7 +27,7 @@
             </aside>
             <div class="col-12 col-md-9">
                 <nav class="border-bottom border-subtle">
-                    @include('layout.nav')
+                    @include('layout.navStaff')
                 </nav>
                 <section class="container-fluid">
                     @yield('content')

@@ -62,8 +62,8 @@
                 </div>
 
 
-            <div class="container-fluid mt-4">
-                <div class="table-responsive">
+        <div >
+            <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -107,9 +107,9 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+       
 
-            <div class="container-fluid mt-4">
+            <div >
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>

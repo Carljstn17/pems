@@ -92,9 +92,28 @@
                                             <form id="deleteForm{{ $user->id }}" method="POST" action="{{ route('staff.laborer-soft-delete', ['user' => $user->id]) }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-outline-danger" onclick="confirmDelete({{ $user->id }})">
+                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal{{ $user->id }}">
                                                     <i class="bi bi-trash3"></i>
                                                 </button>
+                                            
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="confirmationModal{{ $user->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure you want to delete this user <span class="bold">"{{ $user->username }}"</span>?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                <button type="button" class="btn btn-danger" onclick="proceedDelete({{ $user->id }})">Confirm</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </form>
                                         </td>  
                                     </tr>
@@ -108,16 +127,8 @@
         </div>
 
         <script>
-            function confirmDelete(userId) {
-                var confirmation = confirm('Are you sure you want to delete this user?');
-        
-                if (confirmation) {
-                    // Proceed with the form submission
+                function proceedDelete(userId) {
                     document.getElementById('deleteForm' + userId).submit();
-                } else {
-                    // Cancelled, do not proceed
-                    console.log('Deletion cancelled');
                 }
-            }
         </script>
 @endsection

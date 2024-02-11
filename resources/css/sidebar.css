@@ -3,7 +3,7 @@
 }
 
 ul.nav{
-    width: 350px;
+    width: 100%;
 }
 li.nav-item{
     border-radius: 6px;
@@ -25,4 +25,8 @@ li.nav-item.active{
 
 .border{
     border-color: var(--secondary-color);
+}
+
+li.sub{
+    width: 100%;
 }

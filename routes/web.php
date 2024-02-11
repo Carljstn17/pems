@@ -9,13 +9,17 @@ use App\Http\Controllers\ToolController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdvanceController;
+use App\Http\Controllers\ConcernController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\CombinedController;
 use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MachineryController;
+use App\Http\Controllers\AdvanceRequestController;
+use App\Models\AdvanceRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,11 +36,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/notifications', 'NotificationController@index');
+
 //owner route
 Route::get('/owner-login', [AuthController::class, 'showOwnerLoginForm'])
     ->name('owner-login');
 Route::post('/owner/login', [AuthController::class, 'ownerLogin']);
 
+Route::put('update-receipt-remarks/{receiptId}', [ReceiptController::class, 'updateReceiptRemarks'])->name('updateReceiptRemarks');
 
 //owner auth
 Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () {
@@ -54,11 +61,12 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/estimate/show/{group_id}', [EstimateController::class, 'showOwner'])->name('owner.estimateShow');
     Route::get('/owner/estimate/reject', [EstimateController::class, 'rejectEstimate'])->name('owner.estimateReject');
     Route::get('/owner/estimate/showreject/{group_id}', [EstimateController::class, 'showRejectOwner'])->name('owner.estimateShowReject');
-    Route::post('/estimates/{group_id}/update', [EstimateController::class, 'reject'])->name('statusAndRemarks');
+    Route::put('/estimates/{group_id}/reject', [EstimateController::class, 'reject'])->name('owner.reject');
+    Route::put('/estimates/{group_id}/accept', [EstimateController::class, 'accept'])->name('owner.accept');
 
     Route::get('/owner/payroll/latest', [PayrollController::class, 'ownerPayrollLatest'])->name('owner.payroll');
     Route::get('/owner/payroll/show-latest/{batchId}', [PayrollController::class, 'showOwnerPayroll'])->name('owner.showPayroll');
-    Route::put('/update-batch-remarks/{batchId}', [PayrollController::class, 'updateBatchRemarks'])->name('updateBatchRemarks');
+    Route::put('/update-batch-remarks/{batchId}', [PayrollController::class, 'ownerBatchRemarks'])->name('ownerBatchRemarks');
 
     Route::get('/owner/tool', [ToolController::class, 'allToolOwner'])->name('owner.tool');
     Route::get('/owner/tool/report', [ToolController::class, 'toolLogs'])->name('owner.toolLogs');
@@ -131,7 +139,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::post('/suppliers', [SupplierController::class, 'store'])->name('supplier.store');
     Route::get('/receipt/project/{project_id}', [ReceiptController::class, 'projectReceipt'])->name('project.receipt');
     Route::get('/receipt/form/{id}', [ReceiptController::class, 'show'])->name('receipt.form');
-    Route::put('update-receipt-remarks/{receiptId}', [ReceiptController::class, 'updateReceiptRemarks'])->name('updateReceiptRemarks');
+ 
 
     Route::get('/staff/tool', [ToolController::class, 'allTool'])->name('staff.tool');
     Route::post('/store-tools', [ToolController::class, 'store'])->name('store.tools');
@@ -146,6 +154,13 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::post('/staff/register', [AuthController::class, 'registerLaborer'])->name('staff.register');
     Route::put('/staff/{user}', [UserController::class, 'updateLaborer'])->name('staff.editLaborer');
     Route::delete('/staff/laborer-soft-delete/{user}', [UserController::class, 'softDeleteLaborer'])->name('staff.laborer-soft-delete');
+
+    Route::get('/advance/req-notif/{id}', [AdvanceRequestController::class, 'show'])->name('request.notif');
+    Route::get('/advance-req/all-notif', [AdvanceRequestController::class, 'allRequest'])->name('request.allNotif');
+
+    Route::get('/concern/notif/{id}', [ConcernController::class, 'show'])->name('concern.notif');
+    Route::get('/concern/all-notif', [ConcernController::class, 'allConcern'])->name('concern.allNotif');
+    Route::get('/concerns/{id}/confirm-accept', [ConcernController::class, 'confirmAccept'])->name('concerns.confirm.accept');
 });
 
 // laborer login
@@ -160,6 +175,12 @@ Route::middleware(['auth', CheckUserRole::class . ':laborer'])->group(function (
     Route::get('/laborer/payroll', [PayrollController::class, 'laborerPayroll'])->name('laborer.payroll');
     Route::get('/laborer/payroll/show/{payrollId}', [PayrollController::class, 'laborerShowPayroll'])->name('laborer.showPayroll');
     Route::get('/laborer/advance-list', [AdvanceController::class, 'laborerAdvanceList'])->name('laborer.advanceList');
+    Route::get('/laborer/advance-req', [AdvanceRequestController::class, 'viewRequestForm'])->name('laborer.advanceReq');
+    Route::post('/submit/advance-req', [AdvanceRequestController::class, 'store'])->name('form.submitReq');
+    Route::get('/laborer/concern', [ConcernController::class, 'viewConcernForm'])->name('laborer.concern');
+    Route::post('/submit/concern', [ConcernController::class, 'store'])->name('form.submitConcern');
+    Route::get('/advance-request-count', [AdvanceRequestController::class, 'getNotificationCount'])->name('notification.count.advance');
+    Route::get('/notification-count-concern', [ConcernController::class, 'getNotificationCount'])->name('notification.count.concern');
 });
 
 

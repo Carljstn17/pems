@@ -16,13 +16,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-<body class="bg">
+<body class="" style="height: 100vh;">
     <div class="container-fluid bg-white">
         <div class="row">
-            <aside class="col-12 col-md-3 border border-subtle">
-                @include('layout.panel')
-            </aside>
-            <div class="col-12 col-md-9">
+            <div class="col-12 col-md-9 order-2">
                 <nav class="border-bottom border-subtle">
                     @include('layout.nav')
                 </nav>
@@ -30,7 +27,39 @@
                     @yield('content')
                 </section>
             </div>
+            <aside class="col-12 col-md-3 border border-subtle order-1">
+                @include('layout.panel')
+            </aside>
         </div>
-    </div>    
+    </div>
+
+    <script>
+        // Check the screen width on page load
+window.addEventListener('load', function() {
+  updateClassBasedOnScreenWidth();
+});
+
+// Check the screen width on window resize
+window.addEventListener('resize', function() {
+  updateClassBasedOnScreenWidth();
+});
+
+// Function to update the class based on screen width
+function updateClassBasedOnScreenWidth() {
+  var myDiv = document.getElementById('navbarNav');
+
+  // Check if the screen width is less than or equal to 767px
+  if (window.innerWidth <= 767) {
+    // Remove the class if the condition is met
+    myDiv.classList.remove('show');
+  } else {
+    // Add the class if the condition is not met
+    myDiv.classList.add('show');
+  }
+}
+
+    </script>
 </body>
+
 </html>
+

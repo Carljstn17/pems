@@ -69,8 +69,28 @@
                     </div>
 
                     @if(Auth::user() && Auth::user()->id == $project->user_id)
-                        <a href="#" class="btn btn-danger" onclick="confirmFinishProject('{{ url('finish-project', ['id' => $project->id]) }}')">Finish Project</a>
+                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmationModal{{ $project->id }}">
+                            Finish Project
+                        </button>
                     @endif
+
+                    <div class="modal fade" id="confirmationModal{{ $project->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to finish this project <span class="bold">"{{ $project->project_id }}"</span> ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-danger" onclick="proceedFinishProject('{{ url('finish-project', ['id' => $project->id]) }}')">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="table-responsive mt-5">
                         <table class="table table-bordered">
@@ -103,12 +123,8 @@
                 </div>
             </div>
             <script>
-                function confirmFinishProject(route) {
-                    var confirmation = confirm('Are you sure you want to finish this project?');
-        
-                    if (confirmation) {
-                        window.location.href = route; // Proceed with the route
-                    }
+                 function proceedFinishProject(route) {
+                    window.location.href = route; // Proceed with the route
                 }
             </script>
 @endsection

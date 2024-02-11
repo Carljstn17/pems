@@ -1,7 +1,7 @@
 @extends('layout.staff')
 
     @section('content')
-        <div class="py-2 mt-2 mb-3">
+        <div class="py-2 mt-2 mb-4">
             <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | New Entry</span>
         </div>
         
@@ -98,6 +98,7 @@
                 allCheckboxes.forEach(function (checkbox) {
                     checkbox.addEventListener('change', function () {
                         updateAdvanceAmount();
+                        updateTotalNetAmount();
                     });
                 });
 
@@ -105,17 +106,22 @@
                     var totalAmount = 0;
 
                     inputFields.forEach(function (inputField) {
-                        var laborerId = inputField.parentElement.querySelector('.checklist').dataset.laborerId;
-                        var checkedAmount = 0;
+                        var checklistElement = inputField.parentElement.querySelector('.checklist');
 
-                        allCheckboxes.forEach(function (checkbox) {
-                            if (checkbox.checked && checkbox.dataset.laborerId === laborerId) {
-                                checkedAmount += parseFloat(checkbox.dataset.amount);
-                            }
-                        });
+                        // Add a check to ensure checklistElement is not null
+                        if (checklistElement) {
+                            var laborerId = checklistElement.dataset.laborerId;
+                            var checkedAmount = 0;
 
-                        inputField.value = isNaN(checkedAmount) ? '0.00' : checkedAmount.toFixed(2);
-                        totalAmount += checkedAmount;
+                            allCheckboxes.forEach(function (checkbox) {
+                                if (checkbox.checked && checkbox.dataset.laborerId === laborerId) {
+                                    checkedAmount += parseFloat(checkbox.dataset.amount);
+                                }
+                            });
+
+                            inputField.value = isNaN(checkedAmount) ? '0.00' : checkedAmount.toFixed(2);
+                            totalAmount += checkedAmount;
+                        }
                     });
 
                     total_advanceInput.value = isNaN(totalAmount) ? '0.00' : totalAmount.toFixed(2);

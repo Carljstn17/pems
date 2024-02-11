@@ -5,6 +5,24 @@
         <i class="fs-5 bi-person-vcard"></i> <span class="d-sm-inline">Profile</span>
     </div>
 
+    @if(session('error'))
+    <div class="alert alert-danger">
+            {{ session('error') }}
+    </div>
+    @endif
+
+    @if(session('success'))
+        <div class="alert alert-success">
+                {{ session('success') }}
+        </div>
+        <script>
+            // Reload the page after displaying the success message
+            setTimeout(function() {
+                location.reload();
+            }, 2000); // Reload after 2 seconds (adjust the time as needed)
+        </script>
+    @endif
+
     <div class="row justify-content-center mt-5">
         <div class="col-md-4">
             <div class="border border-subtle rounded mb-4 text-center p-2">

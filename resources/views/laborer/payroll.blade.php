@@ -20,16 +20,16 @@
             @forelse ($payrolls as $payroll)
                 <a href="{{ route('laborer.showPayroll', ['payrollId' => $payroll->id]) }}" class="link-dark text-decoration-none">
                     <div class="row p-4 d-flex justify-content-center rounded-2 border hover3 mb-2">
-                        <div class="col">
+                        <div class="col-sm-12 mb-2 col-lg-3">
                             <span class="bold">Project: &nbsp</span>{{ Str::limit($payroll->project_id, 15) }}
                         </div>
-                        <div class="col">
+                        <div class="col-sm-12 mb-2 col-lg-3">
                             <span class="bold">Salary: &nbsp</span>{{ number_format($payroll->salary,2) }}
                         </div>
-                        <div class="col">
+                        <div class="col-sm-12 mb-2 col-lg-3">
                             <span class="bold">Net $: &nbsp</span>{{ number_format($payroll->net_amount,2) }}
                         </div>
-                        <div class="col">
+                        <div class="col-sm-12 mb-2 col-lg-3">
                             <span class="bold">Created At: &nbsp</span>{{ \Carbon\Carbon::parse($payroll->created_at)->diffForHumans() }}
                         </div>
                     </div>

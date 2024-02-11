@@ -10,6 +10,7 @@ use App\Models\EstimateDelete;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
+use App\Notifications\EstimateNotification;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class EstimateController extends Controller
@@ -269,26 +270,31 @@ class EstimateController extends Controller
 
     public function reject(Request $request, $group_id)
     {
-        // Validate the request
-        $request->validate([
-            'remarks' => 'required|string',
-            'status' => 'required|string',
+        $estimate = Estimate::where('group_id', $group_id)->firstOrFail(); // Retrieve the estimate
+    
+    // Update the estimate status and remarks
+        $estimate->update([
+            'status' => 'rejected',
+            'remarks' => $request->remarks,
         ]);
+        
+        // Send email notification to the user to whom the estimate belongs
+        $estimate->user->notify(new EstimateNotification($estimate));
+        
+        return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
+    }
+
+    public function accept(Request $request, $group_id)
+    {
+        $estimate = Estimate::where('group_id', $group_id)->firstOrFail(); // Retrieve the estimate
     
-        // Find the estimate by ID
-        $estimate = Estimate::where('group_id', $group_id)->first();
-    
-        if ($estimate) {
-            // Update the estimate with new data
-            $estimate->update([
-                'remarks' => $request->input('remarks'),
-                'status' => $request->input('status'),
-            ]);
-    
-            // Redirect back or to any other page after update
-            return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
-        }
-        // Redirect back or to any other page after update
+        Estimate::where('group_id', $group_id)->update([
+            'status' => 'accepted',
+            'remarks' => $request->remarks,
+        ]);
+
+        $estimate->user->notify(new EstimateNotification($estimate));
+        
         return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
     }
 }

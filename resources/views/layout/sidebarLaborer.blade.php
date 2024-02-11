@@ -11,28 +11,28 @@
         </div>
         
         <ul class="nav nav-pills flex-column mb-sm-auto px-3 pt-4 align-items-start gap-1 border-top" id="menu">
-            <li class="nav-item px-2 {{ request()->routeIs('laborer.dashboard') ? 'active' : '' }}"">
+            <li class="nav-item px-2 {{ request()->routeIs('laborer.dashboard') ? 'active' : '' }}">
                 <a href="{{ route('laborer.dashboard') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-speedometer2"></i> <span class="ms-1 d-sm-inline">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item px-2 {{ request()->routeIs('laborer.profile') ? 'active' : '' }}"">
+            <li class="nav-item px-2 {{ request()->routeIs('laborer.profile') ? 'active' : '' }}">
                 <a href="{{ route('laborer.profile') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Account</span>
                 </a>
             </li>
-            <li class="nav-item px-2 {{ request()->routeIs('laborer.payroll', 'laborer.advanceList') ? 'active' : '' }}"">
+            <li class="nav-item px-2 {{ request()->routeIs('laborer.payroll', 'laborer.advanceList') ? 'active' : '' }}">
                 <a href="{{ route('laborer.payroll') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-wallet"></i> <span class="ms-1 d-sm-inline">Payroll</span>
                 </a>
             </li>
-            <li class="nav-item px-2">
-                <a href="{{ route('owner.tool') }}" class="nav-link align-middle px-0 link-dark">
+            <li class="nav-item px-2 {{ request()->routeIs('laborer.advanceReq') ? 'active' : '' }}">
+                <a href="{{ route('laborer.advanceReq') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-envelope"></i> <span class="ms-1 d-sm-inline">Request</span>
                 </a>
             </li>
-            <li class="nav-item px-2">
-                <a href="{{ route('owner.machinery') }}" class="nav-link align-middle px-0 link-dark">
+            <li class="nav-item px-2 {{ request()->routeIs('laborer.concern') ? 'active' : '' }}">
+                <a href="{{ route('laborer.concern') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-chat-left-dots"></i> <span class="ms-1 d-sm-inline">Concern</span>
                 </a>
             </li>

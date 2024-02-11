@@ -22,20 +22,20 @@
             @forelse ($payrollBatch as $batches)
                 <a href="{{ route('owner.showPayroll', ['batchId' => $batches->id]) }}" class="link-dark text-decoration-none">
                     <div class="row p-4 d-flex justify-content-center rounded-2 border hover3 mb-2">
-                        <div class="col">
+                        <div class="col-sm-12 mb-2 col-lg-3">
                             <span class="bold">Payroll batch: &nbsp</span>{{ $batches->id }}
                         </div>
-                        <div class="col">
+                        <div class="col-sm-12 mb-2 col-lg-3">
                             <span class="bold">Project ID: &nbsp</span>{{ $batches->project_id }}
                         </div>
-                        <div class="col">
+                        <div class="col-sm-12 mb-2 col-lg-3">
                             <span class="bold">Entry By: &nbsp</span>
                             @php
                             $user = \App\Models\User::find($batches->entry_by);
                             echo $user ? $user->username : 'User not found';
                             @endphp
                         </div>
-                        <div class="col">
+                        <div class="col-sm-12 mb-2 col-lg-3">
                             <span class="bold">Created At: &nbsp</span>{{ $batches->created_at->diffForHumans() }}
                         </div>
                     </div>

@@ -53,9 +53,28 @@
                     <form action="{{ route('updateReceiptRemarks', $receipts->id) }}" method="post" id="updateRemarksForm">
                         @csrf
                         @method('PUT')
-                    
-                        <button type="button" class="btn btn-danger" onclick="confirmUpdateRemarks()">Incorrect</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Incorrect</button>
                     </form>
+
+                    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to update the remarks to 
+                                    <span class="bold text-danger">'invalid'</span>  for this receipt id 
+                                    <span class="bold">"{{ $receipts->id }}"</span>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-danger" onclick="updateReceiptRemarks()">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endif
             </div>
             
@@ -65,16 +84,8 @@
     </div>
 
     <script>
-        function confirmUpdateRemarks() {
-            var confirmation = confirm("Are you sure you want to update the remarks to 'invalid' for this batch and 'add' for advances?");
-    
-            if (confirmation) {
-                document.getElementById('updateRemarksForm').submit();
-            } else {
-                // Optionally, you can provide feedback to the user that the update was canceled.
-                alert("Update canceled. Remarks remain unchanged.");
-                return false;
-            }
+        function updateReceiptRemarks() {
+            document.getElementById('updateRemarksForm').submit();
         }
     </script>
 @endsection

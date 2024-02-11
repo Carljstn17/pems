@@ -70,26 +70,39 @@
         </table>
 
         @if(Auth::user() && Auth::user()->id == $batch->entry_by)
-            <form action="{{ route('updateBatchRemarks', $batch->id) }}" method="post" id="updateRemarksForm">
+            <button class="btn btn-danger float-end" type="button" data-bs-toggle="modal" data-bs-target="#updateRemarksModal">
+                Incorrect
+            </button>
+        
+            <!-- Modal -->
+            <div class="modal fade" id="updateRemarksModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to update the remarks to <span class="bold text-danger">'invalid'</span> for this batch <span class="bold">{{ $batch->id }}</span>?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" onclick="proceedUpdateRemarks()">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <form action="{{ route('staff.updateBatchRemarks', $batch->id) }}" method="post" id="updateRemarksForm">
                 @csrf
                 @method('PUT')
-            
-                <button type="button" class="btn btn-danger float-end" onclick="confirmUpdateRemarks()">Incorrect</button>
             </form>
         @endif
         
         <script>
-            function confirmUpdateRemarks() {
-                var confirmation = confirm("Are you sure you want to update the remarks to 'invalid' for this batch and 'add' for advances?");
-        
-                if (confirmation) {
-                    document.getElementById('updateRemarksForm').submit();
-                } else {
-                    // Optionally, you can provide feedback to the user that the update was canceled.
-                    alert("Update canceled. Remarks remain unchanged.");
-                    return false;
-                }
-            }
+            function proceedUpdateRemarks() {
+            document.getElementById('updateRemarksForm').submit();
+        }
         </script>
 
 @endsection

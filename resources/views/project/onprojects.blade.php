@@ -27,7 +27,7 @@
             <div class="mt-2 pb-3 gap-2 border-bottom border-subtle">
                 <div class="row-container gap-3">
                     @forelse ($projects as $project)
-                        <div class="col-container shadow-sm bg-dark rounded-4 d-flex hover2">
+                        <div class="col shadow-sm bg-dark rounded-4 d-flex hover2">
                             <a href="{{ route('project.showproject', $project->id) }}" class="row text-decoration-none link-dark p-3">
                                 <div class="row text-light ">
                                     <span class="fs-6 d-none d-sm-inline">ID: {{ $project->project_id }}</span>
@@ -56,7 +56,7 @@
                     {{ $projects->links('vendor.pagination.bootstrap-4') }}
                 </div>
 
-                <div class="mt-3">
+                <div class="mt-3 px-3">
                     <a href="{{ url('/staff/old-projects') }}" class="text-decoration-none">View Old Project ></a>
                 </div>
 

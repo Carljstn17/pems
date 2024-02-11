@@ -44,8 +44,8 @@
                     <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Register</span>
                 </a>
             </li>
-            <div class="border-top d-sm-inline" style="width: 310px;"></div>
-            <li class="px-2 mt-3 bottom" style="width: 310px;" >
+            <div class="border-top d-sm-inline" style="width: 100%;"></div>
+            <li class="px-2 mt-3 bottom">
                 @auth
                     <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
                         <i class="fs-5 bi-person-circle link-dark"></i> <span class="ms-1 d-sm-inline link-dark">{{ Auth::user()->username }}</span> 
