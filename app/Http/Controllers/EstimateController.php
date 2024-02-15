@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Estimate;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use App\Notifications\EstimateNotification;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Notifications\EstimateEntryNotification;
 
 class EstimateController extends Controller
 {
@@ -181,6 +183,14 @@ class EstimateController extends Controller
                 'remarks' => $request->remarks,
             ]);
         }
+
+        $owners = User::where('role', 'owner')->get();
+        
+        foreach ($owners as $owner) {
+            $estimates = Estimate::where('group_id', $groupId)->get(); // Get the estimates for the current group
+            $owner->notify(new EstimateEntryNotification($estimates));
+        }    
+        
         // Redirect or perform any other actions as needed
         return redirect()->route('latest')->with('success', 'Items added successfully.');
     }
