@@ -6,11 +6,13 @@ use App\Models\User;
 use App\Models\Advance;
 use App\Models\Payroll;
 use App\Models\Project;
-use Illuminate\Http\Request;
-use App\Models\CompanyAttribute;
 use App\Models\PayrollBatch;
+use Illuminate\Http\Request;
+use App\Exports\PayrollExport;
+use App\Models\CompanyAttribute;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PayrollController extends Controller
@@ -228,4 +230,13 @@ class PayrollController extends Controller
 
         return view('laborer.payrollShow', compact('payrolls', ));
     }
+
+    public function export($batchId)
+    {
+        $payrolls = DB::table('payrolls')->where('batch_id', $batchId)->get();
+        $batch = PayrollBatch::findOrFail($batchId);
+
+        return Excel::download(new PayrollExport($payrolls, $batch), 'payroll.xlsx');
+    }
+
 }

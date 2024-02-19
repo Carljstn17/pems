@@ -161,6 +161,10 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/concern/notif/{id}', [ConcernController::class, 'show'])->name('concern.notif');
     Route::get('/concern/all-notif', [ConcernController::class, 'allConcern'])->name('concern.allNotif');
     Route::get('/concerns/{id}/confirm-accept', [ConcernController::class, 'confirmAccept'])->name('concerns.confirm.accept');
+
+    Route::get('export-estimates/{group_id}', [EstimateController::class, 'export'])->name('export-estimates');
+    Route::get('/payroll/export/{batchId}', [PayrollController::class, 'export'])->name('payroll.export');
+
 });
 
 // laborer login

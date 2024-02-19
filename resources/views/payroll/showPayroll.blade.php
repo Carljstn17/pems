@@ -97,7 +97,11 @@
                 @csrf
                 @method('PUT')
             </form>
+
+            <a href="{{ route('payroll.export', ['batchId' => $batch->id]) }}" class="btn btn-success float-end me-2">Export Payroll</a>
         @endif
+
+        
         
         <script>
             function proceedUpdateRemarks() {

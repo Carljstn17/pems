@@ -80,7 +80,9 @@
                     <textarea name="remarks" id="remarks"rows="5" class="border border-subtle" style="width:100%;resize:none;" value="" readonly>{{ $estimates->first()->remarks }}</textarea>
                 </div>
 
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ route('export-estimates', ['group_id' => $group_id]) }}" class="btn btn-success">Export Estimate</a>
+
                     <a href="{{ route('estimate.edit', $estimates->first()->group_id) }}" class="btn btn-primary float-end px-4">Edit</a>
                 </div>
             </div>

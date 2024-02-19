@@ -8,8 +8,10 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\EstimateTotal;
 use App\Models\EstimateDelete;
+use App\Exports\EstimatesExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\QueryException;
 use App\Notifications\EstimateNotification;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -306,5 +308,12 @@ class EstimateController extends Controller
         $estimate->user->notify(new EstimateNotification($estimate));
         
         return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
+    }
+
+    public function export($group_id)
+    {
+        $logoUrl = 'https://example.com/logo.jpg';
+
+        return Excel::download(new EstimatesExport($group_id, $logoUrl), 'estimates.xlsx');
     }
 }
