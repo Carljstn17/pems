@@ -5,10 +5,11 @@
             <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate | Latest</span>
         </div>
 
+        <div class="py-2 mt-3">
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                <a href="{{ url('/staff/estimate/new') }}" class="btn btn-outline-primary mt-3" style="transition:0.8s;"">
-                    <span><i class="bi bi-plus"></i>Add New Project</span>
-                </a>
+                <div>
+                    <p class="fs-5">Search Results for "{{ $query }}"</p>
+                </div>
 
                 <form action="{{ route('estimate.search') }}" method="GET" class="mt-3">
                     <div class="input-group">
@@ -17,10 +18,10 @@
                     </div>
                 </form>
             </div>
+        </div>
 
-            <h1 class="m-3">Search Results for "{{ $query }}"</h1>
         
-        <div class="row p-2 mt-3 gap-2">
+        <div class="mt-3 pb-1 px-3">
             @foreach($estimates as $group_id => $estimate)
                 @php
                     $firstEstimate = $estimate->first();

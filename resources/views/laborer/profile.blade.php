@@ -27,7 +27,7 @@
         <div class="col-md-4">
             <div class="border border-subtle rounded mb-4 text-center p-2">
                 <div style="width:330px;">
-                    <img src="{{ asset('storage/' . $laborers->image) }}" alt="Receipt Photo" style="width:100%;">
+                    <img src="{{ $laborers->image ? asset('storage/' . $laborers->image) : asset('image/profile.jpeg') }}" alt="Receipt Photo" style="width:100%;">
                 </div>
                 <div>
                     <p class="mb-0 fs-4">{{ $laborers->username }}</p>

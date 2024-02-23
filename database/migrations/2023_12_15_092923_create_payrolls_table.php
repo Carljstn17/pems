@@ -19,9 +19,9 @@ return new class extends Migration
             $table->foreign('project_id')->references('id')->on('projects');
             $table->string('name');
             $table->decimal('rate_per_day', 13, 4);
-            $table->integer('no_of_days');
+            $table->decimal('no_of_days', 13, 4);
             $table->decimal('ot_rate', 13, 4);
-            $table->integer('ot_hour')->nullable();
+            $table->decimal('ot_hour', 13, 4)->nullable();
             $table->decimal('ot_amount', 13, 4)->nullable();
             $table->decimal('salary', 13, 4);
             $table->integer('advance_amount')->nullable();

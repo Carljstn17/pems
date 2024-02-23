@@ -29,6 +29,11 @@ class User extends Authenticatable
         'birthdate', 
         'address',
         'image',
+        'last_updated_at'
+    ];
+
+    protected $dates = [
+        'last_updated_at',
     ];
 
     /**

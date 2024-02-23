@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Rules\RecaptchaRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -16,38 +17,27 @@ class AuthController extends Controller
 
     public function ownerLogin(Request $request)
     {
-        $rules = [
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ];
+        $validator = Validator::make($request->all(), [
+            'g-recaptcha-response' => ['required', new RecaptchaRule()],
+        ]);
     
-        // Custom error messages
-        $messages = [
-            'username.required' => 'Incorrect Username',
-            'password.required' => 'Incorrect Password',
-        ];
-    
-        // Validate the request data
-        $validator = Validator::make($request->all(), $rules, $messages);
-    
-        // Check if the validation fails
         if ($validator->fails()) {
-            return redirect('/owner-login')
-                ->withErrors($validator)
-                ->withInput();
+            return redirect('/owner-login')->withErrors($validator)->withInput();
         }
+    
         $credentials = $request->only('username', 'password');
-
+    
         if (Auth::attempt($credentials)) {
             $role = Auth::user()->role;
-
+    
             if ($role == 'owner') {
                 return redirect()->intended('/owner/dashboard');
             }
         }
-
-        return redirect('/owner-login')->withErrors(['username' => 'Invalid credentials']);
+    
+        return redirect('/owner-login')->withErrors(['password' => 'Incorrect Username or Password'])->withInput();
     }
+    
     public function showOwnerPanel()
     {
         return view('owner.panel');
@@ -143,25 +133,12 @@ class AuthController extends Controller
 
     public function staffLogin(Request $request)
     {
-        $rules = [
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ];
+        $validator = Validator::make($request->all(), [
+            'g-recaptcha-response' => ['required', new RecaptchaRule()],
+        ]);
     
-        // Custom error messages
-        $messages = [
-            'username.required' => 'Incorrect Username',
-            'password.required' => 'Incorrect Password',
-        ];
-    
-        // Validate the request data
-        $validator = Validator::make($request->all(), $rules, $messages);
-    
-        // Check if the validation fails
         if ($validator->fails()) {
-            return redirect('/staff-login')
-                ->withErrors($validator)
-                ->withInput();
+            return redirect('/staff-login')->withErrors($validator)->withInput();
         }
 
         $credentials = $request->only('username', 'password');
@@ -174,7 +151,7 @@ class AuthController extends Controller
             }
         }
 
-        return redirect('/staff-login')->withErrors(['username' => 'Invalid credentials']);
+        return redirect('/staff-login')->withErrors(['password' => 'Incorrect Username or Password'])->withInput();
     }
     public function showStaffPanel()
     {
@@ -190,25 +167,12 @@ class AuthController extends Controller
 
     public function laborerLogin(Request $request)
     {
-        $rules = [
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ];
+        $validator = Validator::make($request->all(), [
+            'g-recaptcha-response' => ['required', new RecaptchaRule()],
+        ]);
     
-        // Custom error messages
-        $messages = [
-            'username.required' => 'Incorrect Username',
-            'password.required' => 'Incorrect Password',
-        ];
-    
-        // Validate the request data
-        $validator = Validator::make($request->all(), $rules, $messages);
-    
-        // Check if the validation fails
         if ($validator->fails()) {
-            return redirect('/laborer-login')
-                ->withErrors($validator)
-                ->withInput();
+            return redirect('/laborer-login')->withErrors($validator)->withInput();
         }
 
         $credentials = $request->only('username', 'password');
@@ -221,7 +185,7 @@ class AuthController extends Controller
             }
         }
 
-        return redirect('/laborer-login')->withErrors(['username' => 'Invalid credentials']);
+        return redirect('/laborer-login')->withErrors(['password' => 'Incorrect Username or Password'])->withInput();
     }
     public function showLaborerPanel()
     {

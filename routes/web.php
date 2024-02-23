@@ -144,6 +144,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/tool', [ToolController::class, 'allTool'])->name('staff.tool');
     Route::post('/store-tools', [ToolController::class, 'store'])->name('store.tools');
     Route::put('/tools/{tool}', [ToolController::class, 'update'])->name('update.tool');
+    Route::get('/staff/tools/search', [SearchController::class, 'searchTool'])->name('tool.search');
 
     Route::get('/staff/machinery', [MachineryController::class, 'allMachinery'])->name('staff.machinery');
     Route::post('/store-machinery', [MachineryController::class, 'store'])->name('store.machinery');

@@ -8,9 +8,7 @@
         <div class="py-2 mt-3">
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
                 <div>
-                    <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#addToolsModal">
-                        <span><i class="bi bi-plus"></i>Add Tools</span>
-                    </button>
+                    <p class="fs-5">Search Results for "{{ $query }}"</p>
                 </div>
 
                 <form action="{{ route('tool.search') }}" method="GET">
@@ -22,7 +20,6 @@
             </div>
         </div>
 
-        @include('tool.create_tools_modal')
         <div class="table table-responsive mt-3">
             <table class="table table-bordered">
                 <thead>
@@ -37,8 +34,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($toolsByType as $toolType => $toolsInType) 
-                        @foreach($toolsInType as $tool)
+                    @foreach($tools as $tool) 
                             <tr>
                                 <td>{{ $tool->tool_type }}</td>
                                 <td>{{ $tool->property }}</td>
@@ -84,16 +80,9 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
                     @endforeach
                 </tbody>
             </table>
-        </div>
-
-        
-        
-        <div class="mt-1 float-end">
-            {{ $tools->links('vendor.pagination.bootstrap-4') }}
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

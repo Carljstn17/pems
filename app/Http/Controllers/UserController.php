@@ -61,20 +61,11 @@ class UserController extends Controller
 
     public function updateInfo(Request $request, $id)
     {
-        $laborer = User::findOrFail($id);
-
-        $request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'contact' => 'required|numeric',
-            'birthdate' => 'required|date',
-            'address' => 'required|string',
-        ]);
-
-        $lastUpdate = $laborer->updated_at;
-
-        if ($lastUpdate->diffInDays(Carbon::now()) >= 64) {
+        $user = User::findOrFail($id);
+    
+        $lastUpdate = $user->last_updated_at;
+    
+        if ($lastUpdate === null || $user->updated_at->diffInDays($lastUpdate) >= 64) {
             // Allow the update
     
             $updateData = [];
@@ -103,27 +94,32 @@ class UserController extends Controller
             if ($request->filled('address')) {
                 $updateData['address'] = $request->address;
             }
-
+    
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
-        
+    
                 // Store the image in the public disk
                 $image->storeAs('images', $imageName, 'public');
-        
+    
                 // Update the image column in the database
-                $laborer->update(['image' => 'images/' . $imageName]);
+                $updateData['image'] = 'images/' . $imageName;
             }
     
             // Your update logic here
-            $laborer->update($updateData);
+            $user->update($updateData);
+    
+            // Update the last_updated_at timestamp
+            $user->update(['last_updated_at' => $user->fresh()->updated_at]);
     
             return redirect()->back()->with('success', 'Update successful');
         } else {
             // Do not allow the update
             return redirect()->back()->with('error', 'You can only update once every 64 days');
         }
-
-        return redirect()->back()->with('success', 'Laborer information updated successfully.');
+    
+        return redirect()->back()->with('success', 'User information updated successfully.');
     }
+    
+    
 }

@@ -19,7 +19,7 @@
                 </form>
             </div>
 
-            <h1 class="m-3">Search Results for "{{ $query }}"</h1>
+            <h1 class="m-3 fs-4">Search Results for "{{ $query }}"</h1>
         
         <div class="row p-2 mt-3 gap-2">
             @foreach($estimates as $group_id => $estimate)
