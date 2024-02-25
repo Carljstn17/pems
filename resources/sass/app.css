@@ -1,0 +1,32 @@
+main{
+    margin-top: 10rem;
+}
+
+.letter{
+    letter-spacing: -1px;
+}
+
+@media only screen and (max-width: 600px) {
+    .img-fluid{
+        width: 150px;
+        margin: auto;
+    }
+    main{
+        width: 100%;
+        padding: 2rem;
+        margin: 0;
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #a1a1a1;
+    border-radius: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }

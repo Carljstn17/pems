@@ -27,7 +27,7 @@
                             <td class="col-md-1"><input type="text" class="form-control no-border" name="no[]" value="1" readonly></td>
                             <td class="col-md-4"><input type="text" class="form-control no-border" placeholder="item description" name="description[]" required></td>
                             <td><input type="text" class="form-control no-border" placeholder="measure" name="uom[]"></td>
-                            <td><input type="number" class="form-control no-border" name="quantity[]" placeholder="0" oninput="calculateAmount(this)" required></td>
+                            <td><input type="number" class="form-control no-border" name="quantity[]" placeholder="0" oninput="calculateAmount(this)" step="any" required></td>
                             <td><input type="number" class="form-control no-border" name="unit_cost[]" placeholder="per unit" oninput="calculateAmount(this)" required></td>
                             <td><input type="text" class="form-control no-border" name="amount[]" placeholder="0" readonly></td>
                             <td class="text-center">

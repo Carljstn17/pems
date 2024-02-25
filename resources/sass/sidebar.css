@@ -1,0 +1,32 @@
+:root{
+    --secondary-color:#e6f0ff;
+}
+
+ul.nav{
+    width: 100%;
+}
+li.nav-item{
+    border-radius: 6px;
+    width: 100%;
+    transition: .1s;
+}
+
+li.nav-item:hover{
+    background-color: var(--secondary-color);
+}
+
+.active{
+    background-color: brown;
+}
+
+li.nav-item.active{
+    background-color:#e6f0ff;
+}
+
+.border{
+    border-color: var(--secondary-color);
+}
+
+li.sub{
+    width: 100%;
+}

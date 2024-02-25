@@ -44,7 +44,6 @@
                     @enderror
                 </div>
 
-
                 <div class="g-recaptcha d-grid justify-content-center mb-4" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
 
                 <div class="d-grid mb-5">

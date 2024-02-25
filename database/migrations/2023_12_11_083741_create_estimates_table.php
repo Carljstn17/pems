@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('description');
             $table->string('uom')->nullable();
-            $table->integer('quantity');
-            $table->decimal('unit_cost', 8, 2);
+            $table->decimal('quantity', 13, 4);
+            $table->decimal('unit_cost', 13, 4);
             $table->string('group_id')->index();
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->longText('remarks');

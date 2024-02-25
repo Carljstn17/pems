@@ -27,10 +27,10 @@ class CreateAdminUser extends Command
     public function handle()
     {
         $user = new User;
-        $user->username = 'Owner';
-        $user->name = 'Roel Magsaysay';
-        $user->email = 'owner@example.com';
-        $user->contact = '09112223333';
+        $user->username = 'Test';
+        $user->name = 'Test';
+        $user->email = 'case.alvarado.au@phinmaed.com';
+        $user->contact = '09183077562';
         $user->password = bcrypt('password123');
         $user->role = 'owner';
         $user->save();

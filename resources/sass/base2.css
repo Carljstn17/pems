@@ -1,0 +1,187 @@
+:root{
+    --secondary-color:#e6f0ff;
+    --last-color:#a4b1c4;
+    --font-family:'Montserrat', sans-serif;
+}
+
+html,body,p,span,a,button,table,div{
+    font-family: var(--font-family);
+    font-size: 16px;
+}
+
+.red-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: none;
+}
+
+span,a,i{
+    font-weight: 400;
+}
+span.bold{
+    font-weight: 500;
+}
+.head{
+    font-weight: 500;
+    letter-spacing: 2px;
+}
+.minus{
+    margin-left: -12px;
+}
+.row-container{
+    width: 100%;
+	margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.col-container{
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+}
+
+html {
+    overflow-x: hidden;
+}
+.sidebar{
+    position: relative;
+}
+.border-bottom{
+    margin-left: 8px;
+    width: 98%;
+    border: center;
+}
+
+.margin{
+    margin-top: 8rem;
+}
+.bg{
+    background-color: whitesmoke;
+}
+.hover,
+.hover2{
+    transition: .5s;
+}s
+.hover:hover{
+    opacity: .8;
+    transform: scale(1.01);
+}
+
+.hover2:hover{
+    opacity: .9;
+}
+
+.hover3{
+    background-color: #f6f9ff;
+    transition: ease-in-out .5s;
+}
+.hover3:hover{
+    background-color: var(--secondary-color);
+    opacity: .8;
+}
+
+.latest{
+    background-color: white;
+}
+
+/* @media only screen and (max-width: 600px) {
+    .table-responsive{
+        width: 100%;
+    }
+    .row-container{
+        grid-template-columns: repeat(1);
+    }
+    .col-container{
+        width: 100%;
+    }
+  }
+
+@media only screen and (max-width: 376px) {
+    .table-responsive{
+        width: 290px;
+    }
+  } */
+
+.narrow-cell
+{
+    width: 20%;
+}
+
+input.no-border,
+select.no-border {
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+.custom-date-input {
+    position: relative;
+}
+
+.custom-date-input input[type="date"]::before {
+    content: attr(placeholder);
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #000000;
+}
+
+.custom-date-input input[type="date"] {
+    padding-left: 80px; /* Adjust this value based on your design */
+}
+
+.col-width{
+    width: 15px;
+}
+
+.col-md-2-5 {
+    flex: 0 0 20%; /* 20% width of the container */
+    max-width: 20%; /* Ensure it doesn't grow beyond 20% */
+}
+
+.col-md-9-5{
+    flex: 0 0 80%; /* 80% width of the container */
+    max-width: 80%; 
+}
+
+/* .navbar-toggler{
+    z-index: 1000;
+} */
+
+.input-group .btn {
+    position: relative;
+    z-index: 0 !important;
+}
+
+.no-border{
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    font-size: 30px;
+}
+
+.bottom{
+    margin-bottom: 30rem;
+}
+
+.bi-box{
+    font-size: 80px;
+    color: var(--last-color);
+}
+
+.no-text{
+    color: var(--last-color);
+}
+
+textarea {
+    resize: none;
+  }
