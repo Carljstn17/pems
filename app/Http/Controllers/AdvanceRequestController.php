@@ -50,8 +50,6 @@ class AdvanceRequestController extends Controller
             // Add other attributes as needed
         ]);
 
-        Notification::send(Auth::user(), new NewAdvanceNotification($advanceRequest));
-
         $staffUsers = User::where('role', 'staff')->get();
 
         foreach ($staffUsers as $staffUser) {

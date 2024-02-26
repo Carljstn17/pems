@@ -24,24 +24,30 @@
         <table class="table table-bordered">
             <thead>
                 <tr class="text-center">
-                    <td><span class="bold">Machinery Type</span></td>  <!-- Update table header -->
+                    <td>
+                        <span class="bold d-none d-sm-inline">Machinery&nbspType</span>
+                        <span class="bold d-inline d-sm-none">M-&nbspType</span>
+                    </td>  
                     <td><span class="bold">Property</span></td>
-                    <td><span class="bold">Machinery Name</span></td>  <!-- Update table header -->
-                    <td><span class="bold">Unit Cost</span></td>
+                    <td>
+                        <span class="bold d-none d-sm-inline">Machinery&nbspName</span>
+                        <span class="bold d-inline d-sm-none">M-&nbspName</span>
+                        </td> 
+                    <td><span class="bold ">Unit&nbspCost</span></td>
                     <td><span class="bold">Status</span></td>
                     <td><span class="bold">Whereabouts</span></td>
                 </tr>
             </thead>
             <tbody>
-                @foreach($machineriesByType as $machineryType => $machineriesInType)  <!-- Update variable names -->
-                    @foreach($machineriesInType as $machinery)  <!-- Update variable names -->
+                @foreach($machineriesByType as $machineryType => $machineriesInType) 
+                    @foreach($machineriesInType as $machinery) 
                         <tr>
-                            <td>{{ $machinery->machinery_type }}</td>  <!-- Update field name -->
-                            <td>{{ $machinery->property }}</td>
-                            <td>{{ $machinery->machinery_name }}</td>  <!-- Update field name -->
-                            <td>{{ $machinery->unit_cost }}</td>
-                            <td class="text-success">{{ $machinery->machineryReport->status }}</td>  <!-- Update field name -->
-                            <td>{{ $machinery->machineryReport->whereabout }}</td>  <!-- Update field name -->
+                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machinery_type }}">{{ Str::limit($machinery->machinery_type, 8) }}</td>
+                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->property }}">{{ Str::limit($machinery->property, 8) }}</td>
+                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machinery_name }}">{{ Str::limit($machinery->machinery_name, 8) }}</td>
+                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->unit_cost }}">{{ Str::limit($machinery->unit_cost, 8) }}</td>
+                            <td class="text-success text-nowrap" data-toggle="tooltip" title="{{ $machinery->machineryReport->status }}">{{ Str::limit($machinery->machineryReport->status, 8) }}</td>
+                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machineryReport->whereabout }}">{{ Str::limit($machinery->machineryReport->whereabout, 8) }}</td>
                         </tr>
                     @endforeach
                 @endforeach
@@ -54,4 +60,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 @endsection

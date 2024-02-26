@@ -37,11 +37,14 @@ class NewAdvanceNotification extends Notification
     
     public function toMail(object $notifiable): MailMessage
     {
+        $user = User::findOrFail($this->advanceRequest->entry_by);
+        
         return (new MailMessage)
         ->line('You have a new advance request:')
-        ->line('- User ID: ' . $this->advanceRequest->entry_by)
+        ->line('- Submitted by: ' . $user->name)
         ->line('- Amount: $' . $this->advanceRequest->amount)
-        ->line('- Reason of Request: ' . $this->advanceRequest->id);
+        ->line('- Reason of Request: ' . $this->advanceRequest->id)
+        ->action('View Advance Request', route('request.notif', $this->advanceRequest->id));
     }
 
     /**

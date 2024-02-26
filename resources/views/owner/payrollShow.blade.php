@@ -2,19 +2,20 @@
 
 @section('content')
     <div class="py-2 mt-2 mb-4">
-        <div class="border-bottom mb-3 d-sm-none">
-            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary text-decoration-none  mb-3">
-                <i class="bi-backspace"></i> Back
-            </a>
+        <div class="d-flex align-items-center">
+            <div class="d-sm-none me-2">
+                <a href="{{ url()->previous() }}" class="text-secondary text-decoration-none">
+                    <i class="bi-backspace"></i>
+                </a>
+            </div>
+            <i class="fs-5 bi-wallet me-2"></i> <span class=" d-sm-inline">Payroll | Project -
+                @if ($payrolls->isNotEmpty())
+                    {{ $payrolls->first()->project_id }}
+                @else
+                @endif
+            </span> |
+            <span style="color: {{ $batch->remarks === 'valid' ? 'green' : 'red' }}">{{ $batch->remarks }}</span>
         </div>
-
-        <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | Project -
-            @if ($payrolls->isNotEmpty())
-                {{ $payrolls->first()->project_id }}
-            @else
-            @endif
-        </span> |
-        <span style="color: {{ $batch->remarks === 'valid' ? 'green' : 'red' }}">{{ $batch->remarks }}</span>
     </div>
 
     <div class="d-flex justify-content-between mb-2 gap-2">
@@ -41,8 +42,8 @@
                     <th class="col-md-2"><span class="bold">NAME</span></th>
                     <th><span class="bold">RATE/DAY</span></th>
                     <th><span class="bold">DAYS</span></th>
-                    <th><span class="bold">OT-HOUR</span></th>
-                    <th><span class="bold">OT-TOTAL</span></th>
+                    <th><span class="bold">OT&nbspHOUR</span></th>
+                    <th><span class="bold">OT&nbspTOTAL</span></th>
                     <th><span class="bold">SALARY</span></th>
                     <th><span class="bold">ADVANCE</span></th>
                     <th><span class="bold">NET $</span></th>
@@ -53,7 +54,7 @@
                 @foreach ($payrolls as $index => $payroll)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $payroll->name }}</td>
+                        <td class="text-nowrap" data-toggle="tooltip" title="{{ $payroll->name }}">{{ Str::limit($payroll->name, 20) }}</td>
                         <td>{{ number_format($payroll->rate_per_day, 2) }}</td>
                         <td>{{ $payroll->no_of_days }}</td>
                         <td>{{ number_format($payroll->ot_hour, 2) }}</td>
@@ -113,5 +114,9 @@
         function updateRemarks() {
             document.getElementById('updateRemarksForm').submit();
         }
+        
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>
 @endsection

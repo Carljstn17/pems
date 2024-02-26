@@ -4,7 +4,7 @@
     <div class="py-2 mt-2">
         <i class="fs-5 bi-chat-left-dots"></i></i> <span class="d-sm-inline">Concerns</span>
     </div>
-    <div class="mt-3" style="width: 95%";>
+    <div class="mt-3">
         <div class="card">
             <div class="card-header text-center">
                 <p class="fs-5">Remaining concern/s for this month

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{{ env('APP_NAME') }}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('image/logo.jpg') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -16,7 +17,7 @@
 <body class="bg-light">
 
     <main>
-<div class="container-fluid">
+<div class="">
     <div class="card mx-auto p-4" style="max-width: 400px;">
         <div class="card-body">
             <h2 class="card-title text-center p-4">Laborer Login</h2>
@@ -32,8 +33,6 @@
                     @enderror
                 </div>
 
-
-
                 <div class="form-group mb-4">
                     <label for="password"></label>
                     <div class="form-group mb-2">
@@ -42,6 +41,10 @@
                     @error('password')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
+                    <div class="d-flex align-items-center ms-2">
+                        <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        <span class="ml-2 ms-1 text-secondary">remember me</span>
+                    </div>
                 </div>
 
                 <div class="g-recaptcha d-grid justify-content-center mb-4" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>

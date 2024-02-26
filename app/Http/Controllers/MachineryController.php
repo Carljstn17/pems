@@ -102,7 +102,7 @@ class MachineryController extends Controller
 
     public function machineryLogs()
     {
-        $machineryLogs = MachineryReport::with('user', 'machineryLog')->orderBy('updated_at')->paginate(15);
+        $machineryLogs = MachineryReport::with('user', 'machineryLog')->latest('updated_at')->paginate(15);
 
         return view('owner.machineryLogs', compact('machineryLogs'));
     }

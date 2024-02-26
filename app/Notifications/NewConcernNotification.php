@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use App\Models\Concern;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -35,9 +36,15 @@ class NewConcernNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $user = User::findOrFail($this->concern->entry_by);
+        
         return (new MailMessage)
         ->line('You have a new concern of laborer:')
-        ->line('- Concern: ' . $this->concern);
+        ->line('- Submitted_by: ' . $user->name)
+        ->line('- Concern: ' . $this->concern->concern)
+        ->line('- Concern ID: ' . $this->concern->id)
+        ->action('View Concern', route('concern.notif', $this->concern->id))
+        ;
     }
 
     /**

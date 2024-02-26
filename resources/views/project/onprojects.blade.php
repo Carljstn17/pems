@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="mt-3 px-3">
-                    <a href="{{ url('/staff/old-projects') }}" class="text-decoration-none">View Old Project ></a>
+                    <a href="{{ url('/staff/old-projects') }}" class="text-decoration-none fst-italic">/View Old Project ></a>
                 </div>
 
             </div>

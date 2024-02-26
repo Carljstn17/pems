@@ -7,16 +7,23 @@ use App\Rules\RecaptchaRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 class AuthController extends Controller
 {
     public function showOwnerLoginForm()
     {
+        $user = Auth::user();
+        if (!empty($user->remember_token)){
+            return redirect('/owner/dashboard');
+        }
         return view('auth.owner-login');
     }
 
     public function ownerLogin(Request $request)
     {
+        $remember = ($request->has('remember')) ? true : false;
+        
         $validator = Validator::make($request->all(), [
             'g-recaptcha-response' => ['required', new RecaptchaRule()],
         ]);
@@ -27,7 +34,7 @@ class AuthController extends Controller
     
         $credentials = $request->only('username', 'password');
     
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
             $role = Auth::user()->role;
     
             if ($role == 'owner') {
@@ -90,7 +97,7 @@ class AuthController extends Controller
             'role' => $request->input('role'),
         ]);
 
-        return view('staff.laborer')->with('success', 'Employee registered successfully.');
+        return redirect('/staff/laborer')->with('success', 'Employee registered successfully.');
     }
 
     public function showStaffLaborer()
@@ -114,8 +121,6 @@ class AuthController extends Controller
 
         $request->session()->invalidate();
 
-        $request->session()->regenerateToken();
-
         return redirect()->intended('/');
     }
 
@@ -128,11 +133,18 @@ class AuthController extends Controller
     //staff auth
     public function showStaffLoginForm()
     {
+        $user = Auth::user();
+        if (!empty($user->remember_token)){
+            return redirect('/staff/dashboard');
+        }
         return view('auth.staff-login');
     }
 
     public function staffLogin(Request $request)
     {
+        
+        $remember = ($request->has('remember')) ? true : false;
+        
         $validator = Validator::make($request->all(), [
             'g-recaptcha-response' => ['required', new RecaptchaRule()],
         ]);
@@ -143,7 +155,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('username', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
             $role = Auth::user()->role;
 
             if ($role == 'staff') {
@@ -162,11 +174,18 @@ class AuthController extends Controller
     //laborer auth    
     public function showLaborerLoginForm()
     {
+        $user = Auth::user();
+        if (!empty($user->remember_token)){
+            return redirect('/laborer/dashboard');
+        }
+        
         return view('auth.laborer-login');
     }
 
     public function laborerLogin(Request $request)
     {
+        $remember = ($request->has('remember')) ? true : false;
+        
         $validator = Validator::make($request->all(), [
             'g-recaptcha-response' => ['required', new RecaptchaRule()],
         ]);
@@ -177,11 +196,11 @@ class AuthController extends Controller
 
         $credentials = $request->only('username', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
             $role = Auth::user()->role;
 
             if ($role == 'laborer') {
-                return redirect()->intended('/laborer/profile');
+                return redirect()->intended('/laborer/dashboard');
             }
         }
 

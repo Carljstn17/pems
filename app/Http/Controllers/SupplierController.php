@@ -14,7 +14,7 @@ class SupplierController extends Controller
     }
 
     public function ownerSupplierList() {
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::latest()->paginate(10);
 
         // Pass the advances data to the view
         return view('owner.supplier', compact('suppliers'));

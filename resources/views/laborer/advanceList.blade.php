@@ -2,7 +2,14 @@
 
 @section('content')
     <div class="py-2 mt-2 mb-3">
-        <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | Advance List</span>
+        <div class="d-flex align-items-center">
+            <div class="d-sm-none me-2">
+                <a href="{{ url()->previous() }}" class="text-secondary text-decoration-none">
+                    <i class="bi-backspace"></i>
+                </a>
+            </div>
+            <i class="fs-5 bi-wallet me-2"></i> <span class=" d-sm-inline">Payroll | Advance List</span>
+        </div>
     </div>
 
     <div class="py-2 mt-3">
@@ -16,31 +23,32 @@
         </div>
     </div>
 
-    <table class="mt-3 table table-bordered">
-        <thead>
-            <tr>
-                <th><span class="bold">Date</span></th>
-                <th><span class="bold">Name</span></th>
-                <th><span class="bold">Amount</span></th>
-                <td><span class="bold">Remark</span></td>
-                <td><span class="bold">Payroll-ID</span></td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($advances as $advance)
+        <table class="mt-3 table table-bordered">
+            <thead>
                 <tr>
-                    <td>{{ $advance->created_at->format('Y-m-d') }}</td>
-                    <td>{{ $advance->name }}</td>
-                    <td>{{ $advance->amount }}</td>
-                    <td style="color: {{ $advance->remarks === 'add' ? 'green' : 'red' }}">{{ $advance->remarks }}</td>
-                    <td>{{ $advance->payroll_id }}</td>
+                    <th><span class="bold">Date</span></th>
+                    <th><span class="bold">Amount</span></th>
+                    <td><span class="bold">Remark</span></td>
+                    <td>
+                        <span class="bold d-none d-sm-inline">Payroll&nbspBatch</span>
+                        <span class="bold d-sm-inline d-sm-none">P-&nbspBatch</span>
+                    </td>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($advances as $advance)
+                    <tr>
+                        <td class="text-nowrap">{{ $advance->created_at->format('y-m-d') }}</td>
+                        <td>{{ $advance->amount }}</td>
+                        <td style="color: {{ $advance->remarks === 'add' ? 'green' : 'red' }}">{{ $advance->remarks }}</td>
+                        <td>{{ $advance->payroll_id }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-    <div class="mt-3 pb-3">
+    <div class="mt-3 pb-3 float-end">
+        {{ $advances->links('vendor.pagination.bootstrap-4') }}
     </div>
-    
 
 @endsection

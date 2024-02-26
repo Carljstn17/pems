@@ -27,4 +27,9 @@ class Advance extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    public function payroll()
+    {
+        return $this->belongsTo(Payroll::class, 'payroll_id');
+    }
 }

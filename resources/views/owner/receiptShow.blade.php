@@ -2,14 +2,16 @@
 
 @section('content')
     <div class="py-2 mt-2">
-        <div class="border-bottom mb-3 d-sm-none">
-            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary text-decoration-none  mb-3">
-                <i class="bi-backspace"></i> Back
-            </a>
+        <div class="d-flex align-items-center">
+            <div class="d-sm-none me-2">
+                <a href="{{ url()->previous() }}" class="text-secondary text-decoration-none">
+                    <i class="bi-backspace"></i>
+                </a>
+            </div>
+            <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline">Receipt | ID: {{ $receipts->id }}</span>
+            <span style="color: {{ $receipts->remarks === 'valid' ? 'green' : 'red' }}"> | {{ $receipts->remarks }}</span>
+            
         </div>
-
-        <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline">Receipt | ID: {{ $receipts->id }}</span>
-        <span style="color: {{ $receipts->remarks === 'valid' ? 'green' : 'red' }}"> | {{ $receipts->remarks }}</span>
     </div>
 
     <div class="mt-4">

@@ -70,7 +70,7 @@
                                 <th class="col-md-1">Company</th>
                                 <th class="col-md-3">Email</th>
                                 <th class="col-md-1">Contact</th>
-                                <th class="col-md-2">Full Name</th>
+                                <th class="col-md-2">FullName</th>
                                 <th class="col-md-1">Username</th>
                                 <th class="col-md-1">Password</th>
                                 <th class="col-md-1"></th>
@@ -80,13 +80,22 @@
                             @foreach ($users as $user)
                             @if ($user->role === 'owner' || $user->role === 'staff')
                                 <tr>
-                                    <td>{{ $user->role }}</td>
-                                    <td>{{ Str::limit($user->email, 25) }}</td>
-                                    <td>{{ Str::limit($user->contact, 11) }}</td>
-                                    <td>{{ Str::limit($user->name, 20) }}</td>
-                                    <td>{{ $user->username }}</td>
-                                    <td>{{ Str::limit($user->password, 10) }}</td>
-                                    <td class="d-flex justify-content-center gap-2">               
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->role }}">{{ $user->role }}</td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->email }}">
+                                        <span class="d-none d-sm-inline">{{ Str::limit($user->email, 25) }}</span>
+                                        <span class="d-sm-inline d-sm-none">{{ Str::limit($user->email, 8) }}</span>
+                                        </td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->contact }}">
+                                        <span class="d-none d-sm-inline">{{ Str::limit($user->contact, 11) }}</span>
+                                        <span class="d-sm-inline d-sm-none">{{ Str::limit($user->contact, 8) }}</span>
+                                    </td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->name }}">
+                                        <span class="d-none d-sm-inline">{{ Str::limit($user->name, 20) }}</span>
+                                        <span class="d-sm-inline d-sm-none">{{ Str::limit($user->name, 8) }}</span>
+                                    </td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->username }}">{{ $user->username }}</td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->password }}">{{ Str::limit($user->password, 8) }}</td>
+                                    <td class="d-flex justify-content-center gap-2">
                                         <!-- Update Button -->
                                         <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#updateModal{{ $user->id }}">
                                             <i class="bi bi-pencil"></i>
@@ -117,7 +126,7 @@
                                 <th class="col-md-1">Laborer</th>
                                 <th class="col-md-3">Email</th>
                                 <th class="col-md-1">Contact</th>
-                                <th class="col-md-2">Full Name</th>
+                                <th class="col-md-2">FullName</th>
                                 <th class="col-md-1">Username</th>
                                 <th class="col-md-1">Password</th>
                                 <th class="col-md-1"></th>
@@ -127,12 +136,21 @@
                             @foreach ($users as $user)
                                 @if ($user->role === 'laborer')
                                     <tr>
-                                        <td>{{ $user->role }}</td>
-                                        <td>{{ Str::limit($user->email, 25) }}</td>
-                                        <td>{{ Str::limit($user->contact, 11) }}</td>
-                                        <td>{{ Str::limit($user->name, 20) }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ Str::limit($user->password, 10) }}</td>
+                                        <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->role }}">{{ $user->role }}</td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->email }}">
+                                        <span class="d-none d-sm-inline">{{ Str::limit($user->email, 25) }}</span>
+                                        <span class="d-sm-inline d-sm-none">{{ Str::limit($user->email, 8) }}</span>
+                                        </td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->contact }}">
+                                        <span class="d-none d-sm-inline">{{ Str::limit($user->contact, 11) }}</span>
+                                        <span class="d-sm-inline d-sm-none">{{ Str::limit($user->contact, 8) }}</span>
+                                    </td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->name }}">
+                                        <span class="d-none d-sm-inline">{{ Str::limit($user->name, 20) }}</span>
+                                        <span class="d-sm-inline d-sm-none">{{ Str::limit($user->name, 8) }}</span>
+                                    </td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->username }}">{{ $user->username }}</td>
+                                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $user->password }}">{{ Str::limit($user->password, 8) }}</td>
                                         <td class="d-flex justify-content-center gap-2">               
                                             <!-- Update Button -->
                                             <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#updateModal{{ $user->id }}">
@@ -184,5 +202,9 @@
                     console.log('Deletion cancelled');
                 }
             }
+            
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();
+            });
         </script>
 @endsection

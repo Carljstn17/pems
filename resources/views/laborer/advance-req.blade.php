@@ -5,15 +5,16 @@
     <div class="py-2 mt-2">
         <i class="fs-5 bi-envelope"></i></i> <span class="d-sm-inline">Advance Requests</span>
     </div>
-    <div class="mt-3" style="width: 95%";>
-        <div class="card">
+    
+    <div class="mt-3 mx-auto">
+        <div class="card mx-auto">
             <div class="card-header text-center">
                 <p class="fs-5">Remaining request/s for this month
                     <span class="fs-4 bold">-{{ 2 - $monthlyEntryCount }}</span>
                 </p>
             </div>
 
-            <div class="card-body p-5">
+            <div class="card-body p-sm-2 p-lg-4">
                 @if(session('error'))
                     <div class="alert alert-danger">
                         {{ session('error') }}
@@ -32,7 +33,7 @@
                     </script>
                 @endif
 
-                <form action="{{ route('form.submitReq') }}" method="post">
+                <form action="{{ route('form.submitReq') }}" method="post" class="">
                     @csrf
                     <div class="form-group mb-3">
                         <input type="number" name="amount" class="form-control" placeholder="Enter Amount">

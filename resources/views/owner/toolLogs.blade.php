@@ -21,22 +21,22 @@
                 <thead>
                     <tr class="text-center">
                         <td><span class="bold">Property</span></td>
-                        <td><span class="bold">Tool Name</span></td>
+                        <td><span class="bold">Tool&nbspName</span></td>
                         <td><span class="bold">Status</span></td>
                         <td><span class="bold">Whereabout</span></td>
-                        <td><span class="bold">Updated-At</span></td>
-                        <td><span class="bold">Updated-By</span></td>
+                        <td><span class="bold">Updated&nbspAt</span></td>
+                        <td><span class="bold">Updated&nbspBy</span></td>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($toolLogs as $log) 
                             <tr>
-                                <td>{{ $log->toolLog->tool_type }}</td>
-                                <td>{{ $log->toolLog->tool_name }}</td>
-                                <td>{{ $log->status }}</td>
-                                <td>{{ $log->whereabout }}</td>
-                                <td>{{ $log->updated_at }}</td>
-                                <td>{{ $log->user->username }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->toolLog->tool_type }}">{{ Str::limit($log->toolLog->tool_type, 8) }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->toolLog->tool_name }}">{{ Str::limit($log->toolLog->tool_name, 8) }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->status }}">{{ Str::limit($log->status, 8) }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->whereabout }}">{{ Str::limit($log->whereabout, 8) }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->updated_at }}">{{ Str::limit($log->updated_at->format('Y-m-d H:i:s'), 8) }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->user->username }}">{{ Str::limit($log->user->username, 8) }}</td>
                             </tr>
                     @endforeach
                 </tbody>
@@ -48,5 +48,10 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
 @endsection
 

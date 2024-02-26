@@ -29,11 +29,19 @@ class AdvanceController extends Controller
     }
 
     public function advanceList() {
-        $advances = Advance::all();
+        $advances = Advance::latest()->paginate(10);
         $laborers = User::where('role', 'laborer')->get();
 
         // Pass the advances data to the view
         return view('payroll.advanceList', compact('advances', 'laborers'));
+    }
+    
+    public function ownerAdvanceList() {
+        $advances = Advance::latest()->paginate(10);
+        $laborers = User::where('role', 'laborer')->get();
+
+        // Pass the advances data to the view
+        return view('owner.advanceList', compact('advances', 'laborers'));
     }
 
     public function getAdvance($id)
@@ -46,7 +54,7 @@ class AdvanceController extends Controller
 
     public function laborerAdvanceList() {
         $userId = Auth::id();
-        $advances = Advance::where('user_id', $userId)->get();
+        $advances = Advance::where('user_id', $userId)->latest()->paginate(10);
 
         // Pass the advances data to the view
         return view('laborer.advanceList', compact('advances'));

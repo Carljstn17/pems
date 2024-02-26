@@ -106,7 +106,7 @@ class ToolController extends Controller
 
     public function toolLogs()
     {
-        $toolLogs = ToolReport::with('user', 'toolLog')->orderBy('updated_at')->paginate(15);
+        $toolLogs = ToolReport::with('user', 'toolLog')->latest('updated_at')->paginate(15);
 
         return view('owner.toolLogs', compact('toolLogs'));
     }

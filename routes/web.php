@@ -20,6 +20,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MachineryController;
 use App\Http\Controllers\AdvanceRequestController;
 use App\Models\AdvanceRequest;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,17 @@ use App\Models\AdvanceRequest;
 */
 
 Route::get('/', function () {
+             $user = Auth::user();
+        if (!empty($user->remember_token)){
+            if ($user->role === 'owner') {
+                return redirect('/owner/dashboard');
+            } elseif ($user->role === 'staff') {
+                return redirect('/staff/dashboard');
+            } elseif ($user->role === 'laborer') {
+                return redirect('/laborer/dashboard');
+            }
+        }
+       
     return view('welcome');
 });
 
@@ -67,6 +79,7 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/payroll/latest', [PayrollController::class, 'ownerPayrollLatest'])->name('owner.payroll');
     Route::get('/owner/payroll/show-latest/{batchId}', [PayrollController::class, 'showOwnerPayroll'])->name('owner.showPayroll');
     Route::put('/update-batch-remarks/{batchId}', [PayrollController::class, 'ownerBatchRemarks'])->name('ownerBatchRemarks');
+    Route::get('/owner/advance-list', [AdvanceController::class, 'ownerAdvanceList'])->name('owner.advanceList');
 
     Route::get('/owner/tool', [ToolController::class, 'allToolOwner'])->name('owner.tool');
     Route::get('/owner/tool/report', [ToolController::class, 'toolLogs'])->name('owner.toolLogs');

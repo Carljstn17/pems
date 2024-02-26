@@ -11,7 +11,7 @@
                 <form method="POST" action="{{ route('entry.create') }}" enctype="multipart/form-data">
                     @csrf
 
-                    <select name="project_id" id="project_id" class="form-select col col-md-2 col-sm-6 mb-3">
+                    <select name="project_id" id="project_id" class="form-select col col-md-2 col-sm-6 mb-3" required>
                         <option value="">Select a project</option>
                         @foreach($projects as $project)
                             <option value="{{ $project->id }}">
@@ -31,11 +31,11 @@
                         </div>
             
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="si_or_no" name="si_or_no" placeholder="SI/OR NO.">
+                            <input type="text" class="form-control" id="si_or_no" name="si_or_no" placeholder="SI/OR NO." required>
                         </div>
             
                         <div class="mb-3">
-                            <select class="form-select" id="supplier" name="supplier_id">
+                            <select class="form-select" id="supplier" name="supplier_id" required>
                                 <option value="">Select a supplier</option>
                                     @foreach($suppliers as $supplier)
                                         <option value="{{ $supplier->id }}">

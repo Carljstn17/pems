@@ -49,8 +49,6 @@ class ConcernController extends Controller
             // Add other attributes as needed
         ]);
 
-        Notification::send(Auth::user(), new NewConcernNotification($concern));
-
         $staffUsers = User::where('role', 'staff')->get();
 
         foreach ($staffUsers as $staffUser) {

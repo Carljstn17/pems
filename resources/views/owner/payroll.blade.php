@@ -53,7 +53,7 @@
         </div>
         
         <div class="mt-3 border-top border-subtle d-flex justify-content-end">
-            <a href="{{ route('advance') }}" class="text-decoration-none fst-italic mt-2">/Advance list</a>
+            <a href="{{ route('owner.advanceList') }}" class="text-decoration-none fst-italic mt-2">/Advance list</a>
         </div>
  
 @endsection

@@ -17,9 +17,7 @@ class User extends Authenticatable
         HasFactory, 
         Notifiable, 
         SoftDeletes, 
-        RoutesNotifications,
-        AuthenticatableTrait
-    ; 
+        RoutesNotifications; 
 
     /**
      * The attributes that are mass assignable.

@@ -60,7 +60,7 @@
         </div>
         
         <div class="mt-3 pt-2 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('on.receipt') }}" class="text-decoration-none">Receipt for On-Going Projects</a>
+            <a href="{{ route('on.receipt') }}" class="text-decoration-none fst-italic">/Receipt for On-Going Projects</a>
 
             <a href="{{ route('supplier') }}" class="text-decoration-none fst-italic">/Supplier list</a>
         </div>

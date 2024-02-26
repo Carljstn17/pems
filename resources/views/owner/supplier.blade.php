@@ -2,7 +2,15 @@
 
 @section('content')
     <div class="py-2 mt-2 mb-3">
-        <i class="fs-5 bi-receipt"></i> <span class=" d-sm-inline">Receipt | Supplier List</span>
+        <div class="d-flex align-items-center">
+            <div class="d-sm-none me-2">
+                <a href="{{ url()->previous() }}" class="text-secondary text-decoration-none">
+                    <i class="bi-backspace"></i>
+                </a>
+            </div>
+            <i class="fs-5 bi-receipt me-2"></i>
+            <span class="d-sm-inline">Receipt | Supplier List</span>
+        </div>
     </div>
 
     <div class="py-2 mt-3">
@@ -19,26 +27,33 @@
     <table class="mt-3 table table-bordered">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Supplier</th>
-                <th>Contact</th>
-                <th>Address</th>
+                <th><span class="bold">Date</span></th>
+                <th><span class="bold">Supplier</span></th>
+                <th><span class="bold">Contact</span></th>
+                <th><span class="bold">Address</span></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($suppliers as $supplier)
                 <tr>
-                    <td>{{ $supplier->created_at->format('Y-m-d') }}</td>
-                    <td>{{ Str::limit($supplier->name, 20) }}</td>
-                    <td>{{ Str::limit($supplier->contact, 10) }}</td>
-                    <td>{{ Str::limit($supplier->address, 50) }}</td>
+                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $supplier->created_at->format('Y-m-d') }}">{{ $supplier->created_at->format('y-m-d') }}</td>
+                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $supplier->name }}">{{ Str::limit($supplier->name, 8) }}</td>
+                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $supplier->contact }}">{{ Str::limit($supplier->contact, 8) }}</td>
+                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $supplier->address }}">{{ Str::limit($supplier->address, 8) }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-    <div class="mt-3 pb-3">
+    <div class="mt-3 pb-3 float-end">
+        {{ $suppliers->links('vendor.pagination.bootstrap-4') }}
     </div>
     
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
 
 @endsection

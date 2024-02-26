@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{{ env('APP_NAME') }}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('image/logo.jpg') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

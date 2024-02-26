@@ -26,7 +26,6 @@ return new class extends Migration
             $table->decimal('salary', 13, 4);
             $table->integer('advance_amount')->nullable();
             $table->decimal('net_amount', 13, 4);
-            $table->decimal('total_salary', 13, 4);
             $table->unsignedBigInteger('entry_by');
             $table->foreign('entry_by')->references('id')->on('users');
             $table->unsignedBigInteger('batch_id');

@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>{{ env('APP_NAME') }}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('image/logo.jpg') }}">
 
         <!-- Styles -->
         @vite(['resources/css/base2.css', 'resources/sass/app.scss', 'resources/js/app.js', 'resources/css/sidebar.css',])

@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="mt-3 px-3">
-                    <a href="{{ url('/staff/ongoing-projects') }}" class="text-decoration-none">View On-going Projects</a>
+                    <a href="{{ url('/staff/ongoing-projects') }}" class="text-decoration-none fst-italic">/View On-going Projects</a>
                 </div>
 
             </div>
