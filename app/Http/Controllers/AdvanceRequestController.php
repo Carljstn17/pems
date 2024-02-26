@@ -84,4 +84,11 @@ class AdvanceRequestController extends Controller
 
         return view('staff.allRequest', compact('requests'));
     }
+    
+    public function acceptRequest($advanceId)
+    {
+        AdvanceRequest::where('id', $advanceId)->update(['status' => 'accepted']);
+
+        return redirect()->back()->with('success', 'advance successfully accepted!');
+    }
 }

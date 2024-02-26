@@ -171,10 +171,10 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
 
     Route::get('/advance/req-notif/{id}', [AdvanceRequestController::class, 'show'])->name('request.notif');
     Route::get('/advance-req/all-notif', [AdvanceRequestController::class, 'allRequest'])->name('request.allNotif');
+    Route::put('/advance/accept/{advanceId}', [AdvanceRequestController::class, 'acceptRequest'])->name('advanceAccept');
 
     Route::get('/concern/notif/{id}', [ConcernController::class, 'show'])->name('concern.notif');
     Route::get('/concern/all-notif', [ConcernController::class, 'allConcern'])->name('concern.allNotif');
-    Route::get('/concerns/{id}/confirm-accept', [ConcernController::class, 'confirmAccept'])->name('concerns.confirm.accept');
 
     Route::get('export-estimates/{group_id}', [EstimateController::class, 'export'])->name('export-estimates');
     Route::get('/payroll/export/{batchId}', [PayrollController::class, 'export'])->name('payroll.export');

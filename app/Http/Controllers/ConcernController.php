@@ -77,4 +77,6 @@ class ConcernController extends Controller
         
         return view('staff.allConcern', compact('concerns'));
     }
+    
+    
 }

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('entry_by');
             $table->foreign('entry_by')->references('id')->on('users');
             $table->longText('concern');
-            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

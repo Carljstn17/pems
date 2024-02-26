@@ -16,9 +16,6 @@
                         <div class="form-group mb-3">
                             <textarea class="form-control" name="concern" rows="14" style="resize: none"; readonly>{{ $concerns->concern }}</textarea>
                         </div>
-                        <div class="float-end">
-                            <a href="" class="btn btn-outline-primary"><i class="bi bi-send"></i> Accept Concern</a>
-                        </div>
                     </div>
                 </div>
             </div>
