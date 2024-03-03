@@ -6,7 +6,8 @@
         </div>
 
         <div class="py-2 mt-3">
-            <div class="d-flex justify-content-end border-bottom border-subtle pb-3 gap-2">
+            <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
+                <p class="fs-5">Search Results for "{{ $query }}"</p>                
                 <form action="{{ route('owner.search.receipt') }}" method="GET" >
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
@@ -15,10 +16,7 @@
                 </form>
             </div>
         </div>
-
-        @include('layout.create-receipt-modal')
-        @include('layout.create-supplier-modal')
-
+        
         <div class="mt-3 pb-1 px-3">
             @forelse ($receipts as $receipt)
                 <a href="{{ route('owner.showReceipt', $receipt->id) }}" class="link-dark text-decoration-none">
@@ -44,10 +42,6 @@
             </div>
             @endforelse
         </div> 
-
-        <div class="mt-1">
-            {{ $receipts->links('vendor.pagination.bootstrap-4') }}
-        </div>
         
         <div class="mt-3 pt-2 border-top border-subtle d-flex justify-content-end">
             <a href="{{ route('owner.supplier') }}" class="text-decoration-none fst-italic">/Supplier list</a>

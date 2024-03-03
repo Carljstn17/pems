@@ -43,4 +43,9 @@ class Estimate extends Model
         }
         return $totalAmount;
     }
+    
+    public function entry()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

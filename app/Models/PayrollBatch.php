@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Searchable;
 
 class PayrollBatch extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'project_id',
@@ -26,5 +27,10 @@ class PayrollBatch extends Model
     public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');
+    }
+    
+    public function entry()
+    {
+        return $this->belongsTo(User::class, 'entry_by');
     }
 }

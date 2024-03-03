@@ -6,7 +6,8 @@
         </div>
 
         <div class="py-2 mt-3">
-            <div class="d-flex justify-content-end border-bottom border-subtle pb-3 gap-2">
+            <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
+                <p class="fs-5">Search Results for "{{ $query }}"</p>
                 <form action="{{ route('owner.search.payroll') }}" method="GET" >
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
@@ -15,9 +16,6 @@
                 </form>
             </div>
         </div>
-
-        @include('payroll.advance')
-
         <div class="mt-3 pb-1 px-3">
             @forelse ($payrollBatch as $batches)
                 <a href="{{ route('owner.showPayroll', ['batchId' => $batches->id]) }}" class="link-dark text-decoration-none">
@@ -46,10 +44,6 @@
                 <p class="no-text">No payrolls yet.</p>
             </div>
             @endforelse
-        </div>
-        
-        <div class="mt-1">
-            {{ $payrollBatch->links('vendor.pagination.bootstrap-4') }}
         </div>
         
         <div class="mt-3 border-top border-subtle d-flex justify-content-end">

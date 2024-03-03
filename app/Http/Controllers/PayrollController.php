@@ -194,11 +194,16 @@ class PayrollController extends Controller
     {
         PayrollBatch::where('id', $batchId)->update(['remarks' => 'invalid']);
 
-        // Update remarks in advance table
-        $userIds = DB::table('payrolls')->where('batch_id', $batchId)->pluck('user_id')->toArray();
-        
-        Advance::whereIn('user_id', $userIds)->update(['remarks' => 'add']);
-
+        Advance::whereExists(function ($query) use ($batchId) {
+            $query->select(DB::raw(1))
+                  ->from('payroll_batches')
+                  ->join('payrolls', 'payrolls.batch_id', '=', 'payroll_batches.id')
+                  ->whereColumn('advances.payroll_id', 'payroll_batches.id')
+                  ->where('payrolls.batch_id', $batchId)
+                  ->whereNotNull('payrolls.advance_amount')
+                  ->whereColumn('advances.user_id', 'payrolls.user_id');
+        })->update(['remarks' => 'add']);
+            
         // Redirect back or to any other page after update
         return redirect()->back()->with('success', 'Remarks updated successfully!');
     }

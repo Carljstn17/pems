@@ -49,13 +49,18 @@ class AuthController extends Controller
     {
         return view('owner.panel');
     }
+    
+    public function showRegisterForm()
+    {
+        return view('owner.registerAcc');
+    }
 
     public function registerStaff(Request $request)
     {
         // Validate the request
         $request->validate([
             'username' => 'required|string|max:255',
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|unique:users|max:50',
             'email' => 'required|email|unique:users|max:255',
             'contact' => 'required',
             'password' => 'required|string|min:8',
@@ -72,7 +77,7 @@ class AuthController extends Controller
             'role' => $request->input('role'),
         ]);
 
-        return redirect('/owner/accounts')->with('success', 'Employee registered successfully.');
+        return redirect('/owner/accounts')->withErrors(['password' => 'Invalid Username, Email or Password'])->withInput();
     }
 
     public function registerLaborer(Request $request)
@@ -110,7 +115,7 @@ class AuthController extends Controller
 
     public function showAdminRegister()
     {
-        $users = User::all();
+        $users = User::orderByRaw("FIELD(role, 'owner', 'staff', 'laborer'), created_at DESC")->get();
 
         return view('owner.register', ['users' => $users]);
     }
@@ -218,5 +223,12 @@ class AuthController extends Controller
         $laborers = User::where('id', Auth::id())->first();
 
         return view('laborer.profile', compact('laborers'));
+    }
+    
+    public function showProfile($id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        
+        return view('owner.profile', compact('user', 'id'));
     }
 }

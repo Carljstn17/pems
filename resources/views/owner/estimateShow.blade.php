@@ -2,13 +2,15 @@
 
     @section('content')
         <div class="py-2 mt-2">
-            <div class="border-bottom mb-3 d-sm-none">
-                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary text-decoration-none  mb-3">
-                    <i class="bi-backspace"></i> Back
-                </a>
-            </div>
+            <div class="d-flex align-items-center">
+               <div class="d-sm-none me-2">
+                    <a href="{{ url()->previous() }}" class="text-secondary text-decoration-none">
+                        <i class="bi-backspace"></i>
+                    </a>
+                </div>
             
             <i class="fs-5 bi-card-checklist"></i> <span class=" d-sm-inline">Estimate | Latest Form-view</span>
+            </div>
         </div>
         
         <div class="mx-auto mt-4">
@@ -77,7 +79,7 @@
                             <td><Span class="bold">Description</Span></td>
                             <td><Span class="bold">UOM</Span></td>
                             <td><Span class="bold">Quantity</Span></td>
-                            <td><Span class="bold">Unit-Cost</Span></td>
+                            <td><Span class="bold">Unit&nbspCost</Span></td>
                             <td><Span class="bold">Amount</Span></td>
                         </tr>
                     </thead>
@@ -159,13 +161,13 @@
             <form action="{{ route('owner.accept', $group_id) }}" method="post" id="acceptForm" style="display: none;">
                 @csrf
                 @method('PUT')
-                <input type="hidden" name="remarks" id="remarksInput">
+                <input type="hidden" name="remarks" id="remarksInputAccept">
             </form>
         
             <form action="{{ route('owner.reject', $group_id) }}" method="post" id="rejectForm" style="display: none;">
                 @csrf
                 @method('PUT')
-                <input type="hidden" name="remarks" id="remarksInput">
+                <input type="hidden" name="remarks" id="remarksInputReject">
             </form>
 
             </div>
@@ -186,13 +188,13 @@
 
             function proceedAccept() {
                 var remarks = document.getElementById('remarks').value;
-                document.getElementById('remarksInput').value = remarks;
+                document.getElementById('remarksInputAccept').value = remarks;
                 document.getElementById('acceptForm').submit();
             }
 
             function proceedReject() {
                 var remarks = document.getElementById('remarks').value;
-                document.getElementById('remarksInput').value = remarks;
+                document.getElementById('remarksInputReject').value = remarks;
                 document.getElementById('rejectForm').submit();
             }
         </script>

@@ -7,16 +7,13 @@
 
     <div class="py-2 mt-3">
         <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-            <div>
-                <a href="{{ route('owner.machineryLogs') }}" class="btn btn-outline-primary">LOGS</a>
-            </div>
+            <p class="fs-5">Search Results for "{{ $query }}"</p>
             <form action="{{ route('owner.searchMachinery') }}" method="GET">
                 <div class="input-group">
                     <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
                     <button type="submit" class="btn btn-outline-primary">Search</button>
                 </div>
             </form>
-
         </div>
     </div>
 
@@ -39,8 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($machineriesByType as $machineryType => $machineriesInType) 
-                    @foreach($machineriesInType as $machinery) 
+                    @foreach($machineries as $machinery) 
                         <tr>
                             <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machinery_type }}">{{ Str::limit($machinery->machinery_type, 8) }}</td>
                             <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->property }}">{{ Str::limit($machinery->property, 8) }}</td>
@@ -50,13 +46,8 @@
                             <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machineryReport->whereabout }}">{{ Str::limit($machinery->machineryReport->whereabout, 8) }}</td>
                         </tr>
                     @endforeach
-                @endforeach
             </tbody>
         </table>
-    </div>
-
-    <div class="mt-1 float-end">
-        {{ $machineries->links('vendor.pagination.bootstrap-4') }}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

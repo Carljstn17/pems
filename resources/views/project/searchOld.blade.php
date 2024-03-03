@@ -23,7 +23,7 @@
 
             @include('project.nprojects')
 
-            <p class="fs-4 sm-3">Search Results for "{{ $query }}"</p>
+            <p class="fs-5">Search Results for "{{ $query }}"</p>
 
             <div class="mt-3">
                 <div class="row-container gap-3">

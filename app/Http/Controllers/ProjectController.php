@@ -39,7 +39,7 @@ class ProjectController extends Controller
             "date_started" => $request->input('date_started'),
             "contact" => $request->input('contact'),
         ]);
-        return redirect('/staff/ongoing-projects')->with('success', 'Employee registered successfully.');
+        return redirect('/staff/ongoing-projects')->with('success', 'Employee registered successfully.')->withInput();
     }
     public function show($id)
     {      

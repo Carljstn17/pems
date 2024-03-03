@@ -5,22 +5,16 @@
             <i class="fs-5 bi-card-checklist"></i> <span class=" d-sm-inline">Estimate | Rejected</span>
         </div>
 
-            <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                <a href="{{ url('/staff/estimate/new') }}" class="btn btn-outline-primary mt-3" style="transition:0.8s;"">
-                    <span><i class="bi bi-plus"></i>Add New Project</span>
-                    <span></i>Add</span>
-                </a>
+            <div class="d-flex justify-content-between align-itemscenter border-bottom border-subtle pb-3 gap-2">
+                <p class="fs-5">Search Results for "{{ $query }}"</p>
 
-                <form action="{{ route('search.reject') }}" method="GET" class="mt-3">
+                <form action="{{ route('search.reject') }}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
                         <button type="submit" class="btn btn-outline-primary">Search</button>
                     </div>
                 </form>
             </div>
-
-            <h1 class="m-3 fs-4">Search Results for "{{ $query }}"</h1>
-        
         <div class="row p-2 mt-3 gap-2">
             @foreach($estimates as $group_id => $estimate)
                 @php

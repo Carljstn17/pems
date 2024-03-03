@@ -1,5 +1,7 @@
 @component('mail::message')
-# New Estimate Entry
+<h1 style="text-align: center;">
+    # New Estimate Entry
+</h1>
 
 @component('mail::table')
 | Status | Entry ID | Entry by | Entry date |
@@ -19,13 +21,10 @@
 **Remarks**: {{ $remarks }}
 @endcomponent
 
-@component('mail::button', ['url' => '#rejectModal', 'color' => 'warning'])
-Reject
+@component('mail::button', ['url' => route('owner.estimateShow', ['group_id' => $estimate->group_id]), 'color' => 'success'])
+            Show Estimate
 @endcomponent
 
-@component('mail::button', ['url' => '#acceptModal', 'color' => 'primary'])
-Accept
-@endcomponent
 
 Thanks,<br>
 {{ config('app.name') }}

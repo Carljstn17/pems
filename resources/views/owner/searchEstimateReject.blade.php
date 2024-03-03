@@ -7,10 +7,7 @@
 
         <div class="py-2 mt-3">
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createEstimateModal" style="transition: 0.8s;">
-                    <span class="d-none d-sm-inline">Create New Estimate</span>
-                    <span class="d-sm-inline d-sm-none">Create</span>
-                </button>
+                <p class="fs-5">Search Results for "{{ $query }}"</p>
 
                 <form action="{{ route('owner.search.estimate.reject') }}" method="GET">
                     <div class="input-group">
@@ -21,8 +18,6 @@
             </div>
         </div>
 
-        @include('owner.estimateNew')
-        
         <div class="mt-3 pb-1 px-3">
             @forelse($estimates as $group_id => $estimate)
                 @php
@@ -53,12 +48,8 @@
             @endforelse
         </div>
 
-        <div class="mt-1">
-            {{ $estimates->links('vendor.pagination.bootstrap-4') }}
-        </div>
-
         <div class="mt-3 border-top border-subtle d-flex justify-content-end">
-            <a href="{{ route('owner.estimate') }}" class="text-decoration-none fst-italic mt-1">/View Latest Estimate</a>
+            <a href="{{ route('owner.estimate') }}" class="text-decoration-none mt-1">/View Latest Estimate</a>
         </div>
 
 @endsection

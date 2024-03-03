@@ -38,9 +38,10 @@ class EstimateNotification extends Notification
     {
         return (new MailMessage)
                     ->line('This estimate ' . $this->estimate->group_id . ' is already evaluated.')
-                    ->action('Estimate link: ', url('/staff/estimate/reject/{group_id}'))
                     ->line('Evaluation status: '. $this->estimate->status)
-                    ->line('Remarks: '. $this->estimate->remarks);
+                    ->line('Remarks: '. $this->estimate->remarks)
+                    ->action('Estimate link: ', route('estimate.form', $this->estimate->group_id))                    
+                    ;
     }
 
     /**

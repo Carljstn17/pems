@@ -43,7 +43,7 @@
 
                 <tbody>
                     @foreach($laborers as $laborer)
-                    <tr>      
+                    <tr class="laborer-row">      
                         <td>1</td>
                         <td>
                             <input type="hidden" class="user_id" name="user_id[{{ $laborer->id }}]" value="{{ $laborer->id }}">
@@ -62,7 +62,7 @@
                             @include('payroll.advance_modal', ['laborer' => $laborer])
                         </td>
                         <td><input type="number" class="form-control no-border net_salary" name="net_salary[{{ $laborer->id }}]" readonly></td>
-                        <td><input type="checkbox" class="form-check-input" name="checklist[{{ $laborer->id }}]" checked></td>
+                        <td><input type="checkbox" class="form-check-input" name="checklist[{{ $laborer->id }}]" checked onchange="toggleFields(this)"></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -90,6 +90,21 @@
         </form>
 
         <script>
+            function toggleFields(checkbox) {
+                    let row = checkbox.closest('.laborer-row');
+                    let inputs = row.querySelectorAll('.rate, .days, .ot, .ot_total, .salary, .advance_amount, .net_salary');
+                    
+                    inputs.forEach(input => {
+                        if (!checkbox.checked) {
+                            input.value = ""; // Clear the value if unchecked
+                        }
+                    });
+                    updateAdvanceAmount();
+                    updateTotalNetAmount();
+                }
+                
+
+            
             document.addEventListener('DOMContentLoaded', function () {
                 var allCheckboxes = document.querySelectorAll('.checklist');
                 var inputFields = document.querySelectorAll('.advance_amount');
@@ -129,7 +144,7 @@
             });
         </script>
 
-<script>
+        <script>
 
     function calculateAmount(row) {
         var userId = row.getElementsByClassName("user_id")[0].value;

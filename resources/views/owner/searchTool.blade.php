@@ -7,9 +7,7 @@
 
         <div class="py-2 mt-3">
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                <div>
-                    <a href="{{ route('owner.toolLogs') }}" class="btn btn-outline-primary">LOGS</a>
-                </div>
+                <p class="fs-5">Search Results for "{{ $query }}"</p>
                 <form action="{{ route('owner.search.tool') }}" method="GET" class="">
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
@@ -38,8 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($toolsByType as $toolType => $toolsInType) 
-                        @foreach($toolsInType as $tool)
+                        @foreach($tools as $tool)
                             <tr>
                                 <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->tool_type }}">{{ Str::limit($tool->tool_type, 8) }}</td>
                                 <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->property }}">{{ Str::limit($tool->property, 8) }}</td>
@@ -49,15 +46,11 @@
                                 <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->toolReport->whereabout }}">{{ Str::limit($tool->toolReport->whereabout, 8) }}</td>
                             </tr>
                         @endforeach
-                    @endforeach
+                    
                 </tbody>
             </table>
         </div>
         
-        <div class="mt-1 float-end">
-            {{ $tools->links('vendor.pagination.bootstrap-4') }}
-        </div>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
             $(document).ready(function(){

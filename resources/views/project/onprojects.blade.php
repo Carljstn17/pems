@@ -8,9 +8,9 @@
            
             <div class="py-2 mt-3">
                 <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                    <a href="{{ route('add-project') }}" class="btn btn-outline-primary">
                         <span><i class="bi bi-plus"></i> Add New Project</span>
-                    </button>
+                    </a>
                     
 
                     <form action="{{ route('search') }}" method="GET" >

@@ -238,8 +238,15 @@ class EstimateController extends Controller
                 $estimateData['status'] = 'accepted';
             }
 
-            Estimate::create($estimateData);
+            $estimate = Estimate::create($estimateData);
         }
+        
+        $owners = User::where('role', 'owner')->get();
+        
+        foreach ($owners as $owner) {
+            $estimate = Estimate::where('group_id', $groupId)->get(); 
+            $owner->notify(new EstimateEntryNotification($estimate));
+        } 
 
         // Redirect or perform any other actions as needed
         return redirect()->route('owner.estimate')->with('success', 'Items added successfully.');
@@ -284,16 +291,17 @@ class EstimateController extends Controller
     {
         $estimate = Estimate::where('group_id', $group_id)->firstOrFail(); // Retrieve the estimate
     
-    // Update the estimate status and remarks
-        $estimate->update([
+        Estimate::where('group_id', $group_id)->update([
             'status' => 'rejected',
             'remarks' => $request->remarks,
         ]);
         
-        // Send email notification to the user to whom the estimate belongs
-        $estimate->user->notify(new EstimateNotification($estimate));
+        $user = User::find($estimate->user_id);
+        if($user){
+            $user->notify(new EstimateNotification($estimate));
+        }
         
-        return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
+        return redirect()->route('owner.estimateReject')->with('success', 'Estimate updated successfully!');
     }
 
     public function accept(Request $request, $group_id)
@@ -305,7 +313,10 @@ class EstimateController extends Controller
             'remarks' => $request->remarks,
         ]);
 
-        $estimate->user->notify(new EstimateNotification($estimate));
+        $user = User::find($estimate->user_id);
+        if($user){
+            $user->notify(new EstimateNotification($estimate));
+        }
         
         return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
     }

@@ -121,5 +121,29 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'User information updated successfully.');
     }
     
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
+    public function updateInfoForOwner(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+    
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'contact' => 'required|numeric',
+            'birthdate' => 'required|date',
+            'address' => 'required',
+        ]);
+    
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'contact' => $request->contact,
+            'birthdate' => $request->birthdate,
+            'address' => $request->address,
+        ]);
+    
+        return redirect()->back()->with('success', 'User information updated successfully.');
+    }
+
 }

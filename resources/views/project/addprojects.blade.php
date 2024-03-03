@@ -1,15 +1,13 @@
 @extends('layout.staff')
 
     @section('content')
-        <div class="container-fluid">
-            <div class="mt-3">
-                <a href="{{ url()->previous() }}" class="link-dark text-decoration-none">
-                    <i class="fs-5 bi-backspace"> back</i>
-                </a>
+            <div class="py-2 mt-2">
+                <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline">Projects | Add New Project</span>
             </div>
-            <div class="py-12">
-                <div class="card mx-auto p-4 mt-3" style="max-width: 1000px;">
-                    <h1 class="fs-4 p-2">Add Project Form</h1>
+            
+            <div class="">
+                <div class="card mx-auto p-4 mt-3">
+                    <h1 class="fs-4 py-3 px-2">Add Project Form</h1>
                     <form action="{{ url('/staff/store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
@@ -20,10 +18,10 @@
                             name="project_id" 
                             placeholder="Enter Project ID" 
                             autocomplete="off" 
-                            :value="@old('project_id')" 
-                            required>
+                            value="{{ old('project_id') }}" 
+                            >
                             @error('project_id')
-                                {{ $message }}
+                                <div class="text-danger px-2">{{ $message }}</div>
                             @enderror
                         </div>
                     
@@ -35,9 +33,10 @@
                             name="project_dsc" 
                             placeholder="Enter Project Description" 
                             autocomplete="off" 
-                            required>
+                            value="{{ old('project_dsc') }}"
+                            >
                             @error('project_dsc')
-                                {{ $message }}
+                                <div class="text-danger px-2">{{ $message }}</div>
                             @enderror
                         </div>
                     
@@ -49,9 +48,10 @@
                             name="contract" 
                             placeholder="Enter Contract Price" 
                             autocomplete="off" 
-                            required>
+                            value="{{ old('contract') }}"
+                            >
                             @error('contract')
-                                {{ $message }}
+                                <div class="text-danger px-2">{{ $message }}</div>
                             @enderror
                         </div>
                     
@@ -63,9 +63,10 @@
                             name="client" 
                             placeholder="Enter Client" 
                             autocomplete="off" 
-                            required>
+                            value="{{ old('client') }}"
+                            >
                             @error('client')
-                                {{ $message }}
+                                <div class="text-danger px-2">{{ $message }}</div>
                             @enderror
                         </div>
                     
@@ -77,9 +78,10 @@
                             name="contact" 
                             placeholder="Enter Contact No" 
                             autocomplete="off" 
-                            required>
+                            value="{{ old('contact') }}"
+                            >
                             @error('contact')
-                                {{ $message }}
+                                <div class="text-danger px-2">{{ $message }}</div>
                             @enderror
                         </div>
                     
@@ -91,9 +93,10 @@
                             name="location" 
                             placeholder="Enter Project Location" 
                             autocomplete="off" 
-                            required>
+                            value="{{ old('location') }}"
+                            >
                             @error('location')
-                                {{ $message }}
+                                <div class="text-danger px-2">{{ $message }}</div>
                             @enderror
                         </div>
                     
@@ -102,9 +105,10 @@
                             type="date" 
                             class="form-control" 
                             id="date_started" name="date_started" 
-                            required>
+                            value="{{ old('date_started') }}"
+                            >
                             @error('date_started')
-                                {{ $message }}
+                                <div class="text-danger px-2">{{ $message }}</div>
                             @enderror
                         </div>
                     

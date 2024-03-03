@@ -17,7 +17,7 @@
                     </button>
                 </div>
 
-                <form action="" method="GET" >
+                <form action="{{ route('search.payroll') }}" method="GET" >
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
                         <button type="submit" class="btn btn-outline-primary">Search</button>

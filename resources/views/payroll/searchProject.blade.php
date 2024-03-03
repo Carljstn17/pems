@@ -7,11 +7,9 @@
 
         <div class="py-2 mt-3">
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                    <a href="{{ url('/staff/payroll/new') }}" class="btn btn-outline-primary" style="transition:0.8s;"">
-                        <span><i class="bi bi-plus"></i>Create New Payroll</span>
-                    </a>
+                <p class="fs-5">Search Results for "{{ $query }}"</p>
 
-                <form action="{{ route('search.payroll.project') }}" method="GET" >
+                <form action="" method="GET" >
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
                         <button type="submit" class="btn btn-outline-primary">Search</button>
@@ -47,10 +45,6 @@
                 @endforelse
             </div>
         </div>       
-        
-        <div class="mt-1">
-            {{ $projects->links('vendor.pagination.bootstrap-4') }}
-        </div>
         
         <div class="mt-3">
             <a href="{{ route('latest.payroll') }}" class="text-decoration-none mt-2 fst-italic">/View latest Payroll</a>

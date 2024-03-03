@@ -43,6 +43,8 @@ Route::get('/', function () {
             } elseif ($user->role === 'laborer') {
                 return redirect('/laborer/dashboard');
             }
+        } else {
+            return view('welcome');
         }
        
     return view('welcome');
@@ -62,6 +64,7 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     // Routes accessible only to owners
     Route::get('/owner/dashboard', [DashboardController::class, 'showPanel'])->name('owner.dashboard');
     Route::post('/owner/register', [AuthController::class, 'registerStaff']);
+    Route::get('/owner/register-form', [AuthController::class, 'showRegisterForm'])->name('owner.register.form');
     Route::get('/owner/accounts', [AuthController::class, 'showAdminRegister'])->name('owner.register');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/soft-delete/{user}', [UserController::class, 'softDelete'])->name('owner.user-delete');
@@ -90,6 +93,16 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/receipt/{id}', [ReceiptController::class, 'showForOwner'])->name('owner.showReceipt');
     Route::get('/owner/supplier/list', [SupplierController::class, 'ownerSupplierList'])->name('owner.supplier');
     Route::get('/owner/receipt/project/{project_id}', [ReceiptController::class, 'ownerProjectReceipt'])->name('owner.projectReceipt');
+    
+    Route::get('/owner/search-estimate', [SearchController::class, 'searchEstimateForOwner'])->name('owner.search.estimate');
+    Route::get('/owner/search-estimate-reject', [SearchController::class, 'searchRejectEstimateForOwner'])->name('owner.search.estimate.reject');
+    Route::get('/owner/search-tool', [SearchController::class, 'searchToolForOwner'])->name('owner.search.tool');
+    Route::get('/owner/search-machinery', [SearchController::class, 'searchMachineryForOwner'])->name('owner.searchMachinery');
+    Route::get('/owner/search-payroll', [SearchController::class, 'searchPayrollForOwner'])->name('owner.search.payroll');
+    Route::get('/owner/search-receipt', [SearchController::class, 'searchReceiptForOwner'])->name('owner.search.receipt');
+    
+    Route::get('/owner/view-profile/{id}', [AuthController::class, 'showProfile'])->name('owner.show.profile');
+    Route::put('/owner/update-info/{id}', [UserController::class, 'updateInfoForOwner'])->name('owner.updateInfo');
 });
 
 
@@ -110,7 +123,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/finish-project/{id}', [ProjectController::class, 'finishProject'])->name('finish-project');
     Route::get('/staff/old-projects', [ProjectController::class, 'displayOldProject'])->name('old-projects');
     Route::get('/staff/show-old/{oldProject}', [ProjectController::class, 'showOldProject'])->name('show-old');
-    Route::get('/staff/add-projects', [ProjectController::class, 'addProject']);
+    Route::get('/staff/add-projects', [ProjectController::class, 'addProject'])->name('add-project');
     Route::post('/staff/store', [ProjectController::class, 'store']);
     Route::get('/staff/show/{id}', [ProjectController::class, 'show'])->name('project.showproject');
     Route::get('/search/project', [SearchController::class, 'searchProject'])->name('search');
@@ -129,6 +142,8 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/payroll/show-latest/{batchId}', [PayrollController::class, 'showPayroll'])->name('show.payroll');
     Route::get('/payroll/project/{project_id}', [PayrollController::class, 'projectPayroll'])->name('project.payroll');
     Route::put('/staff/update-batch-remarks/{batchId}', [PayrollController::class, 'updateBatchRemarks'])->name('staff.updateBatchRemarks');
+    Route::get('/search/payroll', [SearchController::class, 'searchPayroll'])->name('search.payroll');
+    Route::get('/search/payrollProject', [SearchController::class, 'searchPayrollProject'])->name('search.payroll.project');
 
     Route::get('/staff/estimate', [EstimateController::class, 'showStaffEstimate'])->name('staff.estimate');
     Route::get('/staff/estimate/latest', [EstimateController::class, 'showLatestEstimate'])->name('latest');
@@ -152,7 +167,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::post('/suppliers', [SupplierController::class, 'store'])->name('supplier.store');
     Route::get('/receipt/project/{project_id}', [ReceiptController::class, 'projectReceipt'])->name('project.receipt');
     Route::get('/receipt/form/{id}', [ReceiptController::class, 'show'])->name('receipt.form');
- 
+    Route::get('/receipt/search', [SearchController::class, 'searchReceipt'])->name('receipt.search');
 
     Route::get('/staff/tool', [ToolController::class, 'allTool'])->name('staff.tool');
     Route::post('/store-tools', [ToolController::class, 'store'])->name('store.tools');
