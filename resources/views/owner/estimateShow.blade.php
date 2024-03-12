@@ -70,6 +70,17 @@
                     </table>
                 </div>
  
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="input-group"  style="width: 400px;">
+                        <label for="Project" class="input-group-text"><span class="bold">Project</span></label>
+                        <input type="text" class="form-control " value="{{ $estimates->first()->project->project_id }}">
+                    </div>    
+                    
+                    <div class="input-group"  style="width: 400px;">
+                        <label for="title" class="input-group-text"><span class="bold">Title</span></label>
+                        <input type="text" class="form-control" value="{{ $estimates->first()->title }}">
+                    </div>    
+                </div>
 
                 <div class="table-responsive">
                 <table class="table table-bordered table-rounded mx-auto">
@@ -114,6 +125,7 @@
                 <textarea name="remarks" id="remarks"rows="5" class="border border-subtle" style="width:100%;resize:none;">{{ $estimates->first()->remarks }}</textarea>
             </div>
             
+            @if($estimate->status !== 'accepted' && $estimate->status !== 'rejected')
             <button class="btn btn-warning float-end mx-2" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal">
                 Reject
             </button>
@@ -121,6 +133,7 @@
             <button class="btn btn-primary float-end" type="button" data-bs-toggle="modal" data-bs-target="#acceptModal">
                 Accept
             </button>
+            @endif
 
             <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">

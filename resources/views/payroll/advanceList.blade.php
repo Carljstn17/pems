@@ -1,12 +1,12 @@
 @extends('layout.staff')
 
 @section('content')
-    <div class="py-2 mt-2 mb-3">
-        <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | Advance List</span>
+    <div class="py-2 mt-2">
+        <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline fs-5 head">Payroll | Advance List</span>
     </div>
 
-    <div class="py-2 mt-3">
-        <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
+    <div class="pb-2 m-3">
+        <div class="d-flex justify-content-between gap-2">
             <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createAdvanceModal" style="transition:0.8s;">
                 <span class="d-none d-sm-inline"><i class="bi bi-plus"></i> Advance</span>
             </button>
@@ -14,7 +14,7 @@
             <form action="" method="GET" >
                 <div class="input-group">
                     <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
-                    <button type="submit" class="btn btn-outline-primary">Search</button>
+                    <button type="submit" class="btn btn-outline-dark">Search</button>
                 </div>
             </form>
         </div>
@@ -22,7 +22,8 @@
 
     @include('payroll.advance')
 
-    <table class="table table-bordered">
+    <div class="mt-3 pb-1 px-3">
+    <table class="table table-bordered ">
         <thead>
             <tr>
                 <th><span class="bold">Date</span></th>
@@ -44,6 +45,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 
     <div class="mt-3 pb-3 float-end">
         {{ $advances->links('vendor.pagination.bootstrap-4') }}

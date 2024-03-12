@@ -5,10 +5,20 @@
             <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | New Entry</span>
         </div>
         
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif  
+        
         <form action="{{ route('store.payroll') }}" method="post" class="pb-5">
             @csrf
             <div class="d-flex justify-content-between mb-2">
-                <select name="project_id" id="project_id" class="form-select" style="width: 400px;" required>
+                <select name="project_id" id="project_id" class="form-select" style="width: 400px;">
                     <option value="">Select a project</option>
                     @foreach($projects as $project)
                         <option value="{{ $project->id }}">

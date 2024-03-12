@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="py-2 mt-2">
-        <i class="fs-5 bi-person-vcard"></i> <span class="d-sm-inline">Profile</span>
+        <i class="fs-5 bi-person-vcard"></i> <span class="d-sm-inline fs-5 head">Profile</span>
     </div>
 
     @if(session('error'))

@@ -8,13 +8,47 @@
                     <i class="bi-backspace"></i>
                 </a>
             </div>
-            <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline">Receipt | ID: {{ $receipts->id }}</span>
-            <span style="color: {{ $receipts->remarks === 'valid' ? 'green' : 'red' }}"> | {{ $receipts->remarks }}</span>
+            <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline fs-5 head">Receipt | ID: {{ $receipts->id }}  |</span>
+            <span class="fs-5 head" style="color: {{ $receipts->remarks === 'valid' ? 'green' : 'red' }}"> {{ $receipts->remarks }}</span>
             
         </div>
     </div>
 
     <div class="mt-4">
+        
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <th >
+                        <span class="bold text-nowrap">Project ID</span>
+                    </th>
+                    <th>
+                        <span class="bold text-nowrap">Project Description</span>
+                    </th>
+                    <th>
+                        <span class="bold text-nowrap">Entry By:</span>
+                    </th>
+                    <th >
+                        <span class="bold">Date</span>
+                    </th>
+                </thead>
+                <tbody>
+                    <td >
+                        <span>{{ $receipts->project->project_id }}</span>
+                    </td>
+                    <td>
+                        <span>{{ $receipts->project->project_dsc }}</span>
+                    </td>
+                    <td >
+                        <span>{{ $receipts->user->name }}</span>
+                    </td>
+                    <td >
+                        <span>{{ $receipts->created_at->format('Y-m-d') }}</span>
+                    </td>
+                </tbody>
+            </table>
+        </div>
+                
         <div class="border mt-2 p-4 rounded">
             
             <div class="mb-3 input-group">
@@ -58,10 +92,10 @@
                     <form action="{{ route('updateReceiptRemarks', $receipts->id) }}" method="post" id="updateRemarksForm">
                         @csrf
                         @method('PUT')
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Incorrect</button>
+                        <button type="button" class="btn btn-danger text-nowrap" data-bs-toggle="modal" data-bs-target="#confirmationModal">Incorrect</button>
                     </form>
                 @else
-                    <span class="text-danger" >This receipt is invalid.</span>
+                    <span class="text-danger text-nowrap" >This receipt is invalid.</span>
                 @endif
 
 

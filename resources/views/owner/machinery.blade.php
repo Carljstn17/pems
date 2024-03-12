@@ -2,18 +2,18 @@
 
 @section('content')
     <div class="py-2 mt-2">
-        <i class="fs-5 bi-tools"></i> <span class="d-sm-inline">Machinery | All Machinery</span>
+        <i class="fs-5 bi-tools"></i> <span class="d-sm-inline fs-5 head">Machinery | All Machinery</span>
     </div>
 
-    <div class="py-2 mt-3">
-        <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
+    <div class="pb-2 m-3">
+        <div class="d-flex justify-content-between gap-2">
             <div>
-                <a href="{{ route('owner.machineryLogs') }}" class="btn btn-outline-primary">LOGS</a>
+                <a href="{{ route('owner.machineryLogs') }}" class="btn btn-outline-dark">LOGS</a>
             </div>
             <form action="{{ route('owner.searchMachinery') }}" method="GET">
                 <div class="input-group">
                     <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
-                    <button type="submit" class="btn btn-outline-primary">Search</button>
+                    <button type="submit" class="btn btn-outline-dark">Search</button>
                 </div>
             </form>
 

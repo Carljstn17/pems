@@ -72,6 +72,7 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/show/{id}', [ProjectController::class, 'showProjectOwner'])->name('owner.showproject');
 
     Route::get('/owner/estimate/', [EstimateController::class, 'showLatestOwner'])->name('owner.estimate');
+    Route::get('/owner/create-form/', [EstimateController::class, 'showCreateForm'])->name('owner.estimate.form');
     Route::post('/owner/estimate/create', [EstimateController::class, 'storeEstimateOwner'])->name('owner.storeEstimate');
     Route::get('/owner/estimate/show/{group_id}', [EstimateController::class, 'showOwner'])->name('owner.estimateShow');
     Route::get('/owner/estimate/reject', [EstimateController::class, 'rejectEstimate'])->name('owner.estimateReject');
@@ -147,7 +148,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
 
     Route::get('/staff/estimate', [EstimateController::class, 'showStaffEstimate'])->name('staff.estimate');
     Route::get('/staff/estimate/latest', [EstimateController::class, 'showLatestEstimate'])->name('latest');
-    Route::get('/staff/estimate/new', [EstimateController::class, 'showNewEstimate']);
+    Route::get('/staff/estimate/create', [EstimateController::class, 'showNewEstimate'])->name('staff.estimate.form');;
     Route::get('/staff/estimate/reject', [EstimateController::class, 'showRejectEstimate'])->name('reject');
     Route::post('/items', [EstimateController::class, 'store'])->name('estimate.store');
     Route::get('/staff/estimate/form/{group_id}', [EstimateController::class, 'show'])->name('estimate.form');
@@ -180,6 +181,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/staff/machinery/search', [SearchController::class, 'searchMachinery'])->name('machinery.search');
 
     Route::get('/staff/laborer', [AuthController::class, 'showStaffLaborer'])->name('staff.laborer');
+     Route::get('/staff/register-form', [AuthController::class, 'showRegisterFormLaborer'])->name('staff.register.form');
     Route::post('/staff/register', [AuthController::class, 'registerLaborer'])->name('staff.register');
     Route::put('/staff/{user}', [UserController::class, 'updateLaborer'])->name('staff.editLaborer');
     Route::delete('/staff/laborer-soft-delete/{user}', [UserController::class, 'softDeleteLaborer'])->name('staff.laborer-soft-delete');

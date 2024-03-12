@@ -2,13 +2,13 @@
 
     @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline">Receipt | Latest Entries</span>
+            <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline fs-5 head">Receipt | Latest Entries</span>
         </div>
 
-        <div class="py-2 mt-3">
-            <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
+        <div class="pb-2 m-3">
+            <div class="d-flex justify-content-between gap-2">
                 <div>
-                    <button class="btn btn-outline-primary" style="transition:0.8s;"data-bs-toggle="modal" data-bs-target="#createReceiptModal">
+                    <button class="btn btn-outline-dark" style="transition:0.8s;"data-bs-toggle="modal" data-bs-target="#createReceiptModal">
                         <span><i class="bi bi-plus"></i>Add New Receipt</span>
                     </button>
 
@@ -20,7 +20,7 @@
                 <form action="{{ route('receipt.search') }}" method="GET" >
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
-                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                        <button type="submit" class="btn btn-outline-dark">Search</button>
                     </div>
                 </form>
             </div>
@@ -30,39 +30,47 @@
         @include('layout.create-supplier-modal')
 
         <div class="mt-3 pb-1 px-3">
-            @forelse ($receipts as $receipt)
-                <a href="{{ route('receipt.form', $receipt->id) }}" class="link-dark text-decoration-none">
-                    <div class="row p-4 d-flex justify-content-center rounded-2 border hover3 mb-2">
-                        <div class="col">
-                            <span class="bold">Rceipt SI: &nbsp</span>{{ $receipt->si_or_no }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Project ID: &nbsp</span>{{ Str::limit($receipt->project->project_id, 14) }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Entry By: &nbsp</span>{{ $receipt->user->username }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Entry Date: &nbsp</span>{{ $receipt->created_at->diffForHumans() }}
-                        </div>
-                    </div>
-                </a>
-            @empty
-            <div class="text-center my-5">
-                <i class="bi bi-box"></i>
-                <p class="no-text">No receipts yet.</p>
-            </div>
-            @endforelse
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"><span class="bold text-nowrap">SI-No.</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Project Description</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Entry By</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Date</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($receipts as $receipt)
+                    <tr data-url="{{ route('receipt.form', $receipt->id) }}" class="clickable-row">
+                        <td><span class="text-nowrap">{{ $receipt->si_or_no }}</span></td>
+                        <td><span class="text-nowrap">{{ $receipt->project->project_dsc }}</span></td>
+                        <td>
+                            <span class="text-nowrap">
+                               {{ optional($receipt->user)->username }}
+                            </span>
+                        </td>
+                        <td><span class="text-nowrap">{{ $receipt->created_at->diffForHumans() }}</span></td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center my-5">
+                            <i class="bi bi-box"></i>
+                            <p class="no-text">No payrolls yet.</p>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div> 
 
         <div class="mt-1">
             {{ $receipts->links('vendor.pagination.bootstrap-4') }}
         </div>
         
-        <div class="mt-3 pt-2 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('on.receipt') }}" class="text-decoration-none fst-italic">/Receipt for On-Going Projects</a>
+        <div class="px-3 d-flex justify-content-between">
+            <a href="{{ route('on.receipt') }}" class="text-decoration-none text-secondary fst-italic">/Receipt for On-Going Projects</a>
 
-            <a href="{{ route('supplier') }}" class="text-decoration-none fst-italic">/Supplier list</a>
+            <a href="{{ route('supplier') }}" class="text-decoration-none text-secondary fst-italic">/Supplier list</a>
         </div>
 
        

@@ -8,45 +8,60 @@
                     <i class="bi-backspace"></i>
                 </a>
             </div>
-            <i class="fs-5 bi-wallet me-2"></i> <span class=" d-sm-inline">Payroll | Project -
-                @if ($payrolls->isNotEmpty())
-                    {{ $payrolls->first()->project_id }}
-                @else
-                @endif
-            </span> |
-            <span style="color: {{ $batch->remarks === 'valid' ? 'green' : 'red' }}">{{ $batch->remarks }}</span>
+            <i class="fs-5 bi-wallet me-2"></i> <span class=" d-sm-inline fs-5 head">Payroll | Project -
+                {{ $batch->project_id }} |
+            </span> 
+            <span class="fs-5 head" style="color: {{ $batch->remarks === 'valid' ? 'green' : 'red' }}">{{ $batch->remarks }}</span>
         </div>
     </div>
 
-    <div class="d-flex justify-content-between mb-2 gap-2">
-        <div class="input-group" style="width: 200px;">
-            <label for="ot_rate" class="input-group-text">
-                <span class="d-none d-sm-inline bold">Payroll Batch</span>
-                <span class="d-sm-inline d-sm-none bold ">Batch</span>
-            </label>
-            <input type="text" id="otRate" class="form-control ot_rate" name="ot_rate" value="{{ $batch->id }}"
-                readonly>
+    <div class="mt-2">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <th>
+                        <span class="bold text-nowrap">Project Description</span>
+                    </th>
+                    <th>
+                        <span class="bold text-nowrap">Entry By:</span>
+                    </th>
+                    <th >
+                        <span class="bold">Date</span>
+                    </th>
+                    <th >
+                        <span class="bold text-nowrap">OT Rate</span>
+                    </th>
+                </thead>
+                <tbody>
+                    <td>
+                        <span>{{ $batch->project->project_dsc }}</span>
+                    </td>
+                    <td >
+                        <span>{{ $batch->entry->name }}</span>
+                    </td>
+                    <td >
+                        <span>{{ $batch->created_at->format('Y-m-d') }}</span>
+                    </td>
+                    <td >
+                        <span>{{ $batch->ot_rate }}</span>
+                    </td>
+                </tbody>
+            </table>
         </div>
-        <div class="input-group" style="width: 200px;">
-            <label for="ot_rate" class="input-group-text"><span class="bold">OT-Rate</span></label>
-            <input type="text" id="otRate" class="form-control ot_rate" name="ot_rate"
-                value="{{ number_format($batch->ot_rate, 2) }}" readonly>
-        </div>
-    </div>
 
     <div class="table-responsive">
         <table class="table table-bordered" id="dataTable">
             <thead>
                 <tr>
-                    <th><span class="bold">NO.</span></th>
-                    <th class="col-md-2"><span class="bold">NAME</span></th>
-                    <th><span class="bold">RATE/DAY</span></th>
-                    <th><span class="bold">DAYS</span></th>
-                    <th><span class="bold">OT&nbspHOUR</span></th>
-                    <th><span class="bold">OT&nbspTOTAL</span></th>
-                    <th><span class="bold">SALARY</span></th>
-                    <th><span class="bold">ADVANCE</span></th>
-                    <th><span class="bold">NET $</span></th>
+                    <th><span class="bold">No.</span></th>
+                    <th class="col-md-2"><span class="bold">Name</span></th>
+                    <th><span class="bold">Rate/day</span></th>
+                    <th><span class="bold">Days</span></th>
+                    <th><span class="bold text-nowrap">OT Hour</span></th>
+                    <th><span class="bold text-nowrap">OT Total</span></th>
+                    <th><span class="bold">Salary</span></th>
+                    <th><span class="bold">Advance</span></th>
+                    <th><span class="bold text-nowrap">Net $</span></th>
                 </tr>
             </thead>
 
@@ -102,13 +117,16 @@
         </div>
     </div>
 
-
+    @if($batch->remarks !== 'invalid')
     <form action="{{ route('ownerBatchRemarks', $batch->id) }}" method="post" id="updateRemarksForm">
         @csrf
         @method('PUT')
         <button type="button" class="btn btn-danger float-end" data-bs-toggle="modal"
             data-bs-target="#confirmationModal">Incorrect</button>
     </form>
+    @else
+        <span class="text-danger" >This payroll is invalid.</span>
+    @endif
 
     <script>
         function updateRemarks() {

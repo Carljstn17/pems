@@ -2,7 +2,7 @@
 
     @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate | Rejected Form-view</span>
+            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline fs-5 head">Estimate | Rejected Form-view</span>
         </div>
         
         <div class="mx-auto mt-4">

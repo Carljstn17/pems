@@ -5,9 +5,10 @@
                 <i class="bi bi-x-circle float-end"></i>
             </button>
 
-            <a href="{{ route('owner.dashboard') }}" class="d-flex flex-column align-items-center text-decoration-none link-dark">
-                <span class="fs-5 head py-5 minus">~/OWNER NAV</span>
-            </a>
+            <div class="d-flex justify-content-start align-items-center text-decoration-none link-dark p-3 gap-2">
+                <img src="{{ asset('image/logo2.jpg') }}" alt="logo" style="width:10%;" >
+                <div class="head">PEMS</div>
+            </div>
 
            
                 <ul class="nav nav-pills flex-column mb-sm-auto px-3 pt-4 align-items-start gap-1 border-top " id="menu">
@@ -16,7 +17,7 @@
                             <i class="fs-5 bi-speedometer2"></i> <span class="ms-1 d-sm-inline">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item px-2 {{ request()->is('owner/accounts') ? 'active' : '' }}">
+                    <li class="nav-item px-2 {{ request()->is('owner/accounts', 'owner/register-form', 'owner/view-profile/*') ? 'active' : '' }}">
                         <a href="{{ url('owner/accounts') }}" class="nav-link align-middle px-0 link-dark">
                             <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Account</span>
                         </a>

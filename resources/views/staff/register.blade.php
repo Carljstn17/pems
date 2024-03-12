@@ -1,4 +1,4 @@
-@extends('layout.owner')
+@extends('layout.staff')
 
     @section('content')
 
@@ -9,20 +9,18 @@
                     <i class="bi-backspace"></i>
                 </a>
             </div>
-            <i class="fs-5 bi-person-plus me-1"></i> <span class="d-sm-inline text-nowrap head fs-5"> Register Account</span>
+            <i class="fs-5 bi-person-plus me-1"></i> <span class="d-sm-inline text-nowrap fs-5 head"> Register Account</span>
         </div>
     </div>    
 
-    <div class="mt-3 ">
-         <div class="card mx-auto p-4 mt-3">
+    <div class="mt-3">
+        <div class="card mx-auto p-4 mt-3">
                     <p class="fs-5 py-3 px-2">Fillup this form to add new account</p>
-        <form method="POST" action="{{ url('/owner/register') }}">
+        <form method="POST" action="{{ route('staff.register') }}">
             @csrf
             <div class="mb-3 input-group">
                 <label for="" class="input-group-text">Job</label>
                 <select class="form-select" name="role" required>
-                    <option value="owner">Owner</option>
-                    <option value="staff">Staff</option>
                     <option value="laborer">Laborer</option>
                 </select>
             </div>

@@ -1,8 +1,11 @@
 <div class="col-12 col-lg-auto sidebar" id="navbarNav">
     <div class="d-flex flex-column flex-shrink-0 pt-1 min-vh-100 bg-white">
-        <a href="{{ route('dashboard') }}" class="d-flex flex-column align-items-center text-decoration-none link-dark">
-            <span class="fs-5 head py-5 minus">~/STAFF NAV</span>
-        </a>
+        
+        <div class="d-flex justify-content-start align-items-center text-decoration-none link-dark p-3 gap-2">
+                <img src="{{ asset('image/logo2.jpg') }}" alt="logo" style="width:10%;" >
+                <div class="head">PEMS</div>
+            </div>
+        
         <ul class="nav nav-pills flex-column mb-sm-auto px-3 pt-4 align-items-start gap-1 border-top" id="menu">
             <li class="nav-item px-2 {{ request()->is('staff/dashboard') ? 'active' : '' }} ">
                 <a href="{{ url('staff/dashboard') }}" class="nav-link align-middle px-0 link-dark">
@@ -39,7 +42,7 @@
                     <i class="fs-5 bi-gear-wide"></i> <span class="ms-1 d-sm-inline">Machinery</span>
                 </a>
             </li>
-            <li class="nav-item px-2 mb-3 {{ request()->routeIs('staff.laborer') ? 'active' : '' }}">
+            <li class="nav-item px-2 mb-3 {{ request()->routeIs('staff.laborer', 'staff.register.form') ? 'active' : '' }}">
                 <a href="{{ route('staff.laborer') }}" class="nav-link align-middle px-0 link-dark">
                     <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Register</span>
                 </a>

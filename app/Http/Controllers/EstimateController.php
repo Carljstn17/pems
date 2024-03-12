@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Estimate;
+use App\Models\Project;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\EstimateTotal;
@@ -28,10 +29,11 @@ class EstimateController extends Controller
     
     public function showLatestEstimate()
     {
-        $perPage = 5;
+        $perPage = 20;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         
         $estimates = Estimate::whereIn('status', ['accepted','pending'])
+            ->orderByRaw("FIELD(status, 'accepted', 'pending')")
             ->latest('updated_at')
             ->get()
             ->groupBy('group_id');
@@ -49,10 +51,11 @@ class EstimateController extends Controller
 
     public function showLatestOwner()
     {
-        $perPage = 5;
+        $perPage = 20;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         
         $estimates = Estimate::whereIn('status', ['accepted','pending'])
+            ->orderByRaw("FIELD(status, 'pending', 'accepted')")
             ->latest('updated_at')
             ->get()
             ->groupBy('group_id');
@@ -70,16 +73,15 @@ class EstimateController extends Controller
 
     public function showNewEstimate()
     {
-        $formId = Str::uuid(); 
-
-        return view('estimate.new', compact('formId'));
+         $projects = Project::where('status', 'new')->latest()->get();
+        return view('estimate.new', compact('projects'));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
     
     public function showRejectEstimate()
     {
-        $perPage = 5;
+        $perPage = 20;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         
         $estimates = Estimate::where('status', 'rejected')
@@ -98,7 +100,7 @@ class EstimateController extends Controller
 
     public function rejectEstimate()
     {
-        $perPage = 5;
+        $perPage = 20;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         
         $estimates = Estimate::where('status', 'rejected')
@@ -154,21 +156,25 @@ class EstimateController extends Controller
     {
         // Validation (you can customize based on your needs)
         $request->validate([
-            'description.*' => 'required|string',
-            'uom.*' => 'nullable|string',
-            'quantity.*' => 'required|numeric',
-            'unit_cost.*' => 'required|numeric',
-            'remarks' => 'required|string'
+            'title' => 'required|string|max:120',
+            'project_id' => 'required',
+            'description.*' => 'required|string|max:120',
+            'uom.*' => 'nullable|string|max:15',
+            'quantity.*' => 'required|numeric|max:999',
+            'unit_cost.*' => 'required|numeric|max:999999',
+            'remarks' => 'required|string|max:255'
         ]);
 
         // Save items to the database
         $latestGroupId = Estimate::max('group_id');
         $groupIdCounter = (int)substr($latestGroupId, -5) + 1;
-        $groupId = 'EstimateID-' . str_pad($groupIdCounter, 5, '0', STR_PAD_LEFT);
+        $groupId = 'ID-' . str_pad($groupIdCounter, 5, '0', STR_PAD_LEFT);
 
         foreach ($request->description as $key => $description) {
             $quantity = $request->quantity[$key];
             $unitCost = $request->unit_cost[$key];
+            $project_id = $request->input('project_id');
+            $title = $request->input('title');
 
             // Calculate the amount
             $amount = $quantity * $unitCost;
@@ -176,6 +182,8 @@ class EstimateController extends Controller
             // Create Estimate with amount
             Estimate::create([
                 "user_id" => Auth::id(),
+                'project_id' => $project_id,
+                'title' => $title,
                 'description' => $description,
                 'uom' => $request->uom[$key],
                 'quantity' => $quantity,
@@ -203,16 +211,17 @@ class EstimateController extends Controller
     {
         // Validation (you can customize based on your needs)
         $request->validate([
-            'description.*' => 'required|string',
-            'uom.*' => 'nullable|string',
-            'quantity.*' => 'required|numeric',
-            'unit_cost.*' => 'required|numeric',
+            'description.*' => 'required|string|max:120',
+            'uom.*' => 'nullable|string|max:15',
+            'quantity.*' => 'required|numeric|max:999',
+            'unit_cost.*' => 'required|numeric|max:999999',
+            'remarks' => 'required|string|max:255'
         ]);
 
         // Save items to the database
         $latestGroupId = Estimate::max('group_id');
         $groupIdCounter = (int) substr($latestGroupId, -5) + 1;
-        $groupId = 'EstimateID-' . str_pad($groupIdCounter, 5, '0', STR_PAD_LEFT);
+        $groupId = 'ID-' . str_pad($groupIdCounter, 5, '0', STR_PAD_LEFT);
 
         foreach ($request->description as $key => $description) {
             $quantity = $request->quantity[$key];
@@ -224,6 +233,8 @@ class EstimateController extends Controller
             // Create Estimate with amount
             $estimateData = [
                 'user_id' => Auth::id(),
+                'project_id' => $projectId,
+                'title' => $title,
                 'description' => $description,
                 'uom' => $request->uom[$key],
                 'quantity' => $quantity,
@@ -249,7 +260,7 @@ class EstimateController extends Controller
         } 
 
         // Redirect or perform any other actions as needed
-        return redirect()->route('owner.estimate')->with('success', 'Items added successfully.');
+        return redirect()->route('owner.estimate')->with('success', 'Items added successfully.')->withInput();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -326,5 +337,13 @@ class EstimateController extends Controller
         $logoUrl = 'https://example.com/logo.jpg';
 
         return Excel::download(new EstimatesExport($group_id, $logoUrl), 'estimates.xlsx');
+    }
+    
+    
+    public function showCreateForm()
+    {
+        $projects = Project::where('status', 'new')->latest()->get();
+        
+        return view('owner.createEstimate', compact('projects'));
     }
 }

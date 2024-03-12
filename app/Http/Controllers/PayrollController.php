@@ -24,7 +24,7 @@ class PayrollController extends Controller
 
     public function showPayrollLatest()
     {
-        $payrollBatch = PayrollBatch::latest('created_at')->paginate(5);
+        $payrollBatch = PayrollBatch::latest('created_at')->paginate(20);
         $laborers = User::where('role', 'laborer')->get();
 
         return view('payroll.latest', compact('payrollBatch','laborers'));
@@ -32,7 +32,7 @@ class PayrollController extends Controller
 
     public function ownerPayrollLatest()
     {
-        $payrollBatch = PayrollBatch::latest('created_at')->paginate(5);
+        $payrollBatch = PayrollBatch::latest('created_at')->paginate(20);
         $laborers = User::where('role', 'laborer')->get();
 
         return view('owner.payroll', compact('payrollBatch','laborers'));

@@ -2,7 +2,7 @@
 
     @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-5 bi-wallet"></i> <span class="d-sm-inline">Payroll | On-going Project Payroll</span>
+            <i class="fs-5 bi-wallet"></i> <span class="d-sm-inline fs-head">Payroll | On-going Project Payroll</span>
         </div>
 
         <div class="py-2 mt-3">
@@ -12,7 +12,7 @@
                 <form action="" method="GET" >
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
-                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                        <button type="submit" class="btn btn-outline-dark">Search</button>
                     </div>
                 </form>
             </div>

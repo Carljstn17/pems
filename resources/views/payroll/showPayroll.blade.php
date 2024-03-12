@@ -2,24 +2,41 @@
 
     @section('content')
         <div class="py-2 mt-2 mb-3">
-            <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | Project - 
-                @if ($payrolls->isNotEmpty())
-                {{ $payrolls->first()->project_id }}
-                @else
-                @endif</span>   |   
-                <span style="color: {{ $batch->remarks === 'valid' ? 'green' : 'red' }}">{{ $batch->remarks }}</span>
+            <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline fs-5 head">Payroll | Project - 
+                {{ $batch->project_id }} |</span>  
+                <span class="fs-5 head" style="color: {{ $batch->remarks === 'valid' ? 'green' : 'red' }}">{{ $batch->remarks }}</span>
         </div>
         
-        <div class="d-flex justify-content-between mb-2">
-            <div class="input-group"  style="width: 200px;">
-                <label for="ot_rate" class="input-group-text"><span class="bold">Payroll Batch</span></label>
-                <input type="text" id="otRate" class="form-control ot_rate" name="ot_rate" value="{{ $batch->id }}" readonly>
-            </div>    
-            <div class="input-group"  style="width: 200px;">
-                <label for="ot_rate" class="input-group-text"><span class="bold">OT-RATE</span></label>
-                <input type="text" id="otRate" class="form-control ot_rate" name="ot_rate" value="{{ number_format($batch->ot_rate, 2) }}" readonly>
-            </div>    
-        </div>
+        <table class="table table-bordered">
+                <thead>
+                    <th>
+                        <span class="bold text-nowrap">Project Description</span>
+                    </th>
+                    <th>
+                        <span class="bold text-nowrap">Entry By:</span>
+                    </th>
+                    <th >
+                        <span class="bold">Date</span>
+                    </th>
+                    <th >
+                        <span class="bold text-nowrap">OT Rate</span>
+                    </th>
+                </thead>
+                <tbody>
+                    <td>
+                        <span>{{ $batch->project->project_dsc }}</span>
+                    </td>
+                    <td >
+                        <span>{{ $batch->entry->name }}</span>
+                    </td>
+                    <td >
+                        <span>{{ $batch->created_at->format('Y-m-d') }}</span>
+                    </td>
+                    <td >
+                        <span>{{ $batch->ot_rate }}</span>
+                    </td>
+                </tbody>
+            </table>
 
         <table class="table table-bordered" id="dataTable">
             <thead>
@@ -69,6 +86,7 @@
             </tfoot>
         </table>
 
+        @if($batch->remarks !== 'invalid')
         @if(Auth::user() && Auth::user()->id == $batch->entry_by)
             <button class="btn btn-danger float-end" type="button" data-bs-toggle="modal" data-bs-target="#updateRemarksModal">
                 Incorrect
@@ -100,7 +118,9 @@
 
             <a href="{{ route('payroll.export', ['batchId' => $batch->id]) }}" class="btn btn-success float-end me-2">Export Payroll</a>
         @endif
-
+        @else
+        <span class="text-danger" >This payroll is invalid.</span>
+        @endif
         
         
         <script>

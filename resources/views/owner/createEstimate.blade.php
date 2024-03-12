@@ -1,4 +1,4 @@
-@extends('layout.staff')
+@extends('layout.owner')
 
 @section('content')
     <div class="py-2 mt-2">
@@ -16,11 +16,9 @@
     @endif
 
     <div class="pb-2 m-3">
-        <form action="{{ route('estimate.store') }}" method="post" class="p-2">
+        <form action="{{ route('owner.storeEstimate') }}" method="post" class="p-2">
             @csrf
-            <div class="table-responsive">
-                
-                <div class="d-flex justify-content-between mb-3">
+            <div class="d-flex justify-content-between mb-3">
                     <select name="project_id" id="project_id" class="form-select" style="width: 400px;">
                         <option value="">Select a project</option>
                         @foreach($projects as $project)
@@ -36,7 +34,8 @@
                         <input type="text" class="form-control" placeholder="Estimate Title" name="title" value="{{ old('title') }}">
                     </div>    
                 </div>
-                
+
+            <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -78,14 +77,14 @@
             </div>
             
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-success" onclick="addRow()">+ Add Row</button>
+                <button type="button" class="btn btn-success text-nowrap" onclick="addRow()">+ Add Row</button>
             </div>
 
             <div>
                 <label for=""><span class="bold">Remarks</span></label>
                 <textarea name="remarks" id="remarks" rows="5" class="border border-subtle" style="width:100%;resize:none;">{{ old('remarks') }}</textarea>
             </div>
-            <button type="submit" class="btn btn-dark float-end">Submit Estimate</button>
+            <button type="submit" class="btn btn-dark float-end text-nowrap">Submit Estimate</button>
         </form>
     </div>
 

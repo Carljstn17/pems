@@ -231,4 +231,9 @@ class AuthController extends Controller
         
         return view('owner.profile', compact('user', 'id'));
     }
+    
+    public function showRegisterFormLaborer()
+    {
+        return view('staff.register');
+    }
 }

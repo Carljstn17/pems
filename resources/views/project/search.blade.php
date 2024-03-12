@@ -8,14 +8,14 @@
 
             <div class="py-2 mt-3">
                 <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#addProjectModal">
                         <span><i class="bi bi-plus"></i> Add New Project</span>
                     </button>
 
                     <form action="{{ route('search') }}" method="GET">
                         <div class="input-group">
                             <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
-                            <button type="submit" class="btn btn-outline-primary">Search</button>
+                            <button type="submit" class="btn btn-outline-dark">Search</button>
                         </div>
                     </form>
                 </div>

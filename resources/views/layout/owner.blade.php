@@ -36,29 +36,40 @@
 
     <script>
         // Check the screen width on page load
-window.addEventListener('load', function() {
-  updateClassBasedOnScreenWidth();
-});
-
-// Check the screen width on window resize
-window.addEventListener('resize', function() {
-  updateClassBasedOnScreenWidth();
-});
-
-// Function to update the class based on screen width
-function updateClassBasedOnScreenWidth() {
-  var myDiv = document.getElementById('navbarNav');
-
-  // Check if the screen width is less than or equal to 767px
-  if (window.innerWidth <= 767) {
-    // Remove the class if the condition is met
-    myDiv.classList.remove('show');
-  } else {
-    // Add the class if the condition is not met
-    myDiv.classList.add('show');
-  }
-}
-
+    window.addEventListener('load', function() {
+      updateClassBasedOnScreenWidth();
+    });
+    
+    // Check the screen width on window resize
+    window.addEventListener('resize', function() {
+      updateClassBasedOnScreenWidth();
+    });
+    
+    // Function to update the class based on screen width
+    function updateClassBasedOnScreenWidth() {
+      var myDiv = document.getElementById('navbarNav');
+    
+      // Check if the screen width is less than or equal to 767px
+      if (window.innerWidth <= 767) {
+        // Remove the class if the condition is met
+        myDiv.classList.remove('show');
+      } else {
+        // Add the class if the condition is not met
+        myDiv.classList.add('show');
+      }
+    }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const rows = document.querySelectorAll(".clickable-row");
+        rows.forEach(row => {
+            row.addEventListener("click", function () {
+                const url = this.getAttribute("data-url");
+                if (url) {
+                    window.location.href = url;
+                }
+            });
+        });
+    });
     </script>
 </body>
 

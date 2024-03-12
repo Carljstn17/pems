@@ -2,13 +2,13 @@
 
 @section('content')
     <div class="py-2 mt-2">
-        <i class="fs-5 bi-tools"></i> <span class="d-sm-inline">Machinery | All Machinery</span>
+        <i class="fs-5 bi-tools"></i> <span class="d-sm-inline fs-5 head">Machinery | All Machinery</span>
     </div>
 
-    <div class="py-2 mt-3">
-        <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
+    <div class="pb-2 m-3">
+        <div class="d-flex justify-content-between gap-2">
             <div>
-                <button class="btn btn-outline-primary" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#addMachineryModal">
+                <button class="btn btn-outline-dark" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#addMachineryModal">
                     <span><i class="bi bi-plus"></i>Add Machinery</span>
                 </button>
             </div>
@@ -16,7 +16,7 @@
             <form action="{{ route('machinery.search') }}" method="GET">
                 <div class="input-group">
                     <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
-                    <button type="submit" class="btn btn-outline-primary">Search</button>
+                    <button type="submit" class="btn btn-outline-dark">Search</button>
                 </div>
             </form>
         </div>
@@ -24,7 +24,7 @@
 
     @include('machinery.create_machinery_modal')  <!-- Update the modal include reference -->
 
-    <div class="table table-responsive mt-3">
+    <div class="table table-responsive mt-3 pb-1 px-3">
         <table class="table table-bordered">
             <thead>
                 <tr class="text-center">
@@ -48,7 +48,7 @@
                             <td class="text-success">{{ $machinery->machineryReport->status }}</td>  <!-- Update field name -->
                             <td>{{ $machinery->machineryReport->whereabout }}</td>  <!-- Update field name -->
                             <td class="text-center">
-                                <button class="btn btn-outline-primary" data-toggle="modal" data-target="#editMachineryModal{{ $machinery->id }}">
+                                <button class="btn btn-outline-dark" data-toggle="modal" data-target="#editMachineryModal{{ $machinery->id }}">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                             </td>

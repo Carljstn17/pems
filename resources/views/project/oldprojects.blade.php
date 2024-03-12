@@ -3,19 +3,19 @@
     @section('content')
         <div class="">
             <div class="py-2 mt-2">
-                <i class="fs-5 bi-buildings"></i> <span class="d-sm-inline">Projects | Old/Finished</span>
+                <i class="fs-5 bi-buildings"></i> <span class="d-sm-inline fs-5 head">Projects | Old/Finished</span>
             </div>
            
             <div class="py-2 mt-3">
                 <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                    <a href="{{ route('add-project') }}" class="btn btn-outline-dark">
                         <span><i class="bi bi-plus"></i> Add New Project</span>
-                    </button>
+                    </a>
 
                     <form action="{{ route('search.old') }}" method="GET">
                         <div class="input-group">
                             <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
-                            <button type="submit" class="btn btn-outline-primary">Search</button>
+                            <button type="submit" class="btn btn-outline-dark">Search</button>
                         </div>
                     </form>
                 </div>
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="mt-3 px-3">
-                    <a href="{{ url('/staff/ongoing-projects') }}" class="text-decoration-none fst-italic">/View On-going Projects</a>
+                    <a href="{{ url('/staff/ongoing-projects') }}" class="text-decoration-none text-secondary fst-italic">/View On-going Projects</a>
                 </div>
 
             </div>

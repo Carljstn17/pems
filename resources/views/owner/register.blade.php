@@ -1,30 +1,22 @@
 @extends('layout.owner')
 
     @section('content')
-    
-    <style>
-        table{
-            border-radius: 1rem !important;
-        }
-        tbody,tr,td{
-            background-color:white !important;
-        }
-    </style>
 
     <div class="py-2 mt-2">
-        <i class="fs-5 bi-person-plus"></i> <span class="d-sm-inline">Account</span>
+        <i class="fs-5 bi-person-plus"></i> <span class="fs-5 head d-sm-inline">Account</span>
     </div>    
 
-        <div class="py-2 mt-3 border-bottom border-subtle pb-3 d-flex justify-content-between  gap-2">
+        <div class=" m-3 d-flex justify-content-between  gap-2">
             <div>
-                <a class="btn btn-outline-primary" style="transition: 0.8s;" href="{{ route('owner.register.form')}}">
-                    <span><i class="bi bi-plus"></i>Register Account</span>
+                <a class="btn btn-outline-dark text-nowrap" style="transition: 0.8s;" href="{{ route('owner.register.form')}}">
+                    <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Register Account</span>
+                    <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Register</span>
                 </a>
             </div>
             
             <div>
             <div class="input-group">
-                <button class="btn btn-outline-secondary" type="button">
+                <button class="btn btn-outline-dark" type="button">
                     <i class="bi bi-search"></i>
                 </button>
                 <input class="form-control border-dark-subtle" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
@@ -65,17 +57,19 @@
                                     <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->username }}">{{ $user->username }}</td>
                                     <td class="d-flex justify-content-center gap-2">
    
-                                        <a href="{{ route('owner.show.profile', $user->id) }}" class="btn btn-outline-primary" style="transition: 0.8s;">
+                                        <a href="{{ route('owner.show.profile', $user->id) }}" class="btn btn-outline-dark" style="transition: 0.8s;">
                                             <i class="bi bi-pencil"></i>
                                         </a>
 
-                                        <form id="deleteStaffForm{{ $user->id }}" method="POST" action="{{ route('owner.user-delete', ['user' => $user->id]) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-outline-danger" onclick="confirmDeleteStaff({{ $user->id }})">
-                                                <i class="bi bi-trash3"></i>
-                                            </button>
-                                        </form>
+                                        @if($user->role !== 'owner')
+                                            <form id="deleteStaffForm{{ $user->id }}" method="POST" action="{{ route('owner.user-delete', ['user' => $user->id]) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-outline-danger" onclick="confirmDeleteStaff({{ $user->id }})">
+                                                    <i class="bi bi-trash3"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>  
                                 </tr>
                                 @include('owner.update-modal', ['user' => $user])

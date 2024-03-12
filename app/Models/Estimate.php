@@ -16,6 +16,8 @@ class Estimate extends Model
 
     protected $fillable = [
         'group_id',
+        'project_id',
+        'title',
         'user_id',
         'description', 
         'uom', 
@@ -30,6 +32,11 @@ class Estimate extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
     }
 
     public function getAmount() {

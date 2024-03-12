@@ -39,7 +39,9 @@ class SearchController extends Controller
 
         $estimates = Estimate::where(function ($queryBuilder) use ($searchQuery, $status) {
             $queryBuilder->where('description', 'LIKE', "%{$searchQuery}%")
+                ->orWhere('status', 'LIKE', "%{$searchQuery}%")
                 ->orWhere('group_id', 'LIKE', "%{$searchQuery}%")
+                ->orWhere('title', 'LIKE', "%{$searchQuery}%")
                 ->orWhere('user_id', 'LIKE', "%{$searchQuery}%")
                 ->orWhereHas('entry', function ($query) use ($searchQuery) {
                     $query->where('username', 'LIKE', "%{$searchQuery}%");
@@ -59,7 +61,9 @@ class SearchController extends Controller
 
         $estimates = Estimate::where(function ($queryBuilder) use ($searchQuery, $status) {
             $queryBuilder->where('description', 'LIKE', "%{$searchQuery}%")
+                ->orWhere('status', 'LIKE', "%{$searchQuery}%")
                 ->orWhere('group_id', 'LIKE', "%{$searchQuery}%")
+                ->orWhere('title', 'LIKE', "%{$searchQuery}%")
                 ->orWhere('user_id', 'LIKE', "%{$searchQuery}%")
                 ->orWhereHas('entry', function ($query) use ($searchQuery) {
                     $query->where('username', 'LIKE', "%{$searchQuery}%");

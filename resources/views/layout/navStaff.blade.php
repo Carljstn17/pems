@@ -1,9 +1,4 @@
-<nav class="navbar px-2 py-3 d-flex justify-content-between">
-    <div>
-        <a class="navbar-brand d-none d-md-inline head" href="#">PROJECT EXPENSES MANAGEMENT SYSTEM</a>
-        <span class="navbar-brand d-inline d-md-none mx-2">PEMS</span>
-    </div>
-
+<nav class="navbar px-2 py-3 d-flex justify-content-end">
     <div class=" d-flex justify-content-end">
         <div class="dropdown me-3">
             <span id="notification-icon-estimate" class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

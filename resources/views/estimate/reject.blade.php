@@ -2,60 +2,66 @@
 
     @section('content')
         <div class="py-2 mt-2">
-            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline">Estimate | Rejected</span>
+            <i class="fs-5 bi-card-checklist"></i> <span class="d-sm-inline fs-5 head">Estimate | Rejected</span>
         </div>
 
-        <div class="py-2 mt-3">
-            <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
-                <a href="{{ url('/staff/estimate/new') }}" class="btn btn-outline-primary" style="transition:0.8s;"">
-                    <span><i class="bi bi-plus"></i>Create New Estimate</span>
+        <div class="pb-2 m-3">
+            <div class="d-flex justify-content-between gap-2">
+                <a href="{{ route('staff.estimate.form') }}" class="btn btn-outline-dark" style="transition: 0.8s;">
+                    <span><i class="bi bi-plus text-nowrap"></i>Create New Estimate</span>
                 </a>
 
                 <form action="{{ route('search.reject') }}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
-                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                        <button type="submit" class="btn btn-outline-dark">Search</button>
                     </div>
                 </form>
             </div>
         </div>
         
         <div class="mt-3 pb-1 px-3">
-            @forelse($estimates as $group_id => $estimate)
-                @php
-                    $firstEstimate = $estimate->first();
-                @endphp
-            
-                <a href="{{ route('show.reject', ['group_id' => $firstEstimate->group_id]) }}" class="link-dark text-decoration-none">
-                    <div class="row p-4 d-flex justify-content-center rounded-2 border hover3 mb-2">
-                        <div class="col">
-                            <span class="bold">Status: &nbsp</span>{{ $firstEstimate->status }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Entry ID: &nbsp</span>{{ $firstEstimate->group_id }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Entry by: &nbsp</span>{{ $firstEstimate->user->username }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Entry At: &nbsp</span>{{ $firstEstimate->created_at->diffForHumans() }}
-                        </div>
-                    </div>
-                </a>
-            @empty
-            <div class="text-center my-5">
-                <i class="bi bi-box"></i>
-                <p class="no-text">No reject estimates yet.</p>
+
+            <div class="table-responsive">
+            <table class="table table-hover"  id="estimateTable">
+                <thead>
+                    <tr>
+                        <th scope="col"><span class="bold text-nowrap">Status</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Title</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Entry By</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Date</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($estimates as $group_id => $estimate)
+                        @php
+                            $firstEstimate = $estimate->first();
+                        @endphp
+                        <tr data-url="{{ route('estimate.form', ['group_id' => $firstEstimate->group_id]) }}" class="clickable-row">
+                            <td><span class="text-nowrap">{{ $firstEstimate->status }}</span></td>
+                            <td><span class="text-nowrap">{{ $firstEstimate->title }}</span></td>
+                            <td><span class="text-nowrap">{{ $firstEstimate->user->username }}</span></td>
+                            <td><span class="text-nowrap">{{ $firstEstimate->updated_at->diffForHumans() }}</span></td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center my-5">
+                                <i class="bi bi-box"></i>
+                                <p class="no-text">No estimates yet.</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
             </div>
-            @endforelse
         </div>
 
-        <div class="mt-1">
+        <div class="px-3 d-flex justify-content-between">
+            <a href="{{ route('latest') }}" class="link-secondary text-decoration-none fst-italic">
+                <span class="d-none d-sm-inline text-nowrap">/View Latest Estimate</span>
+                <span class="d-sm-inline d-sm-none">/Latest</span>
+            </a>
             {{ $estimates->links('vendor.pagination.bootstrap-4') }}
-        </div>
-
-        <div class="mt-3 pt-2 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('latest') }}" class="text-decoration-none">View Latest Estimate</a>
         </div>
 
 @endsection
