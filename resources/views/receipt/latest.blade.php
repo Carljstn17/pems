@@ -8,9 +8,9 @@
         <div class="pb-2 m-3">
             <div class="d-flex justify-content-between gap-2">
                 <div>
-                    <button class="btn btn-outline-dark" style="transition:0.8s;"data-bs-toggle="modal" data-bs-target="#createReceiptModal">
-                        <span><i class="bi bi-plus"></i>Add New Receipt</span>
-                    </button>
+                    <a href="{{ route('receipt.entry.form') }}" class="btn btn-outline-dark" style="transition:0.8s;">
+                        <span><i class="bi bi-plus text-nowrap"></i>Add New Receipt</span>
+                    </a>
 
                     <button class="btn btn-outline-success" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#createSupplierModal">
                         <span><i class="bi bi-plus"></i>Supplier</span>
@@ -25,8 +25,7 @@
                 </form>
             </div>
         </div>
-
-        @include('layout.create-receipt-modal')
+        
         @include('layout.create-supplier-modal')
 
         <div class="mt-3 pb-1 px-3">

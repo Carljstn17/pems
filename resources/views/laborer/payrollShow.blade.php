@@ -11,23 +11,23 @@
                     <table class="table table-bordered table-rounded mx-auto">
                         <tbody class="table-light">
                             <tr>
-                                <td>
-                                    <span class="d-none d-sm-inline">Project ID: {{ $payrolls->project_id }}</span>
-                                    <span class="d-sm-inline d-sm-none">PR-ID: {{ $payrolls->project_id }}</span>
-                                </td>
                                 <td class="narrow-cell">
                                     <span class="d-none d-sm-inline">Batch ID: {{ $payrolls->batch_id }}</span>
-                                    <span class="d-sm-inline d-sm-none">B-ID: {{ $payrolls->batch_id }}</span>
+                                    <span class="d-sm-inline d-sm-none text-nowrap">Batch ID: {{ $payrolls->batch_id }}</span>
+                                </td>
+                                <td>
+                                    <span class="d-none d-sm-inline">Project ID: {{ $payrolls->project_dsc }} </span>
+                                    <span class="d-sm-inline d-sm-none text-nowrap">{{ $payrolls->project_dsc }}</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="narrow-cell">
-                                    <span class="d-none d-sm-inline">Created At: {{ \Carbon\Carbon::parse($payrolls->created_at)->format('Y-m-d') }}</span>
-                                    <span class="d-sm-inline d-sm-none">{{ \Carbon\Carbon::parse($payrolls->created_at)->format('Y-m-d') }}</span>
+                                    <span class="d-none d-sm-inline">Entry By: {{ $payrolls->entry_by }}</span>
+                                    <span class="d-sm-inline d-sm-none text-nowrap">{{ $payrolls->entry_by }}</span>
                                 </td>
                                 <td class="narrow-cell">
-                                    <span class="d-none d-sm-inline">Entry By: {{ $payrolls->entry_by }}</span>
-                                    <span class="d-sm-inline d-sm-none">{{ $payrolls->entry_by }}</span>
+                                    <span class="d-none d-sm-inline">Created At: {{ \Carbon\Carbon::parse($payrolls->created_at)->format('Y-m-d') }}</span>
+                                    <span class="d-sm-inline d-sm-none text-nowrap">{{ \Carbon\Carbon::parse($payrolls->created_at)->format('Y-m-d') }}</span>
                                 </td>
                             </tr>
                         </tbody>

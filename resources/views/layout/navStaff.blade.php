@@ -57,7 +57,7 @@
             <!-- Dropdown menu -->
             <div class="dropdown-menu" style="margin-left:-8rem; max-height: 300px; overflow-y: auto;" aria-labelledby="notification-icon-advance">
                 @php
-                    $requests = \App\Models\AdvanceRequest::orderBy('created_at', 'desc')->with('user')->get();
+                    $requests = \App\Models\AdvanceRequest::orderBy('created_at', 'desc')->with("user")->get();
                 @endphp
                 <a href="{{ route('request.allNotif') }}" class="d-flex justify-content-end link-dark text-decoration-none text-secondary">
                     <span class="text-end">see all</span>
@@ -67,7 +67,11 @@
                     @if ($count < 8)
                         <a href="{{ route('request.notif', $req->id) }}" class="card rounded-0 border link-dark text-decoration-none text-secondary">
                             <div class="px-2">
-                                <span>{{ $req->user->username }}</span><br>
+                                @if ($req->user)
+                                    <span>User: {{ $req->user->username }}</span><br>
+                                @else
+                                    <span>User is null for AdvanceRequest ID: {{ $req->id }}</span><br>
+                                @endif
                                 <span>{{ $req->created_at->diffForHumans() }}</span>
                             </div>
                         </a>

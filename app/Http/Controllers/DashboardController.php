@@ -10,6 +10,7 @@ use App\Models\Receipt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\AdvanceRequest;
 
 class DashboardController extends Controller
 {
@@ -41,4 +42,14 @@ class DashboardController extends Controller
 
         return view('owner.panel', compact('estimates', 'projects', 'payrolls', 'receipts'));
     }
+    
+    public function Dashboard()
+    {
+        $advanceRequest = AdvanceRequest::where('status', 'accepted')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return view('laborer.dashboard', compact('advanceRequest'));
+    }
+    
 }

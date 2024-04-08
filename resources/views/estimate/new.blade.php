@@ -40,9 +40,8 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class=" col-md-1"><span class="bold">No</span></th>
                             <th class=" col-md-4"><span class="bold">Description</span></th>
-                            <th class=" col-md-1"><span class="bold">UOM</span></th>
+                            <th ><span class="bold">UOM</span></th>
                             <th><span class="bold ">Quantity</span></th>
                             <th><span class="bold">UnitCost</span></th>
                             <th><span class="bold">Amount</span></th>
@@ -51,10 +50,8 @@
                     </thead>
                     <tbody>
                         @for ($i = 0; $i < old('row_count', 1); $i++)
-                        <input type="hidden" name="row_count" value="{{ old('row_count', 1) }}">
                             <tr>
-                                <td><input type="text" class="form-control no-border" name="no[]" value="{{ $i + 1 }}" readonly></td>
-                                <td><input type="text" class="form-control no-border" placeholder="item description" name="description[]" value="{{ old('description.' . $i) }}"></td>
+                                <td><input type="text" class="form-control no-border" placeholder="item description" name="description[]" value="{{ old('description.' . $i) }}" ></td>
                                 <td><input type="text" class="form-control no-border" placeholder="measure" name="uom[]" value="{{ old('uom.' . $i) }}"></td>
                                 <td><input type="number" class="form-control no-border" name="quantity[]" placeholder="0" oninput="calculateAmount(this)" value="{{ old('quantity.' . $i) }}" step="any"></td>
                                 <td><input type="number" class="form-control no-border" name="unit_cost[]" placeholder="per unit" value="{{ old('unit_cost.' . $i) }}" oninput="calculateAmount(this)"></td>
@@ -69,7 +66,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5" class="text-end"><strong>Total Amount:</strong></td>
+                            <td colspan="4" class="text-end"><strong>Total Amount:</strong></td>
                             <td><input type="text" class="form-control no-border" name="total_amount" id="total" value="{{ old('total_amount') }}" readonly></td>
                             <td></td>
                         </tr>
@@ -100,7 +97,6 @@
     var newRow = $("<tr>");
     var cols = "";
 
-    cols += '<td><input type="text" class="form-control no-border" name="no[]" value="' + rowCount + '" readonly></td>';
     cols += '<td><input type="text" class="form-control no-border" placeholder="item description" name="description[]"></td>';
     cols += '<td><input type="text" class="form-control no-border" placeholder="measure" name="uom[]"></td>';
     cols += '<td><input type="text" class="form-control no-border" name="quantity[]" placeholder="0" oninput="calculateAmount(this)"></td>';
@@ -156,6 +152,41 @@
         // Update total on page load
         $(document).ready(function () {
             updateTotal();
+        });
+        
+        
+        $(document).on('input', 'input[name="quantity[]"]', function() {
+            var maxLength = 3; // Set the maximum length
+            if ($(this).val().length > maxLength) {
+                $(this).val($(this).val().substring(0, maxLength));
+            }
+        });
+        
+        $(document).on('input', 'input[name="unit_cost[]"]', function() {
+            var maxLength = 5; // Set the maximum length
+            if ($(this).val().length > maxLength) {
+                $(this).val($(this).val().substring(0, maxLength));
+            }
+        });
+        
+        $(document).on('keypress', 'input[name="quantity[]"], input[name="unit_cost[]"]', function(event) {
+            if (event.key === 'e') {
+                event.preventDefault();
+            }
+        });
+        
+         $(document).on('input', 'input[name="description[]"]', function() {
+            var maxLength = 35; // Set the maximum length
+            if ($(this).val().length > maxLength) {
+                $(this).val($(this).val().substring(0, maxLength));
+            }
+        });
+        
+        $(document).on('input', 'input[name="uom[]"]', function() {
+            var maxLength = 15; // Set the maximum length
+            if ($(this).val().length > maxLength) {
+                $(this).val($(this).val().substring(0, maxLength));
+            }
         });
     </script>
 @endsection

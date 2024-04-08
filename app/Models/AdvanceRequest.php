@@ -11,6 +11,10 @@ class AdvanceRequest extends Model
 
     protected $fillable = ['amount', 'text', 'entry_by'];
 
+    public function entry()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'entry_by', 'id');
+    }
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class, 'entry_by', 'id');

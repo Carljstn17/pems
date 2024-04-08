@@ -3,6 +3,7 @@
                 <span class="navbar-toggler-icon"></span>
         </button>
         
+        @if(Auth::user()->role == 'owner')
         <div class="dropdown me-3">
             <span id="notification-icon-estimate" class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="bi-bell"></i>
@@ -50,6 +51,7 @@
                 @endforelse
             </div>
         </div>
+        @endif
 </nav>
             
         

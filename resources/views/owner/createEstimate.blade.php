@@ -156,5 +156,43 @@
         $(document).ready(function () {
             updateTotal();
         });
+        
+        $(document).on('input', 'input[name="quantity[]"]', function() {
+            var maxLength = 3; // Set the maximum length
+            if ($(this).val().length > maxLength) {
+                $(this).val($(this).val().substring(0, maxLength));
+            }
+        });
+        
+        $(document).on('input', 'input[name="unit_cost[]"]', function() {
+            var maxLength = 5; // Set the maximum length
+            if ($(this).val().length > maxLength) {
+                $(this).val($(this).val().substring(0, maxLength));
+            }
+        });
+        
+        $(document).on('keypress', 'input[name="quantity[]"], input[name="unit_cost[]"]', function(event) {
+            if (event.key === 'e') {
+                event.preventDefault();
+            }
+        });
+        
+        
+        $(document).on('input', 'input[name="description[]"]', function() {
+            var maxLength = 35; // Set the maximum length
+            if ($(this).val().length > maxLength) {
+                $(this).val($(this).val().substring(0, maxLength));
+            }
+        });
+        
+        $(document).on('input', 'input[name="uom[]"]', function() {
+            var maxLength = 10; // Set the maximum length
+            if ($(this).val().length > maxLength) {
+                $(this).val($(this).val().substring(0, maxLength));
+            }
+        });
+        
+        
+
     </script>
 @endsection

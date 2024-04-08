@@ -21,6 +21,9 @@ use App\Http\Controllers\MachineryController;
 use App\Http\Controllers\AdvanceRequestController;
 use App\Models\AdvanceRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\Auth\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,8 +53,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/notifications', 'NotificationController@index');
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+Route::middleware(['auth'])->group(function () {
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    return redirect('/home');
+})->name('verification.verify');
+
+Route::get('/email/verify', [VerificationController::class, 'show'])
+    ->name('verification.notice');
+
+Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationEmail'])
+    ->name('verification.send');
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::get('/notifications', 'NotificationController@index');
 //owner route
 Route::get('/owner-login', [AuthController::class, 'showOwnerLoginForm'])
     ->name('owner-login');
@@ -103,9 +124,10 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/search-receipt', [SearchController::class, 'searchReceiptForOwner'])->name('owner.search.receipt');
     
     Route::get('/owner/view-profile/{id}', [AuthController::class, 'showProfile'])->name('owner.show.profile');
-    Route::put('/owner/update-info/{id}', [UserController::class, 'updateInfoForOwner'])->name('owner.updateInfo');
+    Route::get('/owner/view-profile', [AuthController::class, 'showUserOwner'])->name('owner.show-user');
 });
 
+    Route::put('/owner/update-info/{id}', [UserController::class, 'updateInfoForOwner'])->name('owner.updateInfo');
 
 
 
@@ -161,7 +183,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
 
     Route::get('/staff/receipt', [ReceiptController::class, 'showStaffReceipt'])->name('latest.receipt');
     Route::get('/staff/receipt/on-going', [ReceiptController::class, 'showReceiptOngoing'])->name('on.receipt');
-    Route::get('/staff/receipt/new', [ReceiptController::class, 'showReceiptNew']);
+    Route::get('/staff/receipt/form', [ReceiptController::class, 'showReceiptForm'])->name('receipt.entry.form');
     Route::post('/receipt/create', [ReceiptController::class, 'createEntry'])->name('entry.create');
     Route::get('/receipt/supplier', [SupplierController::class, 'supplierForm'])->name('supplier.form');
     Route::get('/supplier/list', [SupplierController::class, 'supplierList'])->name('supplier');
@@ -195,6 +217,9 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
 
     Route::get('export-estimates/{group_id}', [EstimateController::class, 'export'])->name('export-estimates');
     Route::get('/payroll/export/{batchId}', [PayrollController::class, 'export'])->name('payroll.export');
+    
+    Route::get('/staff/view-profile', [AuthController::class, 'showUserProfile'])->name('staff.show-user');
+    Route::get('/staff/laborer/profile/{id}', [AuthController::class, 'showLaborerProfile'])->name('staff.show.profile');
 
 });
 
@@ -204,7 +229,7 @@ Route::post('/laborer/login', [AuthController::class, 'laborerLogin']);
 // laborer auth
 Route::middleware(['auth', CheckUserRole::class . ':laborer'])->group(function () {
     // Routes accessible only to owners
-    Route::get('/laborer/dashboard', [AuthController::class, 'showLaborerPanel'])->name('laborer.dashboard');
+    Route::get('/laborer/dashboard', [DashboardController::class, 'Dashboard'])->name('laborer.dashboard');
     Route::get('/laborer/profile', [AuthController::class, 'showLaborerInfo'])->name('laborer.profile');
     Route::put('/update-info/{user}', [UserController::class, 'updateInfo'])->name('laborer.updateInfo');
     Route::get('/laborer/payroll', [PayrollController::class, 'laborerPayroll'])->name('laborer.payroll');
@@ -216,7 +241,10 @@ Route::middleware(['auth', CheckUserRole::class . ':laborer'])->group(function (
     Route::post('/submit/concern', [ConcernController::class, 'store'])->name('form.submitConcern');
     Route::get('/advance-request-count', [AdvanceRequestController::class, 'getNotificationCount'])->name('notification.count.advance');
     Route::get('/notification-count-concern', [ConcernController::class, 'getNotificationCount'])->name('notification.count.concern');
+    
+    Route::get('/laborer/view-profile', [AuthController::class, 'showUserLaborer'])->name('laborer.show-user');
 });
 
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('auth/logout', [AuthController::class,'logout'])->name('logout-user');
+

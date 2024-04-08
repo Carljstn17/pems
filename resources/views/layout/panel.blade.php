@@ -53,12 +53,12 @@
                     <div class="border-top d-sm-inline"></div>
                     <li class="px-2 mt-3 bottom">
                         @auth
-                            <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                            <a href="{{ route('owner.show-user') }}" class="nav-link px-0 align-middle">
                                 <i class="fs-5 bi-person-circle link-dark"></i> <span class="ms-1 d-sm-inline link-dark">{{ Auth::user()->username }}</span> 
                             </a>
                             <ul class="collapse show ms-1" id="submenu2" data-bs-parent="#menu2">
                                 <li>
-                                    <a href="{{ route('logout') }}" class="nav-link px-0 link-dark "> <span class=" d-sm-inline">Logout</span> </a>
+                                    <a href="{{ route('logout-user') }}" class="nav-link px-0 link-dark"><span class=" d-sm-inline">Logout</span></a>
                                 </li>
                             </ul>
                         @endauth

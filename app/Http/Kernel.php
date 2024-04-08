@@ -18,6 +18,8 @@ class Kernel extends HttpKernel
         // Add your custom middleware here
         'checkLogin' => \App\Http\Middleware\CheckLoginMiddleware::class,
         'checkRole' => \App\Http\Middleware\CheckUserRole::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'custom.verification' => \App\Http\Middleware\CustomVerificationMiddleware::class,
         // ... other middleware
     ];
 

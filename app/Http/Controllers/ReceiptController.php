@@ -67,33 +67,46 @@ class ReceiptController extends Controller
 
         return view('owner.receiptProject', compact('receipts', 'projects', 'suppliers'));
     }
-    // public function showReceiptNew()
-    // {
-    //     $projects = Project::where('status', 'new')->latest()->get();
-    //     $suppliers = Supplier::all();
+    public function showReceiptForm()
+    {
+        $projects = Project::where('status', 'new')->latest()->get();
+        $suppliers = Supplier::all();
 
-    //     return view('receipt.latest', compact('projects', 'suppliers'));
-    // }
+        return view('receipt.new', compact('projects', 'suppliers'));
+    }
 
     public function createEntry(Request $request)
     {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'project_id' => 'required',
+            'receipt_date' => 'required|date',
+            'si_or_no' => 'required',
+            'supplier_id' => 'required',
+            'description' => 'required',
+            'amount' => 'required|numeric|max:100000',
+            'receipt_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Assuming receipt_photo is the file input name
+        ]);
+    
         // Upload the receipt photo and get its path
         $photoPath = $request->file('receipt_photo')->store('receipts');
-
+    
         // Create a new entry record in the database
         Receipt::create([
-            "user_id"=> Auth::id(),
-            'project_id' => $request->input('project_id'),
-            'receipt_date' => $request->input('receipt_date'),
-            'si_or_no' => $request->input('si_or_no'),
-            'supplier_id' => $request->input('supplier_id'),
-            'description' => $request->input('description'),
-            'amount' => $request->input('amount'),
+            "user_id" => Auth::id(),
+            'project_id' => $validatedData['project_id'],
+            'receipt_date' => $validatedData['receipt_date'],
+            'si_or_no' => $validatedData['si_or_no'],
+            'supplier_id' => $validatedData['supplier_id'],
+            'description' => $validatedData['description'],
+            'amount' => $validatedData['amount'],
             'receipt_photo' => $photoPath,
         ]);
+    
         // Redirect back to the user interface
         return redirect()->route('latest.receipt')->with('success', 'Entry submitted successfully!');
     }
+
 
     public function show($id) {
         $receipts = Receipt::where('id', $id)->firstOrFail();

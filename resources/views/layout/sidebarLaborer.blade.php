@@ -5,9 +5,11 @@
                 <i class="bi bi-x-circle float-end"></i>
             </button>
 
-            <a href="{{ route('laborer.dashboard') }}" class="d-flex flex-column align-items-center text-decoration-none link-dark">
-                <span class="fs-5 head py-5 minus">~/LABORER NAV</span>
-            </a>
+            <div class="d-flex justify-content-start align-items-center text-decoration-none link-dark p-3 gap-2">
+                <img src="{{ asset('image/logo2.jpg') }}" alt="logo" style="width:10%;" >
+                <div class="head">PEMS</div>
+            </div>
+            
         </div>
         
         <ul class="nav nav-pills flex-column mb-sm-auto px-3 pt-4 align-items-start gap-1 border-top" id="menu">
@@ -39,12 +41,12 @@
             <div class="border-top d-sm-inline" style="width: 310px;"></div>
             <li class="px-2 mt-3 bottom" style="width: 310px;">
                 @auth
-                    <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                    <a href="{{ route('laborer.show-user') }}" class="nav-link px-0 align-middle">
                         <i class="fs-5 bi-person-circle link-dark"></i> <span class="ms-1 d-sm-inline link-dark">{{ Auth::user()->username }}</span> 
                     </a>
                     <ul class="collapse show ms-1" id="submenu2" data-bs-parent="#menu2">
                         <li>
-                            <a href="{{ route('logout') }}" class="nav-link px-0 link-dark "> <span class=" d-sm-inline">Logout</span> </a>
+                            <a href="{{ route('logout-user') }}" class="nav-link px-0 link-dark "> <span class=" d-sm-inline">Logout</span> </a>
                         </li>
                     </ul>
                 @endauth

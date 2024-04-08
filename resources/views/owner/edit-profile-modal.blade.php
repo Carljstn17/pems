@@ -11,10 +11,12 @@
                     @csrf
                     @method('PUT')
                     
-                    <div class="form-group mb-3">
-                        <label for="fullName" class="form-label">Username:</label>
-                        <input type="text" id="fullName" name="name" class="form-control" value="{{ $user->username }}" required>
-                    </div>
+                    @if(auth()->user()->role === 'owner')
+                        <div class="form-group mb-3">
+                            <label for="fullName" class="form-label">Username:</label>
+                            <input type="text" id="fullName" name="name" class="form-control" value="{{ $user->username }}" required>
+                        </div>
+                    @endif
 
                     <div class="form-group mb-3">
                         <label for="fullName" class="form-label">Full Name:</label>

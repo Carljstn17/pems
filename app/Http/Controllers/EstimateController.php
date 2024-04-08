@@ -156,7 +156,7 @@ class EstimateController extends Controller
     {
         // Validation (you can customize based on your needs)
         $request->validate([
-            'title' => 'required|string|max:120',
+            'title' => 'required|string|max:25',
             'project_id' => 'required',
             'description.*' => 'required|string|max:120',
             'uom.*' => 'nullable|string|max:15',
@@ -211,7 +211,7 @@ class EstimateController extends Controller
     {
         // Validation (you can customize based on your needs)
         $request->validate([
-            'description.*' => 'required|string|max:120',
+            'description.*' => 'required|string|max:25',
             'uom.*' => 'nullable|string|max:15',
             'quantity.*' => 'required|numeric|max:999',
             'unit_cost.*' => 'required|numeric|max:999999',

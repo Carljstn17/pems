@@ -38,7 +38,7 @@
                                 <th class="col-md-1"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                    <tbody>
                             @foreach ($users as $user)
                                 <tr>
                                     <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->role }}">{{ $user->role }}</td>
@@ -57,19 +57,9 @@
                                     <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->username }}">{{ $user->username }}</td>
                                     <td class="d-flex justify-content-center gap-2">
    
-                                        <a href="{{ route('owner.show.profile', $user->id) }}" class="btn btn-outline-dark" style="transition: 0.8s;">
+                                        <a href="{{ route('staff.show.profile', $user->id) }}" class="btn btn-outline-dark" style="transition: 0.8s;">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-
-                                        @if($user->role !== 'owner')
-                                            <form id="deleteStaffForm{{ $user->id }}" method="POST" action="{{ route('owner.user-delete', ['user' => $user->id]) }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-outline-danger" onclick="confirmDeleteStaff({{ $user->id }})">
-                                                    <i class="bi bi-trash3"></i>
-                                                </button>
-                                            </form>
-                                        @endif
                                     </td>  
                                 </tr>
                                 @include('owner.update-modal', ['user' => $user])

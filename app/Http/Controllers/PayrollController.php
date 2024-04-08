@@ -215,7 +215,7 @@ class PayrollController extends Controller
         $payrolls = DB::table('payrolls')
         ->join('projects', 'payrolls.project_id', '=', 'projects.id')
         ->join('payroll_batches', 'payrolls.batch_id', '=', 'payroll_batches.id')
-        ->select('payrolls.*', 'projects.project_id')
+        ->select('payrolls.*', 'projects.project_id', 'projects.project_dsc')
         ->where('payrolls.user_id', $userId)
         ->where('payroll_batches.remarks', 'valid') // Filter based on remarks from payroll_batches table
         ->latest('payrolls.created_at')

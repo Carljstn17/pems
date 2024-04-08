@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Rules\RecaptchaRule;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Hash;
+use App\Notifications\VerifyEmailNotification;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
+    
     public function showOwnerLoginForm()
     {
         $user = Auth::user();
@@ -68,7 +73,7 @@ class AuthController extends Controller
         ]);
 
 
-        User::create([
+        $user = User::create([
             'username' => $request->input('username'),
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -93,7 +98,7 @@ class AuthController extends Controller
         ]);
 
 
-        User::create([
+        $user = User::create([
             'username' => $request->input('username'),
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -120,13 +125,13 @@ class AuthController extends Controller
         return view('owner.register', ['users' => $users]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         Auth::logout();
 
-        $request->session()->invalidate();
+        Session::flush();
 
-        return redirect()->intended('/');
+        return redirect(\URL::previous());
     }
 
     public function displayUser()
@@ -236,4 +241,35 @@ class AuthController extends Controller
     {
         return view('staff.register');
     }
+    
+    public function showLaborerProfile($id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        
+        return view('staff.profile', compact('user', 'id'));
+    }
+    
+     public function showUserProfile()
+    {
+        $user = User::where('id', Auth::id())->first();
+        
+        return view('staff.profile', compact('user'));
+    }
+    public function showUserLaborer()
+    {
+        $user = User::where('id', Auth::id())->first();
+        
+        return view('laborer.user', compact('user'));
+    }
+    public function showUserOwner()
+    {
+        $user = User::where('id', Auth::id())->first();
+        
+        return view('owner.user', compact('user'));
+    }
 }
+
+
+
+
+
