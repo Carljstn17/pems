@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewPayrollNotification;
 
 class PayrollController extends Controller
 {
@@ -24,25 +26,61 @@ class PayrollController extends Controller
 
     public function showPayrollLatest()
     {
-        $payrollBatch = PayrollBatch::latest('created_at')->paginate(20);
+        $payrollBatch = PayrollBatch::whereIn('status', ['valid','pending'])
+            ->orderByRaw("FIELD(status, 'valid', 'pending')")
+            ->latest('created_at')->paginate(10);
+            
         $laborers = User::where('role', 'laborer')->get();
+        $projects = Project::where('status', 'new')->latest()->get();
 
-        return view('payroll.latest', compact('payrollBatch','laborers'));
+        return view('payroll.latest', compact('payrollBatch','laborers', 'projects'));
+    }
+    
+    public function submitProject(Request $request)
+    {
+        $request->validate([
+            'project_id' => 'required|exists:projects,id',
+        ]);
+
+        $projectId = $request->input('project_id');
+
+        // Redirect to a specific view or handle the project selection as needed
+        return redirect()->route('new.payroll', ['project_id' => $projectId]);
     }
 
     public function ownerPayrollLatest()
     {
-        $payrollBatch = PayrollBatch::latest('created_at')->paginate(20);
-        $laborers = User::where('role', 'laborer')->get();
+        $payrollBatch = PayrollBatch::whereIn('status', ['valid','pending'])
+            ->orderByRaw("FIELD(status, 'pending', 'valid')")
+            ->latest('created_at')->paginate(10);
 
-        return view('owner.payroll', compact('payrollBatch','laborers'));
+        return view('owner.payroll', compact('payrollBatch'));
+    }
+    
+    public function invalidList()
+    {
+        $payrollBatch = PayrollBatch::where('status', 'invalid')
+            ->latest('created_at')->paginate(10);
+
+        return view('payroll.invalid', compact('payrollBatch'));
+    }
+    
+    public function invalidListOwner()
+    {
+        $payrollBatch = PayrollBatch::where('status', 'invalid')
+            ->latest('created_at')->paginate(10);
+
+        return view('owner.payrollInvalid', compact('payrollBatch'));
     }
 
-    public function showPayrollNew()
+    public function showPayrollNew($project_id)
     {
+        $project = Project::findOrFail($project_id);
+        $projectId = $project->id;
         $ot_rate_default_value = 1.25;
-        $projects = Project::where('status', 'new')->latest()->get();
-        $laborers = User::where('role', 'laborer')->get();
+        $laborers = User::where('role', 'laborer')
+                        ->where('project_id', $project_id)
+                        ->get();
 
         foreach ($laborers as $laborer) {
             $payroll = DB::table('payrolls')->where('user_id', $laborer->id)->orderBy('created_at', 'desc')->first();
@@ -58,11 +96,12 @@ class PayrollController extends Controller
             }
         }
 
-        return view('payroll.new', compact('projects', 'laborers', 'ot_rate_default_value'));
+        return view('payroll.new', compact('project', 'laborers', 'ot_rate_default_value', 'projectId'));
     }
 
     public function storePayroll(Request $request){
-        $payrollBatch = [
+        DB::beginTransaction();
+        $batchData = [
             "entry_by" => Auth::id(),
             'project_id' => $request->project_id,
             'ot_rate' => $request->ot_rate,
@@ -70,20 +109,34 @@ class PayrollController extends Controller
             'total_advance' => $request->total_advance,
             'total_net' => $request->total_net,
         ];
-
-        $payrollBatch = PayrollBatch::create($payrollBatch);
+        
+        $request->validate([
+            'project_id' => 'required|numeric',
+            'ot_rate' => 'required|numeric',
+            'total_salary' => 'required|numeric',
+            'total_advance' => 'nullable|numeric',
+            'total_net' => 'required|numeric',
+        ], [
+            'total_salary.required' => 'There is no Total Amount. Please check the data'
+        ]);
+        
+        $payrollBatch = PayrollBatch::create($batchData);
         
         $users = $request->input('user_id');
 
         foreach ($users as $userId) {
             // Check if the checklist is checked for the current user
             if ($request->has('checklist') && isset($request->checklist[$userId])) {
-                $data = $request->validate([
-                    'rate_per_day.' . $userId => 'required|numeric',
-                    'no_of_days.' . $userId => 'required|numeric',
-                    // Add other validation rules as needed
-                ]);
-    
+            
+            $data = $request->validate([
+                'rate_per_day.' . $userId => 'required|numeric|max:9999',
+                'no_of_days.' . $userId => 'required|numeric|max:99',
+            ], [
+                'rate_per_day.' . $userId . '.required' => 'The RATE/DAY field is required*',
+                'no_of_days.' . $userId . '.required' => 'The DAYS field is required*',
+                'rate_per_day.' . $userId . '.max' => 'The RATE/DAY amount is too much*',
+                'no_of_days.' . $userId . '.max' => 'The DAYS amount is too much*',
+            ]);
                 $payrollData = [
                     "entry_by" => Auth::id(),
                     'user_id' => $userId,
@@ -95,13 +148,16 @@ class PayrollController extends Controller
                     'ot_amount' => $request->ot_total[$userId],
                     'salary' => $request->salary[$userId],
                     'advance_amount' => $request->advance_amount[$userId],
-                    'net_amount' => $request->net_salary[$userId],
+                    'net_amount' => $request->net_amount[$userId],
                     'project_id' => $request->project_id,
                     'batch_id' => $payrollBatch->id,
                 ];
-    
-                $payroll = Payroll::create($payrollData);
-
+                
+                if(empty($payrollData['no_of_days']) || empty($payrollData['rate_per_day']) || empty($payrollData['salary']) || empty($payrollData['net_amount'])){
+                    DB::rollBack();
+                }
+                
+                $result = Payroll::create($payrollData);
             }
 
             $advances = $request->input('advances');
@@ -122,8 +178,11 @@ class PayrollController extends Controller
             }
         }
 
-
-
+        
+        $owners = User::where('role', 'owner')->get();
+        Notification::send($owners, new NewPayrollNotification($payrollBatch));
+        DB::commit();
+        
         return redirect()->route('latest.payroll')->with('success', 'Payroll record created successfully');
     }
     
@@ -179,20 +238,7 @@ class PayrollController extends Controller
 
     public function ownerBatchRemarks($batchId)
     {
-        PayrollBatch::where('id', $batchId)->update(['remarks' => 'invalid']);
-
-        // Update remarks in advance table
-        $userIds = DB::table('payrolls')->where('batch_id', $batchId)->pluck('user_id')->toArray();
-        
-        Advance::whereIn('user_id', $userIds)->update(['remarks' => 'add']);
-
-        // Redirect back or to any other page after update
-        return redirect()->back()->with('success', 'Remarks updated successfully!');
-    }
-
-    public function updateBatchRemarks($batchId)
-    {
-        PayrollBatch::where('id', $batchId)->update(['remarks' => 'invalid']);
+        PayrollBatch::where('id', $batchId)->update(['status' => 'invalid']);
 
         Advance::whereExists(function ($query) use ($batchId) {
             $query->select(DB::raw(1))
@@ -202,10 +248,36 @@ class PayrollController extends Controller
                   ->where('payrolls.batch_id', $batchId)
                   ->whereNotNull('payrolls.advance_amount')
                   ->whereColumn('advances.user_id', 'payrolls.user_id');
-        })->update(['remarks' => 'add']);
+        })->update(['remarks' => 'valid', 'payroll_id' => null]);
+
+        // Redirect back or to any other page after update
+        return redirect()->back()->with('success', 'Remarks invalid!');
+    }
+
+    public function updateBatchRemarks($batchId)
+    {
+        PayrollBatch::where('id', $batchId)->update(['status' => 'invalid']);
+
+        Advance::whereExists(function ($query) use ($batchId) {
+            $query->select(DB::raw(1))
+                  ->from('payroll_batches')
+                  ->join('payrolls', 'payrolls.batch_id', '=', 'payroll_batches.id')
+                  ->whereColumn('advances.payroll_id', 'payroll_batches.id')
+                  ->where('payrolls.batch_id', $batchId)
+                  ->whereNotNull('payrolls.advance_amount')
+                  ->whereColumn('advances.user_id', 'payrolls.user_id');
+        })->update(['remarks' => 'valid', 'payroll_id' => null]);
             
         // Redirect back or to any other page after update
-        return redirect()->back()->with('success', 'Remarks updated successfully!');
+        return redirect()->back()->with('success', 'Remarks invalid!');
+    }
+    
+    public function statusCorrectValid($batchId)
+    {
+        PayrollBatch::where('id', $batchId)->update(['status' => 'valid']);
+            
+        // Redirect back or to any other page after update
+        return redirect()->back()->with('success', 'status is valid!');
     }
 
     public function laborerPayroll()
@@ -217,7 +289,7 @@ class PayrollController extends Controller
         ->join('payroll_batches', 'payrolls.batch_id', '=', 'payroll_batches.id')
         ->select('payrolls.*', 'projects.project_id', 'projects.project_dsc')
         ->where('payrolls.user_id', $userId)
-        ->where('payroll_batches.remarks', 'valid') // Filter based on remarks from payroll_batches table
+        ->where('payroll_batches.status', 'valid') // Filter based on remarks from payroll_batches table
         ->latest('payrolls.created_at')
         ->paginate(5);
 
@@ -230,7 +302,7 @@ class PayrollController extends Controller
         ->join('projects', 'payrolls.project_id', '=', 'projects.id')
         ->join('users', 'payrolls.entry_by', '=', 'users.id')
         ->where('payrolls.id', $payrollId)
-        ->select('payrolls.*', 'projects.project_dsc', 'users.name as entry_by')
+        ->select('payrolls.*', 'projects.project_dsc', DB::raw('CONCAT(users.fname, " ", COALESCE(users.mname, ""), " ", users.lname) AS entry_by'))
         ->first();
 
         return view('laborer.payrollShow', compact('payrolls', ));

@@ -22,18 +22,17 @@
 </head>
 <body>
     <div class="email-container">
-        <h2>Email Verification</h2>
-        <p>Hello {{ $user->name }},</p>
-        
-        <p>
-            Thank you for registering with our application. Please click the button below to verify your email address:
-        </p>
-        
-        <a href="{{ $verificationUrl }}" class="btn btn-primary">Verify Email Address</a>
-        
-        <p>If you did not create an account, no further action is required.</p>
-        
-        <p>Thank you!</p>
+    @if(session('success'))
+        <div class="alert alert-success">
+                {{ session('success') }}
+        </div>
+    @endif
+        <h1>Email Verification</h1>
+        <p>Please click the button below to verify your email address:</p>
+        <form method="POST" action="{{ route('verify.email', ['userId' => $user->id]) }}">
+            @csrf
+            <button type="submit" class="btn btn-success">Verify Email Address</button>
+        </form>
     </div>
 </body>
 </html>

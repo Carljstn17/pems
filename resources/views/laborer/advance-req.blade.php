@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="py-2 mt-2">
-        <i class="fs-5 bi-envelope"></i></i> <span class="d-sm-inline">Advance Requests</span>
+        <i class="fs-5 bi-envelope"></i></i> <span class="d-sm-inline fs-5 head">Advance Requests</span>
     </div>
     
     <div class="mt-3 mx-auto">
@@ -36,10 +36,16 @@
                 <form action="{{ route('form.submitReq') }}" method="post" class="">
                     @csrf
                     <div class="form-group mb-3">
-                        <input type="number" name="amount" class="form-control" placeholder="Enter Amount">
+                        <input type="number" name="amount" class="form-control" placeholder="Enter Amount" value="{{ old('amount') }}">
+                        @error('amount')
+                            <div class="text-danger px-2">{{ $message }}</div>
+                        @enderror                        
                     </div>
                     <div class="form-group mb-3">
-                        <input type="text" name="text" class="form-control" placeholder="What is the reason behind submitting this advance request?">
+                        <input type="text" name="text" class="form-control" placeholder="What is the reason behind submitting this advance request?" value="{{ old('text') }}" >
+                        @error('text')
+                            <div class="text-danger px-2">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="float-end">
                         <button type="submit" class="btn btn-outline-primary"><i class="bi bi-send"></i> Send Request</button>

@@ -1,19 +1,19 @@
 @extends('layout.staff')
 
 @section('content')
+    <style>
+        .border-red {
+            border: 1px solid red !important;
+        }
+    </style>
     <div class="py-2 mt-2">
+        <div class="d-flex align-items-center">
+        <a href="{{ route('latest') }}" class="text-secondary text-decoration-none btn">
+                    <i class="fs-5 bi-backspace"></i>
+        </a>
         <i class="fs-5 bi-card-checklist"></i> <span class="fs-5 head d-sm-inline">Estimate | Create Estimate</span>
-    </div>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
         </div>
-    @endif
+    </div>
 
     <div class="pb-2 m-3">
         <form action="{{ route('estimate.store') }}" method="post" class="p-2">
@@ -21,20 +21,30 @@
             <div class="table-responsive">
                 
                 <div class="d-flex justify-content-between mb-3">
-                    <select name="project_id" id="project_id" class="form-select" style="width: 400px;">
-                        <option value="">Select a project</option>
-                        @foreach($projects as $project)
-                            <option value="{{ $project->id }}">
-                                {{ $project->project_id }}
-                                <span>&nbsp;-&nbsp; {{ $project->project_dsc }}</span>
-                            </option>
-                        @endforeach
-                    </select>
-                    
-                    <div class="input-group"  style="width: 400px;">
-                        <label for="title" class="input-group-text"><span class="bold">Title</span></label>
-                        <input type="text" class="form-control" placeholder="Estimate Title" name="title" value="{{ old('title') }}">
-                    </div>    
+                    <div>
+                        <select name="project_id" id="project_id" class="form-select @error('project_id') border-red @enderror" style="width: 400px;">
+                            <option value="">Select a project</option>
+                            @foreach($projects as $project)
+                                <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>
+                                    {{ $project->project_id }}
+                                    <span>&nbsp;-&nbsp; {{ $project->project_dsc }}</span>
+                                </option>
+                            @endforeach
+                        </select>
+                            @error('project_id')
+                                    <div class="text-danger px-2 ">{{ $message }}</div>
+                            @enderror
+                    </div>
+                        
+                    <div>
+                        <div class="input-group"  style="width: 400px;">
+                            <label for="title" class="input-group-text"><span class="bold">Title</span></label>
+                            <input type="text" class="form-control @error('title') border-red @enderror" placeholder="Estimate Title" name="title" value="{{ old('title') }}">
+                        </div>    
+                            @error('title')
+                                    <div class="text-danger px-2">{{ $message }}</div>
+                            @enderror
+                    </div>
                 </div>
                 
                 <table class="table table-bordered">
@@ -51,11 +61,43 @@
                     <tbody>
                         @for ($i = 0; $i < old('row_count', 1); $i++)
                             <tr>
-                                <td><input type="text" class="form-control no-border" placeholder="item description" name="description[]" value="{{ old('description.' . $i) }}" ></td>
-                                <td><input type="text" class="form-control no-border" placeholder="measure" name="uom[]" value="{{ old('uom.' . $i) }}"></td>
-                                <td><input type="number" class="form-control no-border" name="quantity[]" placeholder="0" oninput="calculateAmount(this)" value="{{ old('quantity.' . $i) }}" step="any"></td>
-                                <td><input type="number" class="form-control no-border" name="unit_cost[]" placeholder="per unit" value="{{ old('unit_cost.' . $i) }}" oninput="calculateAmount(this)"></td>
-                                <td><input type="text" class="form-control no-border" name="amount[]" placeholder="0" value="{{ old('amount.' . $i) }}" readonly></td>
+                                <td>
+                                    <input type="text" class="form-control @error('description.' . $i) border-red @enderror no-border" 
+                                    placeholder="item description" name="description[]" value="{{ old('description.' . $i) }}">
+                                    @error('description.' . $i)
+                                            <div class="text-danger px-2 text-nowrap">{{ $message }}</div>
+                                    @enderror
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control no-border @error('uom.' . $i) border-red @enderror" 
+                                    placeholder="measure" name="uom[]" value="{{ old('uom.' . $i) }}">
+                                    @error('uom.' . $i)
+                                            <div class="text-danger px-2 text-nowrap">{{ $message }}</div>
+                                    @enderror
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control no-border qt @error('quantity.' . $i) border-red @enderror" 
+                                    name="quantity[]" placeholder="0" oninput="calculateAmount(this)" value="{{ old('quantity.' . $i) }}" 
+                                    step="any" maxlength="3">
+                                    @error('quantity.' . $i)
+                                            <div class="text-danger px-2 text-nowrap">{{ $message }}</div>
+                                    @enderror
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control no-border uc @error('unit_cost.' . $i) border-red @enderror" 
+                                    name="unit_cost[]" placeholder="per unit" value="{{ old('unit_cost.' . $i) }}" oninput="calculateAmount(this)" 
+                                    maxlength="5">
+                                    @error('unit_cost.' . $i)
+                                            <div class="text-danger px-2 text-nowrap">{{ $message }}</div>
+                                    @enderror
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control no-border @error('amount.' . $i) border-red @enderror" 
+                                    name="amount[]" placeholder="0" value="{{ old('amount.' . $i) }}" readonly>
+                                    @error('amount.' . $i)
+                                            <div class="text-danger px-2 text-nowrap">{{ $message }}</div>
+                                    @enderror
+                                </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-danger btn-sm rounded-circle" onclick="removeRow(this)">
                                         <i class="bi bi-x"></i>
@@ -74,13 +116,19 @@
                 </table>
             </div>
             
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-between">
+                @if ($errors->any())
+                    <div class="text-danger">All row is required. Delete unused rows*</div>
+                @endif
                 <button type="button" class="btn btn-success" onclick="addRow()">+ Add Row</button>
             </div>
 
             <div>
                 <label for=""><span class="bold">Remarks</span></label>
-                <textarea name="remarks" id="remarks" rows="5" class="border border-subtle" style="width:100%;resize:none;">{{ old('remarks') }}</textarea>
+                <textarea name="remarks" id="remarks" rows="5" class="border border-subtle @error('remarks') border-red @enderror" style="width:100%;resize:none;">{{ old('remarks') }}</textarea>
+                @error('remarks')
+                                <div class="text-danger px-2">{{ $message }}</div>
+                        @enderror
             </div>
             <button type="submit" class="btn btn-dark float-end">Submit Estimate</button>
         </form>
@@ -118,6 +166,7 @@
         function removeRow(btn) {
             $(btn).closest("tr").remove();
             updateRowCount();
+            updateTotal();
         }
 
         function calculateAmount(input) {
@@ -154,39 +203,11 @@
             updateTotal();
         });
         
-        
-        $(document).on('input', 'input[name="quantity[]"]', function() {
-            var maxLength = 3; // Set the maximum length
-            if ($(this).val().length > maxLength) {
-                $(this).val($(this).val().substring(0, maxLength));
-            }
-        });
-        
-        $(document).on('input', 'input[name="unit_cost[]"]', function() {
-            var maxLength = 5; // Set the maximum length
-            if ($(this).val().length > maxLength) {
-                $(this).val($(this).val().substring(0, maxLength));
-            }
-        });
-        
         $(document).on('keypress', 'input[name="quantity[]"], input[name="unit_cost[]"]', function(event) {
             if (event.key === 'e') {
                 event.preventDefault();
             }
         });
         
-         $(document).on('input', 'input[name="description[]"]', function() {
-            var maxLength = 35; // Set the maximum length
-            if ($(this).val().length > maxLength) {
-                $(this).val($(this).val().substring(0, maxLength));
-            }
-        });
-        
-        $(document).on('input', 'input[name="uom[]"]', function() {
-            var maxLength = 15; // Set the maximum length
-            if ($(this).val().length > maxLength) {
-                $(this).val($(this).val().substring(0, maxLength));
-            }
-        });
     </script>
 @endsection

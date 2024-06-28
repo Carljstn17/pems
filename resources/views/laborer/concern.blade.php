@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="py-2 mt-2">
-        <i class="fs-5 bi-chat-left-dots"></i></i> <span class="d-sm-inline">Concerns</span>
+        <i class="fs-5 bi-chat-left-dots"></i></i> <span class="d-sm-inline fs-5 head">Concerns</span>
     </div>
     <div class="mt-3">
         <div class="card">
@@ -33,7 +33,10 @@
                 <form action="{{ route('form.submitConcern') }}" method="post">
                     @csrf
                     <div class="form-group mb-3">
-                        <textarea class="form-control" name="concern" rows="14" style="resize: none"; placeholder="Enter your concern here..." required></textarea>
+                        <textarea class="form-control" name="concern" rows="14" style="resize: none"; placeholder="Enter your concern here..." required>{{ old('concern') }}</textarea>
+                        @error('concern')
+                            <div class="text-danger px-2">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="float-end">
                         <button type="submit" class="btn btn-outline-primary"><i class="bi bi-send"></i> Send Concern</button>

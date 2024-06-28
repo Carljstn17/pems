@@ -2,7 +2,12 @@
 
 @section('content')
     <div class="py-2 mt-2">
+        <div class="d-flex align-items-center">
+                <a href="{{ route('latest.payroll') }}" class="text-secondary text-decoration-none btn">
+                            <i class="fs-5 bi-backspace"></i>
+                </a>
         <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline fs-5 head">Payroll | Advance List</span>
+        </div>
     </div>
 
     <div class="pb-2 m-3">
@@ -37,9 +42,11 @@
             @foreach ($advances as $advance)
                 <tr>
                     <td class="text-nowrap" data-toggle="tooltip" title="{{ $advance->created_at->format('Y-m-d') }}">{{ $advance->created_at->format('y-m-d') }}</td>
-                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $advance->name }}">{{ Str::limit($advance->name, 15) }}</td>
+                    <td class="text-nowrap" data-toggle="tooltip" title="{{optional($advance->laborer)->fname}} {{optional($advance->laborer)->mname}} {{optional($advance->laborer)->lname}}">
+                        {{optional($advance->laborer)->fname}} {{optional($advance->laborer)->mname}} {{optional($advance->laborer)->lname}}
+                    </td>
                     <td>{{ $advance->amount }}</td>
-                    <td style="color: {{ $advance->remarks === 'add' ? 'green' : 'red' }}">{{ $advance->remarks }}</td>
+                    <td style="color: {{ $advance->remarks === 'valid' ? 'green' : 'red' }}">{{ $advance->remarks === 'valid' ? 'Not yet payrolled' : 'Payrolled' }}</td>
                     <td>{{ $advance->payroll_id }}</td>
                 </tr>
             @endforeach

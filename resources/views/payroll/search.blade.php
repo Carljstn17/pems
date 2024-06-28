@@ -9,7 +9,7 @@
             <div class="d-flex justify-content-between  border-bottom border-subtle pb-3 gap-2">
                 <p class="fs-5">Search Results for "{{ $query }}"</p>
 
-                <form action="" method="GET" >
+                <form action="{{ route('search.payroll') }}" method="GET" >
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
                         <button type="submit" class="btn btn-outline-primary">Search</button>
@@ -19,40 +19,47 @@
         </div>
 
         <div class="mt-3 pb-1 px-3">
-            @forelse ($payrollBatch as $batches)
-                <a href="{{ route('show.payroll', ['batchId' => $batches->id]) }}" class="link-dark text-decoration-none">
-                    <div class="row p-4 d-flex justify-content-center rounded-2 border hover3 mb-2">
-                        <div class="col">
-                            <span class="bold">Payroll batch: &nbsp</span>{{ $batches->id }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Project ID: &nbsp</span>{{ $batches->project_id }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Entry By: &nbsp</span>
-                            @php
-                            $user = \App\Models\User::find($batches->entry_by);
-                            echo $user ? $user->username : 'User not found';
-                            @endphp
-                        </div>
-                        <div class="col">
-                            <span class="bold">Created At: &nbsp</span>{{ $batches->created_at->diffForHumans() }}
-                        </div>
-                    </div>
-                </a>
-            @empty
-            <div class="text-center my-5">
-                <i class="bi bi-box"></i>
-                <p class="no-text">No receipts yet.</p>
+            <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"><span class="bold text-nowrap">P-Batch</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Project Description</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Entry By</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Status</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Date</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($payrollBatch as $batches)
+                    <tr data-url="{{ route('owner.showPayroll', ['batchId' => $batches->id]) }}" class="clickable-row">
+                        <td><span class="text-nowrap">{{ $batches->id }}</span></td>
+                        <td><span class="text-nowrap">{{ $batches->project->project_dsc }}</span></td>
+                        <td>
+                            <span class="text-nowrap">
+                                {{ $batches->entry->username }}
+                            </span>
+                        </td>
+                        <td><span class="text-nowrap">{{ $batches->status }}</span></td>
+                        <td><span class="text-nowrap">{{ $batches->created_at->diffForHumans() }}</span></td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center my-5">
+                            <i class="bi bi-box"></i>
+                            <p class="no-text">No payrolls yet.</p>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
             </div>
-            @endforelse
         </div>
         
-        <div class="mt-3 border-top border-subtle d-flex justify-content-between">
-            <a href="{{ route('on.payroll') }}" class="text-decoration-none fst-italic mt-2">/Payroll for On-Going Projects</a>
+        <div class="px-3 d-flex justify-content-between">
+            <a href="{{ route('on.payroll') }}" class="text-decoration-none text-secondary fst-italic mt-2">/Payroll for On-Going Projects</a>
 
-            <a href="{{ route('advance') }}" class="text-decoration-none fst-italic mt-2">/Advance list</a>
+            <a href="{{ route('advance') }}" class="text-decoration-none text-secondary fst-italic mt-2">/Advance list</a>
         </div>
- 
 @endsection
 

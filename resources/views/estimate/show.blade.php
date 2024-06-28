@@ -2,7 +2,12 @@
 
     @section('content')
         <div class="py-2 mt-2">
+            <div class="d-flex align-items-center">
+            <a href="{{ route('latest') }}" class="text-secondary text-decoration-none btn">
+                        <i class="fs-5 bi-backspace"></i>
+            </a>
             <i class="fs-5 bi-card-checklist"></i> <span class=" d-sm-inline fs-5 head">Estimate | Latest Form-view</span>
+            </div>
         </div>
         
         <div class="mx-auto mt-4">
@@ -51,7 +56,7 @@
                                 <span>{{ $estimates->first()->group_id }}</span>
                             </td>
                             <td >
-                                <span>{{ $estimates->first()->user->username }}</span>
+                                <span>{{ $estimates->first()->user->fname }} {{ $estimates->first()->user->mname }} {{ $estimates->first()->user->lname }}</span>
                             </td>
                             <td >
                                 <span>{{ $estimates->first()->created_at->format('Y-m-d') }}</span>
@@ -114,15 +119,82 @@
                 
                 @if($estimate->status !== 'rejected')
                 <div class="d-flex justify-content-end gap-2">
-                    @if($estimate->status !== 'pending')
-                    <a href="{{ route('export-estimates', ['group_id' => $group_id]) }}" class="btn btn-success">Export Estimate</a>
+                    @if($estimate->status == 'accepted' && (Auth::user() && Auth::user()->srole == 1))
+                        <a href="{{ route('export-estimates', ['group_id' => $group_id]) }}" class="btn btn-success">Export Excel</a>
                     @endif
+                    @if($estimate->status == 'accepted')
+                        <a href="{{ route('pdf-estimates', ['group_id' => $group_id]) }}" class="btn btn-primary">Export PDF</a>
+                    @endif
+                   
 
-                    @if($estimate->status !== 'accepted')
-                    <a href="{{ route('estimate.edit', $estimates->first()->group_id) }}" class="btn btn-primary float-end px-4">Edit</a>
+                    @if($estimate->status == 'pending')
+                    <a href="{{ route('estimate.edit', $estimates->first()->group_id) }}" class="btn btn-success float-end px-4">Edit</a>
                     @endif
+                @endif
+                
+                @if($estimate->status == 'pending' && (Auth::user() && Auth::user()->srole == 1))
+                <button class="btn btn-primary float-end" type="button" data-bs-toggle="modal" data-bs-target="#acceptModal">
+                    <i class="bi-award link-white"></i>
+                    Accept
+                </button>
+                <button class="btn btn-warning float-end mx-2" type="button" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                    <i class="bi-award link-white"></i>
+                    Reject
+                </button>
                 </div>
                 @endif
+
+
+            <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="rejectModalLabel">Confirmation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to reject this estimate?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-warning" onclick="proceedReject()">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="acceptModalLabel">Confirmation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to accept this estimate?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" onclick="proceedAccept()">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            <form action="{{ route('owner.accept', $group_id) }}" method="post" id="acceptForm" style="display: none;">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="remarks" id="remarksInputAccept">
+            </form>
+        
+            <form action="{{ route('owner.reject', $group_id) }}" method="post" id="rejectForm" style="display: none;">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="remarks" id="remarksInputReject">
+            </form>
+
+            </div>
+        </div>
             </div>
         </div>
 
@@ -159,6 +231,31 @@
             
             if (exist) {
                 alert(msg);
+            }
+            
+            
+                        var noFields = document.querySelectorAll('input[name^="no"]');
+                noFields.forEach(function (field, index) {
+                    field.value = index + 1;
+                });
+
+            var msg = '{{ session('alert') }}';
+            var exist = '{{ session()->has('alert') }}';
+            
+            if (exist) {
+                alert(msg);
+            }
+
+            function proceedAccept() {
+                var remarks = document.getElementById('remarks').value;
+                document.getElementById('remarksInputAccept').value = remarks;
+                document.getElementById('acceptForm').submit();
+            }
+
+            function proceedReject() {
+                var remarks = document.getElementById('remarks').value;
+                document.getElementById('remarksInputReject').value = remarks;
+                document.getElementById('rejectForm').submit();
             }
         </script>
 

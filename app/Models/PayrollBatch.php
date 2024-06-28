@@ -17,6 +17,7 @@ class PayrollBatch extends Model
         'total_net',
         'ot_rate',
         'entry_by',
+        'status'
     ];
 
     public function user()
@@ -26,7 +27,7 @@ class PayrollBatch extends Model
 
     public function project()
     {
-        return $this->belongsTo(Project::class, 'project_id');
+        return $this->belongsTo(Project::class);
     }
     
     public function entry()

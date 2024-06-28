@@ -42,12 +42,12 @@
                 @foreach($machineriesByType as $machineryType => $machineriesInType) 
                     @foreach($machineriesInType as $machinery) 
                         <tr>
-                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machinery_type }}">{{ Str::limit($machinery->machinery_type, 8) }}</td>
+                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machinery_type }}">{{ $machinery->machinery_type }}</td>
                             <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->property }}">{{ Str::limit($machinery->property, 8) }}</td>
-                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machinery_name }}">{{ Str::limit($machinery->machinery_name, 8) }}</td>
-                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->unit_cost }}">{{ Str::limit($machinery->unit_cost, 8) }}</td>
-                            <td class="text-success text-nowrap" data-toggle="tooltip" title="{{ $machinery->machineryReport->status }}">{{ Str::limit($machinery->machineryReport->status, 8) }}</td>
-                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machineryReport->whereabout }}">{{ Str::limit($machinery->machineryReport->whereabout, 8) }}</td>
+                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machinery_name }}">{{ $machinery->machinery_name }}</td>
+                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->unit_cost }}">{{ $machinery->unit_cost }}</td>
+                            <td class="text-success text-nowrap" data-toggle="tooltip" title="{{ $machinery->machineryReport->status }}">{{ $machinery->machineryReport->status }}</td>
+                            <td class="text-nowrap" data-toggle="tooltip" title="{{ $machinery->machineryReport->whereabout }}">{{ $machinery->machineryReport->whereabout }}</td>
                         </tr>
                     @endforeach
                 @endforeach

@@ -3,18 +3,17 @@
 @section('content')
     <div class="py-2 mt-2 mb-3">
         <div class="d-flex align-items-center">
-            <div class="d-sm-none me-2">
-                <a href="{{ url()->previous() }}" class="text-secondary text-decoration-none">
-                    <i class="bi-backspace"></i>
-                </a>
-            </div>
             <i class="fs-5 bi-receipt me-2"></i>
             <span class="d-sm-inline">Receipt | Supplier List</span>
         </div>
     </div>
 
-    <div class="py-2 mt-3">
-        <div class="d-flex justify-content-end border-bottom border-subtle pb-3 gap-2">
+    <div class="pb-2 m-3">
+        <div class="d-flex justify-content-between">
+            <a href="{{ route('owner.receipt') }}" class="btn btn-outline-dark">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                
             <form action="" method="GET" >
                 <div class="input-group">
                     <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
@@ -24,6 +23,7 @@
         </div>
     </div>
 
+    <div class="px-3 pb-1">
     <table class="mt-3 table table-bordered">
         <thead>
             <tr>
@@ -44,6 +44,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 
     <div class="mt-3 pb-3 float-end">
         {{ $suppliers->links('vendor.pagination.bootstrap-4') }}

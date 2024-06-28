@@ -2,9 +2,14 @@
 
     @section('content')
         <div class="py-2 mt-2 mb-3">
+            <div class="d-flex align-items-center">
+                <a href="{{ route('latest.payroll') }}" class="text-secondary text-decoration-none btn">
+                            <i class="fs-5 bi-backspace"></i>
+                </a>
             <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline fs-5 head">Payroll | Project - 
                 {{ $batch->project_id }} |</span>  
-                <span class="fs-5 head" style="color: {{ $batch->remarks === 'valid' ? 'green' : 'red' }}">{{ $batch->remarks }}</span>
+                <span class="fs-5 head" style="color: {{ $batch->status === 'valid' ? 'blue' : ($batch->status === 'pending' ? 'green' : 'red') }}">{{ $batch->status }}</span>
+            </div>
         </div>
         
         <table class="table table-bordered">
@@ -27,7 +32,7 @@
                         <span>{{ $batch->project->project_dsc }}</span>
                     </td>
                     <td >
-                        <span>{{ $batch->entry->name }}</span>
+                        <span>{{ $batch->entry->fname }} {{ $batch->entry->mname }} {{ $batch->entry->lname }}</span>
                     </td>
                     <td >
                         <span>{{ $batch->created_at->format('Y-m-d') }}</span>
@@ -50,7 +55,6 @@
                     <th><span class="bold">SALARY</span></th>
                     <th><span class="bold">ADVANCE</span></th>
                     <th><span class="bold">NET $</span></th>
-                    <th></th>
                 </tr>
             </thead>
 
@@ -66,7 +70,6 @@
                         <td>{{ number_format($payroll->salary, 2) }}</td>
                         <td>{{ number_format($payroll->advance_amount, 2) }}</td>
                         <td>{{ number_format($payroll->net_amount, 2) }}</td>
-                        <td><input type="checkbox" class="form-check-input" name="checklist[]" checked></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -81,52 +84,96 @@
                     <td>{{ number_format($batch->total_salary, 2) }}</td>
                     <td>{{ number_format($batch->total_advance, 2) }}</td>
                     <td>{{ number_format($batch->total_net, 2) }}</td>
-                    <td></td>
                 </tr>
             </tfoot>
         </table>
-
-        @if($batch->remarks !== 'invalid')
-        @if(Auth::user() && Auth::user()->id == $batch->entry_by)
-            <button class="btn btn-danger float-end" type="button" data-bs-toggle="modal" data-bs-target="#updateRemarksModal">
-                Incorrect
-            </button>
-        
-            <!-- Modal -->
-            <div class="modal fade" id="updateRemarksModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to update the remarks to <span class="bold text-danger">'invalid'</span> for this batch <span class="bold">{{ $batch->id }}</span>?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-danger" onclick="proceedUpdateRemarks()">Confirm</button>
-                        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="updateRemarksModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to update the remarks to <span class="bold text-danger">'invalid'</span> for this batch <span class="bold">{{ $batch->id }}</span>?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" onclick="proceedUpdateRemarks()">Confirm</button>
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <div class="modal fade" id="validModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to accept the remarks of this batch 
+                        <span class="bold">"{{ $batch->id }}"</span> ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="updateStatusValid()">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+        @if($batch->status !== 'invalid')
+        @if(Auth::user() && Auth::user()->srole == 1)
+            @if($batch->status == 'pending')
+            <form action="{{ route('statusValid', $batch->id) }}" method="post" id="statusValidForm">
+                @csrf
+                @method('PUT')
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#validModal">
+                    <i class="bi-award link-white"></i>
+                    Correct
+                </button>
+            </form>
+            @endif
+
+            @if($batch->status == 'pending')
+            <button class="btn btn-danger float-end" type="button" data-bs-toggle="modal" data-bs-target="#updateRemarksModal">
+                <i class="bi-award link-white"></i>
+                Incorrect
+            </button>
+            @endif
         
             <form action="{{ route('staff.updateBatchRemarks', $batch->id) }}" method="post" id="updateRemarksForm">
                 @csrf
                 @method('PUT')
             </form>
-
-            <a href="{{ route('payroll.export', ['batchId' => $batch->id]) }}" class="btn btn-success float-end me-2">Export Payroll</a>
         @endif
         @else
         <span class="text-danger" >This payroll is invalid.</span>
         @endif
+        
+        @if($batch->status == 'valid')
+            <a href="{{ route('payroll.export', ['batchId' => $batch->id]) }}" class="btn btn-success float-end me-2">
+                <i class="bi-award link-white"></i>
+                Export Payroll
+            </a>
+        @endif
+            
+        </div>
         
         
         <script>
             function proceedUpdateRemarks() {
             document.getElementById('updateRemarksForm').submit();
         }
+        
+        function updateStatusValid() {
+            document.getElementById('statusValidForm').submit();
+        }
+        
         </script>
 
 @endsection

@@ -15,6 +15,10 @@
                     <button class="btn btn-outline-success" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#createSupplierModal">
                         <span><i class="bi bi-plus"></i>Supplier</span>
                     </button>
+                    
+                    <a href="{{ route('invalidReceipt') }}" class="btn btn-outline-danger">
+                        <i class="bi bi-clipboard2-x"></i>
+                    </a>
                 </div>
 
                 <form action="{{ route('receipt.search') }}" method="GET" >
@@ -63,13 +67,14 @@
         </div> 
 
         <div class="mt-1">
-            {{ $receipts->links('vendor.pagination.bootstrap-4') }}
         </div>
         
         <div class="px-3 d-flex justify-content-between">
-            <a href="{{ route('on.receipt') }}" class="text-decoration-none text-secondary fst-italic">/Receipt for On-Going Projects</a>
-
-            <a href="{{ route('supplier') }}" class="text-decoration-none text-secondary fst-italic">/Supplier list</a>
+            <div class="d-flex justify-content-start gap-3">
+                <a href="{{ route('on.receipt') }}" class="text-decoration-none text-secondary fst-italic">/Receipt for On-Going Projects</a>
+                <a href="{{ route('supplier') }}" class="text-decoration-none text-secondary fst-italic">/Supplier list</a>
+            </div>
+            {{ $receipts->links('vendor.pagination.bootstrap-4') }}
         </div>
 
        

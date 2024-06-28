@@ -19,7 +19,7 @@ class SearchController extends Controller
     {
         $query = $request->input('query');
 
-        $results = Project::search($query, ['project_id', 'project_dsc'], $status)->get();
+        $results = Project::search($query, ['project_id', 'project_dsc'], $status) ->take(40)->latest()->get();
 
         return view('project.search', ['results' => $results, 'query' => $query]);
     }
@@ -28,9 +28,18 @@ class SearchController extends Controller
     {
         $query = $request->input('query');
 
-        $results = Project::search($query, ['project_id', 'project_dsc'], $status)->get();
+        $results = Project::search($query, ['project_id', 'project_dsc'], $status) ->take(40)->latest()->get();
 
         return view('project.search', ['results' => $results, 'query' => $query]);
+    }
+    
+    public function searchProjectOwner(Request $request, $status = 'new')
+    {
+        $query = $request->input('query');
+
+        $projects = Project::search($query, ['project_id', 'project_dsc'], $status) ->take(40)->latest()->get();
+
+        return view('owner.searchProject', ['projects' => $projects, 'query' => $query]);
     }
 
     public function searchEstimate(Request $request, $status = ['pending','accepted'])
@@ -49,6 +58,8 @@ class SearchController extends Controller
                 ;
         })
         ->whereIn('status', $status)
+        ->take(40)
+        ->latest()
         ->get()
         ->groupBy('group_id');
     
@@ -71,6 +82,8 @@ class SearchController extends Controller
                 ;
         })
         ->whereIn('status', $status)
+        ->take(40)
+        ->latest()
         ->get()
         ->groupBy('group_id');
     
@@ -91,6 +104,8 @@ class SearchController extends Controller
                 ;
         })
         ->where('status', 'LIKE', "%{$status}%")
+        ->take(40)
+        ->latest()
         ->get()
         ->groupBy('group_id');
     
@@ -111,6 +126,8 @@ class SearchController extends Controller
                 ;
         })
         ->where('status', 'LIKE', "%{$status}%")
+        ->take(40)
+        ->latest()
         ->get()
         ->groupBy('group_id');
     
@@ -129,6 +146,8 @@ class SearchController extends Controller
             $query->where('whereabout', 'LIKE', "%{$searchQuery}%")
                 ->orWhere('status', 'LIKE', "%{$searchQuery}%");
         })
+        ->take(40)
+        ->latest()
         ->get();
     
         return view('machinery.search', ['machineries' => $machineries, 'query' => $searchQuery]);
@@ -146,6 +165,8 @@ class SearchController extends Controller
             $query->where('whereabout', 'LIKE', "%{$searchQuery}%")
                 ->orWhere('status', 'LIKE', "%{$searchQuery}%");
         })
+        ->take(40)
+        ->latest()
         ->get();
     
         return view('owner.searchMachinery', ['machineries' => $machineries, 'query' => $searchQuery]);
@@ -163,6 +184,8 @@ class SearchController extends Controller
             $query->where('whereabout', 'LIKE', "%{$searchQuery}%")
                 ->orWhere('status', 'LIKE', "%{$searchQuery}%");
         })
+        ->take(40)
+        ->latest()
         ->get();
     
         return view('tool.search', ['tools' => $tools, 'query' => $searchQuery]);
@@ -179,6 +202,8 @@ class SearchController extends Controller
             $query->where('whereabout', 'LIKE', "%{$searchQuery}%")
                 ->orWhere('status', 'LIKE', "%{$searchQuery}%");
         })
+        ->take(40)
+        ->latest()
         ->get();
     
         return view('owner.searchTool', ['tools' => $tools, 'query' => $searchQuery]);
@@ -192,10 +217,12 @@ class SearchController extends Controller
             ->orWhere('project_id', 'LIKE', "%{$searchQuery}%")
             ->orWhere('entry_by', 'LIKE', "%{$searchQuery}%")
             ->orWhere('created_at', 'LIKE', "%{$searchQuery}%")
-            ->orWhere('remarks', 'LIKE', "%{$searchQuery}%")
+            ->orWhere('status', 'LIKE', "%{$searchQuery}%")
             ->orWhereHas('entry', function ($query) use ($searchQuery) {
                 $query->where('username', 'LIKE', "%{$searchQuery}%");
             })
+            ->take(40)
+            ->latest()
             ->get();
     
         return view('payroll.search', ['payrollBatch' => $payrollBatch, 'query' => $searchQuery]);
@@ -205,7 +232,7 @@ class SearchController extends Controller
     {
         $query = $request->input('query');
 
-        $projects = Project::search($query, ['project_id', 'project_dsc'], $status)->get();
+        $projects = Project::search($query, ['project_id', 'project_dsc'], $status)->take(40)->latest()->get();
 
         return view('payroll.searchProject', ['projects' => $projects, 'query' => $query]);
     }
@@ -218,10 +245,12 @@ class SearchController extends Controller
             ->orWhere('project_id', 'LIKE', "%{$searchQuery}%")
             ->orWhere('entry_by', 'LIKE', "%{$searchQuery}%")
             ->orWhere('created_at', 'LIKE', "%{$searchQuery}%")
-            ->orWhere('remarks', 'LIKE', "%{$searchQuery}%")
+            ->orWhere('status', 'LIKE', "%{$searchQuery}%")
             ->orWhereHas('entry', function ($query) use ($searchQuery) {
                 $query->where('username', 'LIKE', "%{$searchQuery}%");
             })
+            ->take(40)
+            ->latest()
             ->get();
     
         return view('owner.searchPayroll', ['payrollBatch' => $payrollBatch, 'query' => $searchQuery]);
@@ -244,6 +273,8 @@ class SearchController extends Controller
             ->orWhereHas('supplier', function ($query) use ($searchQuery) {
                 $query->where('name', 'LIKE', "%{$searchQuery}%");
             })
+            ->take(40)
+            ->latest()
             ->get();
     
         return view('receipt.search', ['receipts' => $receipts, 'query' => $searchQuery]);
@@ -266,6 +297,8 @@ class SearchController extends Controller
             ->orWhereHas('supplier', function ($query) use ($searchQuery) {
                 $query->where('name', 'LIKE', "%{$searchQuery}%");
             })
+            ->take(40)
+            ->latest()
             ->get();
     
         return view('owner.searchReceipt', ['receipts' => $receipts, 'query' => $searchQuery]);

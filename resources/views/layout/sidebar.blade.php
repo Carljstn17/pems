@@ -44,14 +44,19 @@
             </li>
             <li class="nav-item px-2 mb-3 {{ request()->routeIs('staff.laborer', 'staff.register.form') ? 'active' : '' }}">
                 <a href="{{ route('staff.laborer') }}" class="nav-link align-middle px-0 link-dark">
-                    <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Register</span>
+                    <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Account</span>
                 </a>
             </li>
             <div class="border-top d-sm-inline" style="width: 100%;"></div>
             <li class="px-2 mt-3 bottom">
                 @auth
                     <a href="{{ route('staff.show-user') }}" class="nav-link px-0 align-middle">
-                        <i class="fs-5 bi-person-circle link-dark"></i> <span class="ms-1 d-sm-inline link-dark">{{ Auth::user()->username }}</span> 
+                        <i class="fs-5 bi-person-circle link-dark"></i> <span class="ms-1 d-sm-inline link-dark">
+                            {{ Auth::user()->username }}
+                            @if(Auth::user() && Auth::user()->srole == 1)
+                                <i class="fs-5 bi-award link-dark"></i>
+                            @endif
+                            </span> 
                     </a>
                     <ul class="ms-1">
                         <li>

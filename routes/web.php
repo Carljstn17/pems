@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\OtpController;
+use App\Http\Controllers\ResetPasswordController;
+use Barryvdh\DomPDF\Facade as PDF;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +40,7 @@ use App\Http\Controllers\Auth\VerificationController;
 */
 
 Route::get('/', function () {
-             $user = Auth::user();
+        $user = Auth::user();
         if (!empty($user->remember_token)){
             if ($user->role === 'owner') {
                 return redirect('/owner/dashboard');
@@ -45,13 +48,12 @@ Route::get('/', function () {
                 return redirect('/staff/dashboard');
             } elseif ($user->role === 'laborer') {
                 return redirect('/laborer/dashboard');
+            } else {
+                return redirect('/');
             }
-        } else {
-            return view('welcome');
-        }
-       
-    return view('welcome');
-});
+        } 
+        return view('auth.owner-login');
+})->name('welcome');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -66,19 +68,56 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 Route::get('/email/verify', [VerificationController::class, 'show'])
     ->name('verification.notice');
 
-Route::post('/email/verification-notification', [VerificationController::class, 'sendVerificationEmail'])
-    ->name('verification.send');
 });
+
+Route::post('/email/verification-notification', [UserController::class, 'sendVerificationEmail'])
+    ->name('verification.send');
+
+Route::post('/email/resend-verification/{userId}', [UserController::class, 'resendEmailVerify'])
+    ->name('verification.resend.email');
+    
+Route::post('/email/resend/user-verify', [UserController::class, 'resendEmailUser'])
+    ->name('verification.resend.user');
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::get('/send-otp-form', [OtpController::class, 'showSendOtpForm'])->name('send-otp-form');
+Route::post('/send-otp', [OtpController::class, 'sendOtp'])->name('send-otp');
+Route::get('/verify-otp', [OtpController::class, 'showVerifyOtpForm'])->name('verify-otp');
+Route::post('/verify-otp-reset', [OtpController::class, 'verifyOtp'])->name('verify-otp.submit');
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::get('/reset-password', [ResetPasswordController::class, 'showEmailForm'])->name('reset-password');
+
+// Handle submission of email for password reset
+Route::post('/send-reset-link', [ResetPasswordController::class, 'sendResetLink'])->name('send-reset-link');
+
+// Display form to enter OTP and reset password
+Route::get('/reset-password/{userId}', [ResetPasswordController::class, 'showResetForm'])->name('reset-password.form');
+
+// Handle submission of OTP and new password
+Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name('reset-password.submit');
+
+Route::post('resend-otp', [OtpController::class, 'resendOtp'])->name('resend-otp');
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Route::get('/notifications', 'NotificationController@index');
 //owner route
-Route::get('/owner-login', [AuthController::class, 'showOwnerLoginForm'])
+Route::get('/welcome', [AuthController::class, 'showOwnerLoginForm'])
     ->name('owner-login');
 Route::post('/owner/login', [AuthController::class, 'ownerLogin']);
 
 Route::put('update-receipt-remarks/{receiptId}', [ReceiptController::class, 'updateReceiptRemarks'])->name('updateReceiptRemarks');
+
+Route::put('/update-status-valid/{batchId}', [PayrollController::class, 'statusCorrectValid'])->name('statusValid');
+
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+Route::get('/analytics', [ProjectController::class, 'analytics']);
+
 
 //owner auth
 Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () {
@@ -88,8 +127,8 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/register-form', [AuthController::class, 'showRegisterForm'])->name('owner.register.form');
     Route::get('/owner/accounts', [AuthController::class, 'showAdminRegister'])->name('owner.register');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/soft-delete/{user}', [UserController::class, 'softDelete'])->name('owner.user-delete');
 
+    Route::get('/owner/project-list', [ProjectController::class, 'projectListOwner'])->name('owner.project');
     Route::get('/owner/show/{id}', [ProjectController::class, 'showProjectOwner'])->name('owner.showproject');
 
     Route::get('/owner/estimate/', [EstimateController::class, 'showLatestOwner'])->name('owner.estimate');
@@ -98,13 +137,12 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/estimate/show/{group_id}', [EstimateController::class, 'showOwner'])->name('owner.estimateShow');
     Route::get('/owner/estimate/reject', [EstimateController::class, 'rejectEstimate'])->name('owner.estimateReject');
     Route::get('/owner/estimate/showreject/{group_id}', [EstimateController::class, 'showRejectOwner'])->name('owner.estimateShowReject');
-    Route::put('/estimates/{group_id}/reject', [EstimateController::class, 'reject'])->name('owner.reject');
-    Route::put('/estimates/{group_id}/accept', [EstimateController::class, 'accept'])->name('owner.accept');
 
     Route::get('/owner/payroll/latest', [PayrollController::class, 'ownerPayrollLatest'])->name('owner.payroll');
     Route::get('/owner/payroll/show-latest/{batchId}', [PayrollController::class, 'showOwnerPayroll'])->name('owner.showPayroll');
     Route::put('/update-batch-remarks/{batchId}', [PayrollController::class, 'ownerBatchRemarks'])->name('ownerBatchRemarks');
     Route::get('/owner/advance-list', [AdvanceController::class, 'ownerAdvanceList'])->name('owner.advanceList');
+    Route::get('/owner/invalid-list-payroll', [PayrollController::class, 'invalidListOwner'])->name('invalidListOwner');
 
     Route::get('/owner/tool', [ToolController::class, 'allToolOwner'])->name('owner.tool');
     Route::get('/owner/tool/report', [ToolController::class, 'toolLogs'])->name('owner.toolLogs');
@@ -115,6 +153,7 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/receipt/{id}', [ReceiptController::class, 'showForOwner'])->name('owner.showReceipt');
     Route::get('/owner/supplier/list', [SupplierController::class, 'ownerSupplierList'])->name('owner.supplier');
     Route::get('/owner/receipt/project/{project_id}', [ReceiptController::class, 'ownerProjectReceipt'])->name('owner.projectReceipt');
+    Route::get('/owner/invalid-list-receipt', [ReceiptController::class, 'showOwnerReceiptInvalid'])->name('invalidReceiptOwner');
     
     Route::get('/owner/search-estimate', [SearchController::class, 'searchEstimateForOwner'])->name('owner.search.estimate');
     Route::get('/owner/search-estimate-reject', [SearchController::class, 'searchRejectEstimateForOwner'])->name('owner.search.estimate.reject');
@@ -122,14 +161,36 @@ Route::middleware(['auth', CheckUserRole::class . ':owner'])->group(function () 
     Route::get('/owner/search-machinery', [SearchController::class, 'searchMachineryForOwner'])->name('owner.searchMachinery');
     Route::get('/owner/search-payroll', [SearchController::class, 'searchPayrollForOwner'])->name('owner.search.payroll');
     Route::get('/owner/search-receipt', [SearchController::class, 'searchReceiptForOwner'])->name('owner.search.receipt');
+    Route::get('/owner/search-project', [SearchController::class, 'searchProjectOwner'])->name('owner.search.project');
     
     Route::get('/owner/view-profile/{id}', [AuthController::class, 'showProfile'])->name('owner.show.profile');
     Route::get('/owner/view-profile', [AuthController::class, 'showUserOwner'])->name('owner.show-user');
+    
+    
+    Route::post('/assign-role/{userId}', [UserController::class, 'assignRole'])->name('assign');
+    Route::post('/revoke-role/{userId}', [UserController::class, 'revokeRole'])->name('revoke');
 });
+    Route::put('/update-receipts/{id}', [ReceiptController::class, 'updateReceipt'])->name('updateReceipt');
+    Route::delete('/users/soft-delete/{user}', [UserController::class, 'softDelete'])->name('owner.user-delete');
+    
+    Route::put('/estimates/{group_id}/reject', [EstimateController::class, 'reject'])->name('owner.reject');
+    Route::put('/estimates/{group_id}/accept', [EstimateController::class, 'accept'])->name('owner.accept');
 
+    Route::get('export-estimates/{group_id}', [EstimateController::class, 'export'])->name('export-estimates');
+    Route::get('/payroll/export/{batchId}', [PayrollController::class, 'export'])->name('payroll.export');
+    Route::get('pdf-estimates/{group_id}', [EstimateController::class, 'exportPdf'])->name('pdf-estimates');
     Route::put('/owner/update-info/{id}', [UserController::class, 'updateInfoForOwner'])->name('owner.updateInfo');
+    Route::put('/owner/update-ba/{id}', [UserController::class, 'updateAddress'])->name('updateBA');
+    Route::put('/owner/update-email/{id}', [UserController::class, 'updateEmail'])->name('updateEmail');
+    Route::put('/owner/update-contact/{id}', [UserController::class, 'updateContact'])->name('updateContact');
 
-
+    Route::get('email-verification/{userId}/{token}', [UserController::class, 'showVerificationForm'])->name('verify.view');
+    Route::post('verify-email/{userId}', [UserController::class, 'verifyEmail'])->name('verify.email');
+    Route::get('expired-link', [UserController::class, 'expiredLink'])->name('expired');
+    
+    Route::post('/email/resend', [UserController::class, 'resend'])->name('verification.resend');
+    Route::post('reset-password/{userId}', [UserController::class, 'resetPassword'])->name('reset.password');
+    Route::post('/password/update-pass', [UserController::class, 'updatePassword'])->name('update.password');
 
 // staff route
 Route::get('/staff-login', [AuthController::class, 'showStaffLoginForm'])->name('staff-login');
@@ -155,7 +216,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
 
     Route::get('/staff/payroll', [PayrollController::class, 'showStaffPayroll'])->name('staff.payroll');
     Route::get('/staff/payroll/latest', [PayrollController::class, 'showPayrollLatest'])->name('latest.payroll');
-    Route::get('/staff/payroll/new/', [PayrollController::class, 'showPayrollNew'])->name('new.payroll');
+    Route::get('/staff/payroll/new/{project_id}', [PayrollController::class, 'showPayrollNew'])->name('new.payroll');
     Route::post('/staff/payroll/store/', [PayrollController::class, 'storePayroll'])->name('store.payroll');
     Route::get('/get-advance/{id}', [AdvanceController::class, 'getAdvance']);
     Route::get('/staff/payroll/advance', [PayrollController::class, 'showPayrollAdvance']);
@@ -167,7 +228,9 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::put('/staff/update-batch-remarks/{batchId}', [PayrollController::class, 'updateBatchRemarks'])->name('staff.updateBatchRemarks');
     Route::get('/search/payroll', [SearchController::class, 'searchPayroll'])->name('search.payroll');
     Route::get('/search/payrollProject', [SearchController::class, 'searchPayrollProject'])->name('search.payroll.project');
-
+    Route::get('/payroll/invalid-list', [PayrollController::class, 'invalidList'])->name('invalidList');
+    Route::post('/submit-project', [PayrollController::class, 'submitProject'])->name('submit.project');
+    
     Route::get('/staff/estimate', [EstimateController::class, 'showStaffEstimate'])->name('staff.estimate');
     Route::get('/staff/estimate/latest', [EstimateController::class, 'showLatestEstimate'])->name('latest');
     Route::get('/staff/estimate/create', [EstimateController::class, 'showNewEstimate'])->name('staff.estimate.form');;
@@ -191,6 +254,7 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
     Route::get('/receipt/project/{project_id}', [ReceiptController::class, 'projectReceipt'])->name('project.receipt');
     Route::get('/receipt/form/{id}', [ReceiptController::class, 'show'])->name('receipt.form');
     Route::get('/receipt/search', [SearchController::class, 'searchReceipt'])->name('receipt.search');
+    Route::get('/invalid-list-receipt', [ReceiptController::class, 'showReceiptInvalid'])->name('invalidReceipt');
 
     Route::get('/staff/tool', [ToolController::class, 'allTool'])->name('staff.tool');
     Route::post('/store-tools', [ToolController::class, 'store'])->name('store.tools');
@@ -214,13 +278,11 @@ Route::middleware(['auth', CheckUserRole::class . ':staff'])->group(function () 
 
     Route::get('/concern/notif/{id}', [ConcernController::class, 'show'])->name('concern.notif');
     Route::get('/concern/all-notif', [ConcernController::class, 'allConcern'])->name('concern.allNotif');
-
-    Route::get('export-estimates/{group_id}', [EstimateController::class, 'export'])->name('export-estimates');
-    Route::get('/payroll/export/{batchId}', [PayrollController::class, 'export'])->name('payroll.export');
     
     Route::get('/staff/view-profile', [AuthController::class, 'showUserProfile'])->name('staff.show-user');
     Route::get('/staff/laborer/profile/{id}', [AuthController::class, 'showLaborerProfile'])->name('staff.show.profile');
 
+    Route::get('/users/filter', [UserController::class, 'filterByProject'])->name('users.filter');
 });
 
 // laborer login

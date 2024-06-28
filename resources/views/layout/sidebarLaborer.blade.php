@@ -6,8 +6,7 @@
             </button>
 
             <div class="d-flex justify-content-start align-items-center text-decoration-none link-dark p-3 gap-2">
-                <img src="{{ asset('image/logo2.jpg') }}" alt="logo" style="width:10%;" >
-                <div class="head">PEMS</div>
+                <img src="{{ asset('image/16.png') }}" alt="logo" style="width:10%;" >
             </div>
             
         </div>

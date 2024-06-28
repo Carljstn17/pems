@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
 
 class VerifyEmailNotification extends Notification implements ShouldQueue
 {
@@ -19,16 +20,16 @@ class VerifyEmailNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable)
     {
-        $verificationUrl = URL::route('verification.verify', [
-            'id' => $notifiable->getKey(),
-            'hash' => sha1($notifiable->getEmailForVerification())
+        $expiration = Carbon::now()->addMinutes(15); // Example: link expires in 30 minutes
+        $verificationUrl = route('verify.view', [
+            'userId' => $notifiable->id,
+            'token' => encrypt($expiration),
         ]);
 
         return (new MailMessage)
             ->subject('Verify Your Email Address')
-            ->line('Click the button below to verify your email address.')
+            ->line('Please click the button below to verify your email address.')
             ->action('Verify Email Address', $verificationUrl)
-            ->line('If you did not create an account, no further action is required.')
-            ->line('Please note that this link is valid for 60 minutes.');
+            ->line('If you did not create an account, no further action is required.');
     }
 }

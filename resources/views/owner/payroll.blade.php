@@ -6,7 +6,10 @@
         </div>
 
         <div class="pb-2 m-3">
-            <div class="d-flex justify-content-end gap-2">
+            <div class="d-flex justify-content-between gap-2">
+                <a href="{{ route('invalidListOwner') }}" class="btn btn-outline-dark">
+                    <i class="bi bi-clipboard2-x"></i>
+                </a>
                 <form action="{{ route('owner.search.payroll') }}" method="GET" >
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
@@ -15,17 +18,15 @@
                 </form>
             </div>
         </div>
-
-        @include('payroll.advance')
-
         <div class="mt-3 pb-1 px-3">
             <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col"><span class="bold text-nowrap">P-Batch</span></th>
+                        <th scope="col"><span class="bold text-nowrap">P Batch</span></th>
                         <th scope="col"><span class="bold text-nowrap">Project Description</span></th>
                         <th scope="col"><span class="bold text-nowrap">Entry By</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Status</span></th>
                         <th scope="col"><span class="bold text-nowrap">Date</span></th>
                     </tr>
                 </thead>
@@ -39,7 +40,8 @@
                                 {{ $batches->entry->username }}
                             </span>
                         </td>
-                        <td><span class="text-nowrap">{{ $batches->created_at->diffForHumans() }}</span></td>
+                        <td><span class="text-nowrap">{{ $batches->status }}</span></td>
+                        <td><span class="text-nowrap">{{ $batches->updated_at->diffForHumans() }}</span></td>
                     </tr>
                     @empty
                     <tr>

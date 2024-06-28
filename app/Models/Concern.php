@@ -15,6 +15,6 @@ class Concern extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class, 'entry_by', 'id');
+        return $this->belongsTo(\App\Models\User::class, 'entry_by', 'id')->withTrashed();
     }
 }

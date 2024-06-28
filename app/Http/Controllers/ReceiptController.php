@@ -14,7 +14,7 @@ class ReceiptController extends Controller
 {
     public function showStaffReceipt()
     {
-        $receipts = Receipt::latest()->paginate(4);
+        $receipts = Receipt::where('remarks','valid')->latest()->paginate(10);
         $projects = Project::where('status', 'new')->latest()->get();
         $suppliers = Supplier::all();
 
@@ -23,11 +23,29 @@ class ReceiptController extends Controller
 
     public function showOwnerReceipt()
     {
-        $receipts = Receipt::latest()->paginate(4);
+        $receipts = Receipt::where('remarks','valid')->latest()->paginate(10);
         $projects = Project::where('status', 'new')->latest()->get();
         $suppliers = Supplier::all();
 
         return view('owner.receipt', compact('receipts','projects', 'suppliers'));
+    }
+    
+    public function showReceiptInvalid()
+    {
+        $receipts = Receipt::where('remarks','invalid')->latest()->paginate(10);
+        $projects = Project::where('status', 'new')->latest()->get();
+        $suppliers = Supplier::all();
+
+        return view('receipt.invalid', compact('receipts','projects', 'suppliers'));
+    }
+    
+    public function showOwnerReceiptInvalid()
+    {
+        $receipts = Receipt::where('remarks','invalid')->latest()->paginate(10);
+        $projects = Project::where('status', 'new')->latest()->get();
+        $suppliers = Supplier::all();
+
+        return view('owner.receiptInvalid', compact('receipts','projects', 'suppliers'));
     }
 
     public function showReceiptOngoing()
@@ -81,10 +99,10 @@ class ReceiptController extends Controller
         $validatedData = $request->validate([
             'project_id' => 'required',
             'receipt_date' => 'required|date',
-            'si_or_no' => 'required',
+            'si_or_no' => 'required|max:15',
             'supplier_id' => 'required',
             'description' => 'required',
-            'amount' => 'required|numeric|max:100000',
+            'amount' => 'required|numeric|max:999999|min:0',
             'receipt_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Assuming receipt_photo is the file input name
         ]);
     
@@ -133,4 +151,42 @@ class ReceiptController extends Controller
         // Redirect back or to any other page after update
         return redirect()->back()->with('success', 'Remarks updated successfully!');
     }
+    
+    public function updateReceipt(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'project_id' => 'required',
+            'receipt_date' => 'required|date',
+            'si_or_no' => 'required|max:15',
+            'supplier_id' => 'required',
+            'description' => 'required',
+            'amount' => 'required|numeric|max:100000|min:0',
+            'receipt_photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Assuming receipt_photo is the file input name
+        ],[
+            'project_id.required' => 'The project is no longer exist.'
+            ]);
+    
+        $receipt = Receipt::findOrFail($id);
+    
+        // Update the receipt data
+        $receipt->update([
+            'project_id' => $validatedData['project_id'],
+            'description' => $validatedData['description'],
+            'si_or_no' => $validatedData['si_or_no'],
+            'supplier_id' => $validatedData['supplier_id'],
+            'amount' => $validatedData['amount'],
+            'receipt_date' => $validatedData['receipt_date'],
+            // Update other fields as needed
+        ]);
+    
+        // Handle receipt photo update if necessary
+        if ($request->hasFile('receipt_photo')) {
+            $receipt_photo = $request->file('receipt_photo');
+            $path = $receipt_photo->store('receipts', 'public');
+            $receipt->update(['receipt_photo' => $path]);
+        }
+    
+        return redirect()->back()->with('success', 'Receipt updated successfully');
+    }
+
 }

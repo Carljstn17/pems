@@ -65,7 +65,12 @@
                                                 <!-- Input fields for editing -->
                                                 <div class="mb-3">
                                                     <label for="status" class="form-label">Status</label>
-                                                    <input type="text" class="form-control" name="status" value="{{ $tool->toolReport->status }}" required>
+                                                    <select class="form-select" id="status" name="status">
+                                                        <option value="New" {{ $tool->toolReport->status == 'New' ? 'selected' : '' }}>New</option>
+                                                        <option value="Available" {{ $tool->toolReport->status == 'Available' ? 'selected' : '' }}>Available</option>
+                                                        <option value="On Work" {{ $tool->toolReport->status == 'On Work' ? 'selected' : '' }}>On Work</option>
+                                                        <option value="Not Available" {{ $tool->toolReport->status == 'Not Available' ? 'selected' : '' }}>Not Available</option>
+                                                    </select>
                                                 </div>
                             
                                                 <div class="mb-3">
@@ -85,6 +90,18 @@
             </table>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+          <script>
+            function storeInputValues() {
+                sessionStorage.setItem('status', document.getElementById('status').value);
+                sessionStorage.setItem('whereabout', document.getElementById('whereabout').value);
+            }
+        
+            // Function to retrieve and populate input values when modal is shown
+            function populateInputValues() {
+                document.getElementById('status').value = sessionStorage.getItem('status');
+                document.getElementById('whereabout').value = sessionStorage.getItem('whereabout');
+            }
+        </script>
 @endsection
 

@@ -35,7 +35,7 @@
                         @php
                             $firstEstimate = $estimate->first();
                         @endphp
-                        <tr data-url="{{ route('owner.estimateShow', ['group_id' => $firstEstimate->group_id]) }}" class="clickable-row">
+                        <tr data-url="{{ route('estimate.form', ['group_id' => $firstEstimate->group_id]) }}" class="clickable-row">
                             <td>{{ $firstEstimate->status }}</td>
                             <td>{{ $firstEstimate->title }}</td>
                             <td>{{ $firstEstimate->user->username }}</td>

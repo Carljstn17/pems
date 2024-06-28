@@ -5,13 +5,26 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>{{ env('APP_NAME') }}</title>
-        <link rel="icon" type="image/x-icon" href="{{ asset('image/logo.jpg') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('image/17.png') }}">
 
         <!-- Styles -->
         @vite(['resources/css/base2.css', 'resources/sass/app.scss', 'resources/js/app.js', 'resources/css/sidebar.css',])
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400;1,500&display=swap" rel="stylesheet">
+        
+        <style>
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            
+            /* Optional: Set appearance to none to standardize across browsers */
+            input[type=number] {
+                -moz-appearance: textfield; /* Firefox */
+            }
+        </style>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

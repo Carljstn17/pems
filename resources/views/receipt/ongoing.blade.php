@@ -8,10 +8,9 @@
         <div class="py-2 mt-3">
             <div class="d-flex justify-content-between border-bottom border-subtle pb-3 gap-2">
                 <div>
-                    <button class="btn btn-outline-dark" style="transition:0.8s;"data-bs-toggle="modal" data-bs-target="#createReceiptModal">
-                        <span class="d-none d-sm-inline"><i class="bi bi-plus"></i>Add New Receipt</span>
-                        <span class="d-sm-inline d-sm-none"><i class="bi bi-plus"></i>Add New</span>
-                    </button>
+                    <a href="{{ route('receipt.entry.form') }}" class="btn btn-outline-dark" style="transition:0.8s;">
+                        <span><i class="bi bi-plus text-nowrap"></i>Add New Receipt</span>
+                    </a>
 
                     <button class="btn btn-outline-success" style="transition: 0.8s;" data-bs-toggle="modal" data-bs-target="#createSupplierModal">
                         <span><i class="bi bi-plus"></i>Supplier</span>

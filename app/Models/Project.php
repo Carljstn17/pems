@@ -22,4 +22,19 @@ class Project extends Model
         'contact',
         'status'
     ];
+    
+    public function payrollBatches()
+    {
+        return $this->hasMany(PayrollBatch::class);
+    }
+    
+    public function receipts()
+    {
+        return $this->hasMany(Receipt::class);
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

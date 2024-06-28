@@ -2,7 +2,12 @@
 
 @section('content')
     <div class="py-2 mt-2 mb-3">
+        <div class="d-flex align-items-center">
+                <a href="{{ route('latest.receipt') }}" class="text-secondary text-decoration-none btn">
+                            <i class="fs-5 bi-backspace"></i>
+                </a>
         <i class="fs-5 bi-receipt"></i> <span class=" d-sm-inline head fs-5">Receipt | Supplier List</span>
+        </div>
     </div>
 
     <div class="pb-2 m-3">
@@ -48,8 +53,9 @@
     </table>
     </div>
 
-    <div class="mt-3 pb-3">
-    </div>
+    <div class="mt-1">
+            {{ $suppliers->links('vendor.pagination.bootstrap-4') }}
+        </div>
     
 
 @endsection

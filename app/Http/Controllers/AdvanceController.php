@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Advance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AdvanceController extends Controller
 {
@@ -15,13 +16,21 @@ class AdvanceController extends Controller
         $amount = $request->input('amount');
 
         $user = User::find($user_id);
-        $name = $user ? $user->name : null;
+        
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'amount' => 'required|numeric|min:0|max:9999',
+        ]);
+    
+        // Check if the validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         // Create a new Advance instance and save it to the database
         Advance::create([
             "entry_by"=> Auth::id(),
             'user_id' => $user_id,
-            'name' => $name,
             'amount' => $amount,
         ]);
         // Redirect back or to a specific route after successful submission
@@ -29,7 +38,9 @@ class AdvanceController extends Controller
     }
 
     public function advanceList() {
-        $advances = Advance::latest()->paginate(10);
+        $advances = Advance::with(['laborer' => function ($query) {
+            $query->withTrashed();
+        }])->latest()->paginate(10);
         $laborers = User::where('role', 'laborer')->get();
 
         // Pass the advances data to the view

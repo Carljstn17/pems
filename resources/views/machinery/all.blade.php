@@ -21,6 +21,30 @@
             </form>
         </div>
     </div>
+    
+    @if(session('error'))
+        <div class="alert alert-danger">
+                {{ session('error') }}
+        </div>
+        @endif
+    
+        @if(session('success'))
+            <div class="alert alert-success">
+                    {{ session('success') }}
+            </div>
+            <script>
+                // Reload the page after displaying the success message
+                setTimeout(function() {
+                    location.reload();
+                }, 2000); // Reload after 2 seconds (adjust the time as needed)
+            </script>
+        @endif
+        
+        @if (session('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
 
     @include('machinery.create_machinery_modal')  <!-- Update the modal include reference -->
 
@@ -60,7 +84,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editMachineryModalLabel">Edit Machinery - {{ $machinery->property }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body mt-2">
                                         <!-- Your edit form goes here -->
@@ -71,12 +95,20 @@
                                             <!-- Input fields for editing -->
                                             <div class="mb-3">
                                                 <label for="status" class="form-label">Status</label>
-                                                <input type="text" class="form-control" name="status" value="{{ $machinery->machineryReport->status }}" required>
+                                                <select class="form-select" id="status" name="status">
+                                                    <option value="New" {{ $machinery->machineryReport->status == 'New' ? 'selected' : '' }}>New</option>
+                                                    <option value="Available" {{ $machinery->machineryReport->status == 'Available' ? 'selected' : '' }}>Available</option>
+                                                    <option value="On Work" {{ $machinery->machineryReport->status == 'On Work' ? 'selected' : '' }}>On Work</option>
+                                                    <option value="Not Available" {{ $machinery->machineryReport->status == 'Not Available' ? 'selected' : '' }}>Not Available</option>
+                                                </select>
                                             </div>
                     
                                             <div class="mb-3">
                                                 <label for="whereabout" class="form-label">Whereabout</label>
-                                                <input type="text" class="form-control" name="whereabout" value="{{ $machinery->machineryReport->whereabout }}" required>
+                                                <input type="text" class="form-control" id="whereabout" name="whereabout" value="{{ $machinery->machineryReport->whereabout }}" required>
+                                                 @error('whereabout')
+                                                    <div class="text-danger px-2">{{ $message }}</div>
+                                                @enderror
                                             </div>
                     
                                             <!-- Submit button -->
@@ -99,4 +131,17 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+            function storeInputValues() {
+                sessionStorage.setItem('status', document.getElementById('status').value);
+                sessionStorage.setItem('whereabout', document.getElementById('whereabout').value);
+            }
+        
+            // Function to retrieve and populate input values when modal is shown
+            function populateInputValues() {
+                document.getElementById('status').value = sessionStorage.getItem('status');
+                document.getElementById('whereabout').value = sessionStorage.getItem('whereabout');
+            }
+        </script>
+        
 @endsection

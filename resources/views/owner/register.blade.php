@@ -30,43 +30,55 @@
                     <table class="table table-bordered" id="myTable">
                         <thead class="header">
                             <tr>
-                                <th class="col-md-1">Role</th>
-                                <th class="col-md-3">Email</th>
+                                <th class="col-md-2">Username
+                                    <div class="dropdown d-inline float-end">
+                                        <i class="bi bi-funnel dropdown-toggle" id="filterDropdown" data-bs-toggle="dropdown" style="cursor: pointer;"></i>
+                                        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                                            <li><a class="dropdown-item {{ request('role') == 'all' ? 'active' : '' }}" href="#" data-role="all">All</a></li>
+                                            <li><a class="dropdown-item {{ request('role') == 'owner' ? 'active' : '' }}" href="#" data-role="owner">Owner</a></li>
+                                            <li><a class="dropdown-item {{ request('role') == 'staff' ? 'active' : '' }}" href="#" data-role="staff">Staff</a></li>
+                                            <li><a class="dropdown-item {{ request('role') == 'laborer' ? 'active' : '' }}" href="#" data-role="laborer">Laborer</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <form id="filterForm" method="GET" action="{{ route('users.index') }}">
+                                        @csrf
+                                        <input type="hidden" name="role" id="roleInput">
+                                    </form>
+                                </th>
+                                <th class="col-md-2">Fullname</th>
+                                <th class="col-md-2">Email</th>
                                 <th class="col-md-1">Contact</th>
-                                <th class="col-md-2">FullName</th>
-                                <th class="col-md-1">Username</th>
                                 <th class="col-md-1"></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->role }}">{{ $user->role }}</td>
+                                  
+                                    <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->username }}">{{ $user->username }}</td>
+                                    <td class="text-nowrap col-md-2" data-toggle="tooltip" title="{{ $user->name }}">{{ $user->fname }} {{ $user->mname }} {{ $user->lname }}</td>
                                     <td class="text-nowrap col-md-3" data-toggle="tooltip" title="{{ $user->email }}">
-                                        <span class="d-none d-sm-inline">{{ Str::limit($user->email, 20) }}</span>
+                                        <span class="d-none d-sm-inline">{{ $user->email }}</span>
                                         <span class="d-sm-inline d-sm-none">{{ Str::limit($user->email, 8) }}</span>
-                                        </td>
+                                    </td>
+                                    
                                     <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->contact }}">
                                         <span class="d-none d-sm-inline">{{ Str::limit($user->contact, 11) }}</span>
                                         <span class="d-sm-inline d-sm-none">{{ Str::limit($user->contact, 8) }}</span>
                                     </td>
-                                    <td class="text-nowrap col-md-2" data-toggle="tooltip" title="{{ $user->name }}">
-                                        <span class="d-none d-sm-inline">{{ Str::limit($user->name, 20) }}</span>
-                                        <span class="d-sm-inline d-sm-none">{{ Str::limit($user->name, 8) }}</span>
-                                    </td>
-                                    <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->username }}">{{ $user->username }}</td>
                                     <td class="d-flex justify-content-center gap-2">
    
-                                        <a href="{{ route('owner.show.profile', $user->id) }}" class="btn btn-outline-dark" style="transition: 0.8s;">
+                                        <a href="{{ route('owner.show.profile', $user->id) }}" class="link-dark" style="transition: 0.8s;">
                                             <i class="bi bi-pencil"></i>
                                         </a>
 
                                         @if($user->role !== 'owner')
-                                            <form id="deleteStaffForm{{ $user->id }}" method="POST" action="{{ route('owner.user-delete', ['user' => $user->id]) }}">
+                                            <form id="deleteStaffForm{{ $user->id }}" method="POST" action="{{ route('owner.user-delete', ['user' => $user->id]) }}" style="border:none; background-color:white;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-outline-danger" onclick="confirmDeleteStaff({{ $user->id }})">
-                                                    <i class="bi bi-trash3"></i>
+                                                <button type="button" style="border:none; background-color:white; color:red" onclick="confirmDeleteStaff({{ $user->id }})">
+                                                    <i class="bi bi-trash3" style="border:none; background-color:white;"></i>
                                                 </button>
                                             </form>
                                         @endif
@@ -77,6 +89,9 @@
                         </tbody>
                     </table>
                 </div>
+        </div>
+        <div class="px-3 d-flex justify-content-end">
+            {{ $users->links('vendor.pagination.bootstrap-4') }}
         </div>
 
         <script>
@@ -134,6 +149,14 @@
                 }
             }
         }
+        
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', event => {
+                const role = event.target.dataset.role;
+                document.getElementById('roleInput').value = role;
+                document.getElementById('filterForm').submit();
+            });
+        });
         </script>
 
 @endsection

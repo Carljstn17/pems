@@ -12,12 +12,17 @@
 
            
                 <ul class="nav nav-pills flex-column mb-sm-auto px-3 pt-4 align-items-start gap-1 border-top " id="menu">
-                    <li class="nav-item px-2 {{ request()->routeIs('owner.dashboard', 'owner.showproject') ? 'active' : '' }}">
+                    <li class="nav-item px-2 {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('owner.dashboard') }}" class="nav-link align-middle px-0 link-dark">
                             <i class="fs-5 bi-speedometer2"></i> <span class="ms-1 d-sm-inline">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item px-2 {{ request()->is('owner/accounts', 'owner/register-form', 'owner/view-profile/*') ? 'active' : '' }}">
+                    <li class="nav-item px-2 {{ request()->routeIs('owner.project', 'owner.showproject') ? 'active' : '' }}">
+                        <a href="{{ route('owner.project') }}" class="nav-link align-middle px-0 link-dark">
+                            <i class="fs-5 bi-buildings"></i> <span class="ms-1 d-sm-inline">Project</span>
+                        </a>
+                    </li>
+                    <li class="nav-item px-2 {{ request()->is('owner/accounts', 'owner/register-form', 'owner/view-profile/*', 'users') ? 'active' : '' }}">
                         <a href="{{ url('owner/accounts') }}" class="nav-link align-middle px-0 link-dark">
                             <i class="fs-5 bi-person-vcard"></i> <span class="ms-1 d-sm-inline">Account</span>
                         </a>

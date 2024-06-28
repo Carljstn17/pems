@@ -2,11 +2,17 @@
 
     @section('content')
         <div class="py-2 mt-2">
+            <div class="d-flex align-items-center">
             <i class="fs-5 bi-tools"></i> <span class="d-sm-inline fs-5 head">Machinery | Logs</span>
+            </div>
         </div>
 
         <div class="pb-2 m-3">
-            <div class="d-flex justify-content-end gap-2">
+            <div class="d-flex justify-content-between">
+                <a href="{{ route('owner.machinery') }}" class="btn btn-outline-dark">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                
                 <form action="" method="GET" class="">
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
@@ -19,9 +25,8 @@
         <div class="table table-responsive mt-3 px-2">
             <table class="table table-bordered">
                 <thead>
-                    <tr class="text-center">
+                    <tr>
                         <td><span class="bold">Property</span></td>
-                        <td><span class="bold">Tool&nbspName</span></td>
                         <td><span class="bold">Status</span></td>
                         <td><span class="bold">Whereabout</span></td>
                         <td><span class="bold">Updated&nbspAt</span></td>
@@ -31,12 +36,11 @@
                 <tbody>
                     @foreach($machineryLogs as $log) 
                             <tr>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->machineryLog->machinery_type }}">{{ Str::limit($log->machineryLog->machinery_type, 8) }}</td>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->machineryLog->machinery_name }}">{{ Str::limit($log->machineryLog->machinery_name, 8) }}</td>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->status }}">{{ Str::limit($log->status, 8) }}</td>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->whereabout }}">{{ Str::limit($log->whereabout, 8) }}</td>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->updated_at }}">{{ Str::limit($log->updated_at->format('Y-m-d H:i:s'), 8) }}</td>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->user->username }}">{{ Str::limit($log->user->username, 8) }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->machineryLog->machinery_type }}">{{ $log->machineryLog->property }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->status }}">{{ $log->status }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->whereabout }}">{{ $log->whereabout }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->updated_at }}">{{ $log->updated_at->format('Y-m-d H:i:s') }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $log->user->username }}">{{ $log->user->username }}</td>
                             </tr>
                     @endforeach
                 </tbody>

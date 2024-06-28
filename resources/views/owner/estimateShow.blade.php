@@ -61,7 +61,7 @@
                                 <span>{{ $estimates->first()->group_id }}</span>
                             </td>
                             <td >
-                                <span>{{ $estimates->first()->user->username }}</span>
+                                <span>{{ $estimates->first()->user->fname }} {{ $estimates->first()->user->mname }} {{ $estimates->first()->user->lname }}</span>
                             </td>
                             <td >
                                 <span>{{ $estimates->first()->created_at->format('Y-m-d') }}</span>
@@ -73,12 +73,12 @@
                 <div class="d-flex justify-content-between mb-3">
                     <div class="input-group"  style="width: 400px;">
                         <label for="Project" class="input-group-text"><span class="bold">Project</span></label>
-                        <input type="text" class="form-control " value="{{ $estimates->first()->project->project_id }}">
+                        <input type="text" class="form-control " value="{{ $estimates->first()->project->project_id }}" readonly>
                     </div>    
                     
                     <div class="input-group"  style="width: 400px;">
                         <label for="title" class="input-group-text"><span class="bold">Title</span></label>
-                        <input type="text" class="form-control" value="{{ $estimates->first()->title }}">
+                        <input type="text" class="form-control" value="{{ $estimates->first()->title }}" readonly>
                     </div>    
                 </div>
 
@@ -133,6 +133,14 @@
             <button class="btn btn-primary float-end" type="button" data-bs-toggle="modal" data-bs-target="#acceptModal">
                 Accept
             </button>
+            @endif
+            
+            @if($estimate->status == 'accepted')
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ route('export-estimates', ['group_id' => $group_id]) }}" class="btn btn-success">Export Excel</a>
+                    
+                    <a href="{{ route('pdf-estimates', ['group_id' => $group_id]) }}" class="btn btn-primary">Export PDF</a>
+                </div>
             @endif
 
             <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">

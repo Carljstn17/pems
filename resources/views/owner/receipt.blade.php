@@ -6,7 +6,11 @@
         </div>
 
         <div class="pb-2 m-3">
-            <div class="d-flex justify-content-end gap-2">
+            <div class="d-flex justify-content-between gap-2">
+                <a href="{{ route('invalidReceiptOwner') }}" class="btn btn-outline-dark">
+                    <i class="bi bi-clipboard2-x"></i>
+                </a>
+                
                 <form action="{{ route('owner.search.receipt') }}" method="GET" >
                     <div class="input-group">
                         <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
@@ -57,7 +61,7 @@
 
         <div class="px-3 d-flex justify-content-between">
             <a href="{{ route('owner.supplier') }}" class="link-secondary text-decoration-none fst-italic">
-                <span class="d-none d-sm-inline text-nowrap">/Advance-list</span>
+                <span class="d-none d-sm-inline text-nowrap">/Supplier-list</span>
                 <span class="d-sm-inline d-sm-none">/Rejected</span>
             </a>
             {{ $receipts->links('vendor.pagination.bootstrap-4') }}

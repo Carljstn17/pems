@@ -1,8 +1,18 @@
 @extends('layout.staff')
 
     @section('content')
+    <style>
+        .border-red {
+            border: 1px solid red !important;
+        }
+    </style>
         <div class="py-2 mt-2 mb-4">
-            <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline">Payroll | New Entry</span>
+            <div class="d-flex align-items-center">
+                <a href="{{ route('latest.payroll') }}" class="text-secondary text-decoration-none btn">
+                            <i class="fs-5 bi-backspace"></i>
+                </a>
+            <i class="fs-5 bi-wallet"></i> <span class=" d-sm-inline fs-5 head">Payroll | New Entry</span>
+            </div>
         </div>
         
         @if ($errors->any())
@@ -18,20 +28,24 @@
         <form action="{{ route('store.payroll') }}" method="post" class="pb-5">
             @csrf
             <div class="d-flex justify-content-between mb-2">
-                <select name="project_id" id="project_id" class="form-select" style="width: 400px;">
-                    <option value="">Select a project</option>
-                    @foreach($projects as $project)
-                        <option value="{{ $project->id }}">
-                            {{ $project->project_id }}
-                            <span>&nbsp;-&nbsp; {{ $project->project_dsc }}</span>
-                        </option>
-                    @endforeach
-                </select>
-
-                    <div class="input-group"  style="width: 200px;">
-                        <label for="ot_rate" class="input-group-text"><span class="bold">OT-RATE</span></label>
-                        <input type="text" id="otRate" class="form-control ot_rate" name="ot_rate" value="{{ number_format($ot_rate_default_value, 2) }}">
-                    </div>    
+                <div>
+                    <div class="input-group"  style="width: 400px;">
+                        <label for="ot_rate" class="input-group-text"><span class="bold">Project</span></label>
+                        <input type="hidden" name="project_id" value="{{ $projectId }}">
+                        <input type="text" class="form-control" value="{{ $project->project_id }} {{ $project->project_dsc }}">
+                         @error('project_id')
+                                <div class="text-danger px-2 ">{{ $message }}</div>
+                        @enderror
+                    </div>  
+                </div>
+                
+                <div class="input-group"  style="width: 200px;">
+                    <label for="ot_rate" class="input-group-text"><span class="bold">OT-RATE</span></label>
+                    <input type="text" id="otRate" class="form-control ot_rate numberInput @error('ot_rate') border-red @enderror" name="ot_rate" value="{{ number_format($ot_rate_default_value, 2) }}">
+                    @error('ot_rate')
+                            <div class="text-danger px-2 ">{{ $message }}</div>
+                    @enderror
+                </div>    
                 
             </div>
 
@@ -54,25 +68,47 @@
                 <tbody>
                     @foreach($laborers as $laborer)
                     <tr class="laborer-row">      
-                        <td>1</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>
                             <input type="hidden" class="user_id" name="user_id[{{ $laborer->id }}]" value="{{ $laborer->id }}">
-                            <input type="text" class="form-control no-border" name="name[{{ $laborer->id }}]" value="{{ $laborer->name }}" oninput="calculateAmount(this.parentElement.parentElement)" readonly>
+                            <input type="text" class="form-control no-border" name="name[{{ $laborer->id }}]" value="{{ $laborer->fname }} {{ $laborer->mname }} {{ $laborer->lname }}" oninput="calculateAmount(this.parentElement.parentElement)" readonly>
+                            @error('name')
+                                <div class="text-danger px-2">*</div>
+                            @enderror
                         </td>
                         <td>
-                            <input type="number" class="form-control no-border" name="rate_per_day[{{ $laborer->id }}]" value="{{ number_format($laborer->payroll->rate_per_day, 2) }}" oninput="calculateAmount(this.parentElement.parentElement)" {{ isset($laborer->checklist) && !$laborer->checklist ? 'required' : '' }}>
+                            <input type="number" class="form-control no-border numberInput  @error('rate_per_day') border-red @enderror" name="rate_per_day[{{ $laborer->id }}]" value="{{ number_format($laborer->payroll->rate_per_day, 2) }}" oninput="calculateAmount(this.parentElement.parentElement)" {{ isset($laborer->checklist) && !$laborer->checklist ? 'required' : '' }}>
+                            @error('rate_per_day')
+                                <div class="text-danger px-2">*</div>
+                            @enderror
                         </td>
-                        <td><input type="number" class="form-control no-border" name="no_of_days[{{ $laborer->id }}]" oninput="calculateAmount(this.parentElement.parentElement)" {{ isset($laborer->checklist) && !$laborer->checklist ? 'required' : '' }}></td>
-                        <td><input type="number" class="form-control no-border" name="ot_hour[{{ $laborer->id }}]" oninput="calculateAmount(this.parentElement.parentElement)"></td>
-                        <td><input type="number" class="form-control no-border" name="ot_total[{{ $laborer->id }}]" readonly></td>
-                        <td><input type="number" class="form-control no-border salary" name="salary[{{ $laborer->id }}]" readonly></td>
+                        <td class="text-nowrap">
+                            <input type="number" class="form-control no-border d-inline-block days numberInput @error('no_of_days.' . $laborer->id) border-red @enderror" name="no_of_days[{{ $laborer->id }}]" oninput="calculateAmount(this.parentElement.parentElement)" value="{{ old('no_of_days.' . $laborer->id ) }}" {{ isset($laborer->checklist) && !$laborer->checklist ? 'required' : '' }}>
+                            @error('no_of_days.' . $laborer->id)
+                                <div class="text-danger d-inline-block">*</div>
+                            @enderror
+                        </td>
+                        <td class="d-flex align-items-center ">
+                            <input type="number" class="form-control ot no-border me-2 numberInput  @error('ot_hour.' . $laborer->id) border-red @enderror" name="ot_hour[{{ $laborer->id }}]" value="{{ old('ot_hour.' . $laborer->id ) }}" oninput="calculateAmount(this.parentElement.parentElement)">
+                            @error('ot_hour.' . $laborer->id)
+                                <div class="text-danger px-2">*</div>
+                            @enderror
+                        </td>
+                        <td>
+                            <input type="number" class="form-control no-border ot_total" name="ot_total[{{ $laborer->id }}]" value="{{ old('ot_total.' . $laborer->id ) }}" readonly>
+                        </td>
+                        <td class="text-nowrap">
+                            <input type="number" class="form-control no-border salary d-inline-block" name="salary[{{ $laborer->id }}]" value="{{ old('salary.' . $laborer->id ) }}" readonly>
+                        </td>
                         <td>
                             <input type="text" class="form-control no-border advance_amount" value="{{ number_format(optional($laborer->advances())->amount, 2, '.', ',') }}" name="advance_amount[{{ $laborer->id }}]" data-bs-toggle="modal" data-bs-target="#advancesModal{{ $laborer->id }}" readonly>
 
                             @include('payroll.advance_modal', ['laborer' => $laborer])
                         </td>
-                        <td><input type="number" class="form-control no-border net_salary" name="net_salary[{{ $laborer->id }}]" readonly></td>
-                        <td><input type="checkbox" class="form-check-input" name="checklist[{{ $laborer->id }}]" checked onchange="toggleFields(this)"></td>
+                        <td>
+                            <input type="number" class="form-control no-border net_amount" name="net_amount[{{ $laborer->id }}]" value="{{ old('net_amount.' . $laborer->id ) }}" readonly>
+                        </td>
+                        <td><input type="checkbox" class="form-check-input" name="checklist[{{ $laborer->id }}]" {{ old('checklist.' . $laborer->id) ? 'checked' : '' }} {{ $errors->any() ? '' : 'checked' }} onchange="toggleFields(this)"></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -84,9 +120,9 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><input type="text" class="form-control no-border" id="total_salary" name="total_salary" readonly></td>
-                        <td><input type="text" class="form-control no-border" id="total_advance" name="total_advance" readonly></td>
-                        <td><input type="text" class="form-control no-border" id="total_net" name="total_net" readonly></td>
+                        <td><input type="text" class="form-control no-border" id="total_salary" name="total_salary" value="{{ old('total_salary') }}" readonly></td>
+                        <td><input type="text" class="form-control no-border" id="total_advance" name="total_advance" value="{{ old('total_advance') }}" readonly></td>
+                        <td><input type="text" class="form-control no-border" id="total_net" name="total_net" value="{{ old('total_net') }}" readonly></td>
                         <td></td>
                     </tr>
                 </tfoot>
@@ -102,13 +138,17 @@
         <script>
             function toggleFields(checkbox) {
                     let row = checkbox.closest('.laborer-row');
-                    let inputs = row.querySelectorAll('.rate, .days, .ot, .ot_total, .salary, .advance_amount, .net_salary');
+                    let inputs = row.querySelectorAll('.rate, .days, .ot, .ot_total, .salary, .advance_amount, .net_amount');
                     
                     inputs.forEach(input => {
-                        if (!checkbox.checked) {
-                            input.value = ""; // Clear the value if unchecked
+                        if (checkbox.checked) {
+                            input.removeAttribute('disabled'); // Enable the input
+                        } else {
+                            input.value = ""; // Clear the value
+                            input.setAttribute('disabled', 'disabled'); // Disable the input
                         }
                     });
+                    updateTotalSalary()
                     updateAdvanceAmount();
                     updateTotalNetAmount();
                 }
@@ -215,7 +255,7 @@
         var totalNetAmountField = document.getElementById("total_net");
         var salaryFields = document.getElementsByClassName('salary');
         var advanceFields = document.getElementsByClassName('advance_amount');
-        var netAmountFields = document.getElementsByClassName('net_salary');
+        var netAmountFields = document.getElementsByClassName('net_amount');
 
         var totalNetAmount = 0;
 
@@ -238,7 +278,7 @@
     }
 
     function clearForm() {
-        var inputs = document.querySelectorAll(' input[name^="no_of_days[]"], input[name^="ot[]"], input[name^="ot_total[]"], input[name^="salary[]"], input[name^="advance_amount[]"], input[name^="net_salary[]"], input[name^="ot_hour[]"]');
+        var inputs = document.querySelectorAll(' input[name^="no_of_days[]"], input[name^="ot[]"], input[name^="ot_total[]"], input[name^="salary[]"], input[name^="advance_amount[]"], input[name^="net_amount[]"], input[name^="ot_hour[]"]');
         inputs.forEach(function (input) {
             input.value = '';
         });
@@ -249,6 +289,12 @@
         document.getElementById("total_net").value = '';
     }
     
+    $('.numberInput').on('change keyup', function() {
+      // Remove invalid characters
+      var sanitized = $(this).val().replace(/[^0-9]/g, '');
+      // Update value
+      $(this).val(sanitized);
+    });
 </script>
 
 @endsection

@@ -30,35 +30,51 @@ class ToolController extends Controller
     public function store(Request $request)
     {
         // Validate the form data
-        $request->validate([
-            'tool_type' => 'required|string',
-            'tool_name' => 'required|string',
-            'unit_cost' => 'required|numeric',
-            'property' => 'required|string|max:5',
+        $validatedData = $request->validate([
+            'tool_type' => 'required|string|max:50',
+            'tool_name' => 'required|string|max:50',
+            'unit_cost' => 'required|numeric|max:9999999',
+            'property' => 'required|string|max:8',
+            'status' => 'required|string',
+            'whereabout' => 'required|string|max:255',
+        ], [
+            'tool_type.required' => 'Tool type is required.',
+            'tool_name.required' => 'Tool name is required.',
+            'unit_cost.required' => 'Unit cost is required.',
+            'unit_cost.numeric' => 'Unit cost must be a number.',
+            'unit_cost.max' => 'Unit cost cannot exceed 9999999.',
+            'property.required' => 'Property is required.',
+            'property.max' => 'Property cannot exceed 8 characters.',
+            'status.required' => 'Status is required.',
+            'whereabout.required' => 'Whereabout is required.',
         ]);
-
+    
         // Generate the unique property format
-        $uniqueProperty = $this->generateUniqueProperty($request->input('property'));
-
+        $uniqueProperty = $this->generateUniqueProperty($validatedData['property']);
+    
         // Create a new instance of your model and save the data
         $tool = Tool::create([
-            "user_id"=> Auth::id(),
-            'tool_type' => $request->input('tool_type'),
-            'tool_name' => $request->input('tool_name'),
-            'unit_cost' => $request->input('unit_cost'),
+            "user_id" => Auth::id(),
+            'tool_type' => $validatedData['tool_type'],
+            'tool_name' => $validatedData['tool_name'],
+            'unit_cost' => $validatedData['unit_cost'],
             'property' => $uniqueProperty,
             // Add other fields as needed
         ]);
-
+    
+        if ($tool) {
         ToolReport::create([
-            "user_id"=> Auth::id(),
-            'tool_id' => $tool->id,
-            'status' => $request->input('status'),
-            'whereabout' => $request->input('whereabout'),
-        ]);
-
-        // Redirect back or to a specific page after storing the data
-        return redirect()->back()->with('success', 'Tool data has been successfully stored!');
+                "user_id" => Auth::id(),
+                'tool_id' => $tool->id,
+                'status' => $validatedData['status'],
+                'whereabout' => $validatedData['whereabout'],
+            ]);
+    
+            return redirect()->back()->with('success', 'Tool data has been successfully stored!');
+        }
+    
+        // Redirect back with success or error message
+        return redirect()->back()->with('error', 'Tool data could not be stored.')->withInput();
     }
 
 
@@ -88,7 +104,7 @@ class ToolController extends Controller
         // Validate the form data
         $request->validate([
             'status' => 'required|string',
-            'whereabout' => 'required|string',
+            'whereabout' => 'required|string|max:255',
         ]);
 
         // Create a new ToolReport record

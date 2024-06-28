@@ -2,16 +2,14 @@
 
 @section('content')
     <div class="py-2 mt-2">
-        <div class="d-flex align-items-center">
-            <div class="d-sm-none me-2">
-                <a href="{{ url()->previous() }}" class="text-secondary text-decoration-none">
-                    <i class="bi-backspace"></i>
-                </a>
-            </div>
+        <div class="">
             <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline fs-5 head">Receipt | ID: {{ $receipts->id }}  |</span>
             <span class="fs-5 head" style="color: {{ $receipts->remarks === 'valid' ? 'green' : 'red' }}"> {{ $receipts->remarks }}</span>
-            
         </div>
+        
+        <a href="{{ route('owner.receipt') }}" class="btn btn-outline-dark">
+            <i class="bi bi-arrow-left"></i>
+        </a>
     </div>
 
     <div class="mt-4">
@@ -40,13 +38,27 @@
                         <span>{{ $receipts->project->project_dsc }}</span>
                     </td>
                     <td >
-                        <span>{{ $receipts->user->name }}</span>
+                        <span>{{ $receipts->user->fname }} {{ $receipts->user->mname }} {{ $receipts->user->lname }}</span>
                     </td>
                     <td >
                         <span>{{ $receipts->created_at->format('Y-m-d') }}</span>
                     </td>
                 </tbody>
             </table>
+        </div>
+        
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif  
+        
+        <div class="alert alert-success" id="successMessage" style="display: none;">
+            Receipt updated successfully.
         </div>
                 
         <div class="border mt-2 p-4 rounded">
@@ -82,11 +94,20 @@
             </div>
         
             <div class="d-flex justify-content-between">
-                <div class="input-group">
+                <div class="input-group gap-2">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        View Receipt Photo
+                        <span class="d-inline d-sm-none">View Receipt</span>
+                        <span class="d-none d-sm-inline">View Receipt Photo</span>
                     </button>
+                    
+                    @if($receipts->remarks == 'valid')
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateReceiptModal">
+                        Update Receipt
+                    </button>
+                    @endif
                 </div>
+                
+
     
                 @if($receipts->remarks !== 'invalid')
                     <form action="{{ route('updateReceiptRemarks', $receipts->id) }}" method="post" id="updateRemarksForm">
@@ -121,6 +142,7 @@
             </div>
 
             @include('receipt.image-modal')
+            @include('owner.receiptEdit')
         </div>        
     </div>
 
@@ -128,5 +150,16 @@
         function updateReceiptRemarks() {
             document.getElementById('updateRemarksForm').submit();
         }
+        
+        function updateReceiptModal() {
+            document.getElementById('updateReceipt').submit();
+        }
+        
+          @if(session('success'))
+            document.getElementById('successMessage').style.display = 'block';
+            setTimeout(function() {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        @endif
     </script>
 @endsection

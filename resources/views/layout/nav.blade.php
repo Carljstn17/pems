@@ -13,7 +13,7 @@
             <!-- Dropdown menu -->
             <div class="dropdown-menu" style="margin-left:-8rem; max-height: 300px; overflow-y: auto;" aria-labelledby="notification-icon-estimate">
                 @php
-                    $estimates = \App\Models\Estimate::whereIn('status',['pending', 'rejected'])
+                    $estimates = \App\Models\Estimate::where('status','pending')
                         ->orderBy('updated_at', 'desc')
                         ->with('user')
                         ->get();
@@ -27,7 +27,7 @@
                         $filteredEstimates->push($filteredEstimate);
                     }
                 @endphp
-                <a href="" class="d-flex justify-content-end link-dark text-decoration-none text-secondary">
+                <a href="{{ route('owner.estimate') }}" class="d-flex justify-content-end link-dark text-decoration-none text-secondary">
                     <span class="text-end">see all</span>
                 </a>
                 @php $count = 0; @endphp
@@ -36,7 +36,7 @@
                         $firstEstimate = $est->first();
                     @endphp
                     @if ($count < 8)
-                        <a href="{{ route('estimate.form', ['group_id' => $est->group_id]) }}" class="card rounded-0 border link-dark text-decoration-none text-secondary">
+                        <a href="{{ route('owner.estimateShow', ['group_id' => $est->group_id]) }}" class="card rounded-0 border link-dark text-decoration-none text-secondary">
                             <div class="px-2">
                                 <span>{{ $est->group_id }}</span><br>
                                 <span>{{ $est->updated_at->diffForHumans() }}</span>

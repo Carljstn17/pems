@@ -1,105 +1,54 @@
 @extends('layout.owner')
 
     @section('content')
-        <div class="">
-            <div class="mt-3">
-                <a href="{{ url()->previous() }}" class="link-dark text-decoration-none">
-                    <i class="fs-5 bi-backspace"> back</i>
-                </a>
+        <div class="py-2 mt-2">
+                <i class="fs-5 bi-buildings"></i> <span class="fs-5 head d-sm-inline">Ongoing Projects</span>
             </div>
-                <div class="mx-auto mt-4 ">
-                    <div class="table-responsive mx-auto">
-                    <table class="table table-bordered table-rounded mx-auto">
-                        <tbody class="table-light">
-                            <tr>
-                                <th>
-                                    <span class="d-none d-sm-inline">PR ID: {{ $project->project_id }}</span>
-                                    <span class="d-sm-inline d-sm-none">Pr-id: {{ $project->project_id }}</span>
-                                </th>
-                                <th class="narrow-cell">
-                                    <span class="d-none d-sm-inline">Date started: {{ $project->Date_started }}</span>
-                                    <span class="d-sm-inline d-sm-none">Ds: {{ $project->Date_started }}</span>
-                                </th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <span class="d-none d-sm-inline">Location: {{ $project->location }}</span>
-                                    <span class="d-sm-inline d-sm-none">Loc: {{ $project->location }}</span>
-                                </th>
-                                <th class="narrow-cell">
-                                    <span class="d-none d-sm-inline">Date created: {{ $project->created_at->format('Y-m-d') }}</span>
-                                    <span class="d-sm-inline d-sm-none">Dc: {{ $project->created_at->format('Y-m-d') }}</span>
-                                </th>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
+            
+            <div class="pb-2 m-3">
+                <div class="d-flex justify-content-end">
                     
-                    <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Category</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Total Receipt </td>
-                                <td>{{ number_format($totalAmountsReceiptByProject[$project->id] ?? 0, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td>Total Payroll </td>
-                                <td>{{ number_format($totalAmountsPayrollByProject[$project->id] ?? 0, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td>Total Amount</td>
-                                <td>{{ number_format(round($totalAmountByProject, 2), 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td>Contract Price</td>
-                                <td>{{ number_format($projectContract, 2) }}</td>
-                            </tr>
-                            <tr>
-                                <td>Difference</td>
-                                <td style="{{ $colorStyle }}">-{{ number_format(round($totalAmountAndContractDifference, 2), 2) }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-
-                    @if(Auth::user() && Auth::user()->id == $project->user_id)
-                        <a href="{{ url('finish-project', ['id' => $project->id]) }}" class="btn btn-danger">Finish Project</a>
-                    @endif
-                    
-                    <div class="table-responsive mt-5">
-                        <table class="table table-bordered">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Other Information</th>
-                                    <th>Data</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Client</td>
-                                    <td>{{ $project->client }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Contact</td>
-                                    <td>{{ $project->contact }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Created by</td>
-                                    <td>
-                                        @php
-                                            $user = \App\Models\User::find($project->user_id);
-                                            echo $user ? $user->username : 'User not found';
-                                        @endphp
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+        
+                    <form action="{{ route('owner.search.project') }}" method="GET">
+                        <div class="input-group">
+                            <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
+                            <button type="submit" class="btn btn-outline-dark">Search</button>
+                        </div>
+                    </form>
                 </div>
+            </div>
+            
+            <div class="mt-3 pb-1 px-3">
+                <div class="table-responsive">
+                <table class="table table-hover"  id="estimateTable">
+                    <thead class="bs-secondaryd">
+                        <tr>
+                            <th scope="col"><span class="bold text-nowrap">Project - ID</span></th>
+                            <th scope="col"><span class="bold text-nowrap">Description</span></th>
+                            <th scope="col"><span class="bold text-nowrap">Created At</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($projects as $project )
+                            <tr data-url="{{ route('owner.showproject', $project->id) }}" class="clickable-row">
+                                <td><span class="text-nowrap">{{ $project->project_id }}</span></td>
+                                <td><span class="text-nowrap">{{ $project->project_dsc }}</span></td>
+                                <td><span class="text-nowrap">{{ $project->created_at->diffForHumans() }}</span></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center my-5">
+                                    <i class="bi bi-box"></i>
+                                    <p class="no-text">No estimates yet.</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            
+            <div class="px-3 d-flex justify-content-end">
+                {{ $projects->links('vendor.pagination.bootstrap-4') }}
             </div>
 @endsection

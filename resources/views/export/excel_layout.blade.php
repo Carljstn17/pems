@@ -1,19 +1,39 @@
 <div>
     <p colspan="6">G.B. GASPAR ARCHITECTURAL DESIGN SERVICES</p>
-    <p colspan="6"></p>
-    <p colspan="6"></p>
-    <p colspan="6"></p>
-    <p colspan="6">Purchase Request</p>
+    <p colspan="6">{{ $estimates->first()->project->location }}</p>
+    <p colspan="6">{{ $user->contact }}</p>
+    <p colspan="6">{{ $user->email }}</p>
+    <p colspan="6">Purchase Order</p>
     <table>
         <thead>
             <tr>
                 <td colspan="4"></td>
-                <td>PR No.</td>
-                <td></td>
+                <td>PO No.</td>
+                <td>{{ $estimates->first()->group_id }}</td>
             </tr>
             <tr>
                 <td colspan="4"></td>
-                <td>PR Date</td>
+                <td>PO Date</td>
+                <td>{{ now()->format('m-d-Y') }}</td>
+            </tr>
+            <tr>
+                <td>Supplier</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Contact No.</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Contact Person</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Ship To</td>
                 <td></td>
             </tr>
         </thead>

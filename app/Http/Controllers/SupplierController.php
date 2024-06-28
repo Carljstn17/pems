@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
@@ -21,7 +22,7 @@ class SupplierController extends Controller
     }
 
     public function supplierList() {
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::latest()->paginate(10);
 
         // Pass the advances data to the view
         return view('receipt.supplierList', compact('suppliers'));
@@ -29,6 +30,15 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+        'suppliers.*.name' => 'max:50|nullable',
+        'suppliers.*.contact' => 'max:15|min:7|nullable',
+        'suppliers.*.address' => 'max:255|nullable',
+        ], [
+            'suppliers.*.name.max' => 'must not be greater than 50 characters.',
+            'suppliers.*.contact.min' => 'must be at least 7 characters.',
+            'suppliers.*.address.max' => 'must not be greater than 255 characters.',
+        ]);
         $suppliersData = $request->input('suppliers');
 
         if ($suppliersData && is_array($suppliersData)) {
@@ -47,6 +57,6 @@ class SupplierController extends Controller
             }
         }
 
-        return redirect()->route('latest.receipt')->with('success', 'Supplier created successfully!');
+        return redirect()->route('supplier')->with('success', 'Supplier created successfully!');
     }
 }

@@ -3,13 +3,13 @@
     @section('content')
         <div class="">
             <div class="py-2 mt-2">
-                <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline">Advance-Request | {{ $concerns->id }}</span>
+                <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline">Concern | {{ $concerns->id }}</span>
             </div>
             
             <div class="py-2 mt-3">
                 <div class="card">
                     <div class="card-header text-center">
-                        <p class="fs-5">Request by: {{ $concerns->user->username }}</p>
+                        <p class="fs-5">Request by: {{ optional($concerns->user)->fname }} {{ optional($concerns->user)->mname }} {{ optional($concerns->user)->lname }}</p>
                     </div>
                     
                     <div class="card-body p-4">

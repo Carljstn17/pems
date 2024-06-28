@@ -1,38 +1,46 @@
 @extends('layout.staff')
 
 @section('content')
-    <div class="py-2 mt-2 border-bottom border-subtle pb-3">
-        <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline">Concern | All</span>
+    <div class="py-2 mt-2">
+        <i class="fs-5 bi-chat-left-dots"></i> <span class="fs-5 head d-sm-inline">Concern | All</span>
     </div>
     
-    <div class="p-2 mt-3">
-        @forelse ($concerns as $concern)
-                <a href="{{ route('concern.notif', $concern->id) }}" class="link-dark text-decoration-none">
-                    <div class="row p-4 d-flex justify-content-center rounded-2 border hover3 mb-2">
-                        <div class="col">
-                            <span class="bold">Status: &nbsp</span>{{ $concern->status }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Concern ID: &nbsp</span>{{ $concern->id }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Entry By: &nbsp</span>{{ $concern->user->username }}
-                        </div>
-                        <div class="col">
-                            <span class="bold">Entry Date: &nbsp</span>{{ $concern->created_at->diffForHumans() }}
-                        </div>
-                    </div>
-                </a>
-            @empty
-            <div class="text-center my-5">
-                <i class="bi bi-box"></i>
-                <p class="no-text">No receipts yet.</p>
+    <div class="mt-3 pb-1 px-3">
+            <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"><span class="bold text-nowrap">Request ID</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Entry By</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Date</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($concerns as $concern)
+                    <tr data-url="{{ route('concern.notif', $concern->id) }}" class="clickable-row">
+                        <td><span class="text-nowrap">{{ $concern->id }}</span></td>
+                        <td>
+                            <span class="text-nowrap">
+                                {{ $concern->user->username }}
+                            </span>
+                        </td>
+                        <td><span class="text-nowrap">{{ $concern->created_at->diffForHumans() }}</span></td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center my-5">
+                            <i class="bi bi-box"></i>
+                            <p class="no-text">No request yet.</p>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
             </div>
-            @endforelse
-
-            <div class="mt-1">
-                {{ $concerns->links('vendor.pagination.bootstrap-4') }}
-            </div>
+    </div>
+    
+    <div class="mt-1">
+        {{ $concerns->links('vendor.pagination.bootstrap-4') }}
     </div>
 @endsection
 

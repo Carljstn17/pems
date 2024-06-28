@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use App\Models\User;
 
 class EstimatesExport implements FromView, WithEvents
 {
@@ -26,9 +27,9 @@ class EstimatesExport implements FromView, WithEvents
 
     public function view(): View
     {
+        $user = User::find(7);
         $estimates = Estimate::where('group_id', $this->group_id)->get();
-        return view('export.excel_layout', [
-            'estimates' => $estimates]);
+        return view('export.excel_layout', compact('estimates', 'user'));
     }
 
     public function registerEvents(): array
@@ -52,6 +53,14 @@ class EstimatesExport implements FromView, WithEvents
 
                 $event->sheet->getStyle('A1:F1')->applyFromArray([
                     'font' => ['bold' => true],
+                    'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
+                ]);
+                
+                $event->sheet->getStyle('A6:F12')->applyFromArray([
+                    'font' => ['bold' => true],
+                ]);
+                
+                $event->sheet->getStyle('A2:F4')->applyFromArray([
                     'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
                 ]);
 

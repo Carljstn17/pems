@@ -2,7 +2,12 @@
 
     @section('content')
             <div class="py-2 mt-2">
+                <div class="d-flex align-items-center">
+                <a href="{{ route('ongoing-projects') }}" class="text-secondary text-decoration-none btn">
+                            <i class="fs-5 bi-backspace"></i>
+                </a>
                 <i class="fs-5 bi-buildings"></i> <span class=" d-sm-inline fs-5 head">Projects | Add New Project</span>
+                </div>
             </div>
             
             <div class="">

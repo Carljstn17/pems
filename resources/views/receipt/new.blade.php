@@ -3,11 +3,9 @@
     @section('content')
         <div class="py-2 mt-2">
             <div class="d-flex align-items-center">
-               <div class="d-sm-none me-2">
-                    <a href="{{ url()->previous() }}" class="text-secondary text-decoration-none">
-                        <i class="bi-backspace"></i>
-                    </a>
-                </div>
+                <a href="{{ route('latest.receipt') }}" class="text-secondary text-decoration-none btn">
+                            <i class="fs-5 bi-backspace"></i>
+                </a>
                 <i class="fs-5 bi-person-plus me-1"></i> <span class="d-sm-inline text-nowrap fs-5 head">Receipt | New Entry</span>
             </div>
         </div>
@@ -45,7 +43,8 @@
                             @enderror
                         </div>
             
-                        <div class="mb-3">
+                        <div class="mb-3 input-group">
+                            <label for="amount" class="input-group-text">SI/OR NO:</label>
                             <input type="text" class="form-control" id="si_or_no" name="si_or_no" placeholder="SI/OR NO." maxlength="50" value="{{ old('si_or_no') }}">
                             @error('si_or_no')
                                 <div class="text-danger px-2">{{ $message }}</div>
@@ -66,8 +65,9 @@
                             @enderror
                         </div>
             
-                        <div class="mb-3">
-                            <input type="number" class="form-control" id="amount" name="amount" placeholder="Receipt Amount" step=".01" max="100000" value="{{ old('amount') }}" pattern="\d+(\.\d{2})?">
+                        <div class="mb-3 input-group">
+                            <label for="amount" class="input-group-text">Amount:</label>
+                            <input type="number" class="form-control" id="amount" name="amount" placeholder="Receipt Amount" step=".01" max="999999" value="{{ old('amount') }}" pattern="\d+(\.\d{2})?">
                             @error('amount')
                                 <div class="text-danger px-2">{{ $message }}</div>
                             @enderror  

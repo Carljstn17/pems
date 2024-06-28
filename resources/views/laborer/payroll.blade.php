@@ -37,7 +37,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="text-center my-5">
+                            <td colspan="4" class="text-center my-5">
                                 <i class="bi bi-box"></i>
                                 <p class="no-text">No estimates yet.</p>
                             </td>

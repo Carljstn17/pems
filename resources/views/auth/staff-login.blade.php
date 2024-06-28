@@ -41,9 +41,13 @@
                     @error('password')
                             <span class="text-danger">{{ $message }}</span>
                      @enderror
-                    <div class="d-flex align-items-center ms-2">
-                        <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <span class="ml-2 ms-1 text-secondary">remember me</span>
+                    <div class="d-flex align-items-center ms-2 justify-content-between">
+                        <div>
+                            <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                            <span class="ml-2 ms-1 text-secondary">remember me</span>
+                        </div>
+                        
+                        <a href="{{ route('send-otp-form') }}" class="link-secondary">Reset Password</a>
                     </div>
                 </div>
 

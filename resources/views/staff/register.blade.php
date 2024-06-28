@@ -24,12 +24,43 @@
                     <option value="laborer">Laborer</option>
                 </select>
             </div>
-
-            <div class="mb-3">
-                <input type="text" class="form-control" name="name" placeholder="Full Name" value="{{ old('name') }}">
-                @error('name')
+            
+            <div class="input-group mb-3" id="project-select">
+                <label for="project_id" class="input-group-text">Project</label>
+                <select name="project_id" id="project_id" class="form-select" required>
+                    <option value="">Select project for the laborer</option>
+                    @foreach($projects as $project)
+                        <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>
+                            {{ $project->project_id }}&nbsp;-&nbsp;{{ $project->project_dsc }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('project_id')
                     <div class="text-danger px-2">{{ $message }}</div>
                 @enderror
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-4">
+                    <input type="text" class="form-control" name="lname" placeholder="Last Name" value="{{ old('lname') }}">
+                    @error('lname')
+                        <div class="text-danger px-2">{{ $message }}</div>
+                    @enderror
+                </div>
+    
+                <div class="mb-3 col-md-4">
+                    <input type="text" class="form-control" name="fname" placeholder="First Name" value="{{ old('fname') }}">
+                    @error('fname')
+                        <div class="text-danger px-2">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <div class="mb-3 col-md-4">
+                    <input type="text" class="form-control" name="mname" placeholder="Middle Name" value="{{ old('mname') }}">
+                    @error('mname')
+                        <div class="text-danger px-2">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
             <div class="mb-3">

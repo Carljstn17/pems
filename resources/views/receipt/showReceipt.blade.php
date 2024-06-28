@@ -2,8 +2,13 @@
 
 @section('content')
     <div class="py-2 mt-2">
+        <div class="d-flex align-items-center">
+                <a href="{{ route('latest.receipt') }}" class="text-secondary text-decoration-none btn">
+                            <i class="fs-5 bi-backspace"></i>
+                </a>
          <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline fs-5 head">Receipt | ID: {{ $receipts->id }}  |</span>
         <span class="fs-5 head" style="color: {{ $receipts->remarks === 'valid' ? 'green' : 'red' }}"> {{ $receipts->remarks }}</span>
+        </div>
     </div>
 
     <div class="mt-4">
@@ -30,13 +35,23 @@
                     <span>{{ $receipts->project->project_dsc }}</span>
                 </td>
                 <td >
-                    <span>{{ $receipts->user->name }}</span>
+                    <span>{{ $receipts->user->fname }} {{ $receipts->user->mname }} {{ $receipts->user->lname }}</span>
                 </td>
                 <td >
                     <span>{{ $receipts->created_at->format('Y-m-d') }}</span>
                 </td>
             </tbody>
         </table>
+        
+         @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif  
             
         <div class="border mt-2 p-4 rounded">
             
@@ -70,11 +85,17 @@
                 <input type="date" class="form-control" value="{{ $receipts->receipt_date }}" readonly>
             </div>
         
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between gap-2">
                 <div class="input-group">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#imageModal">
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#imageModal">
                         View Receipt Photo
                     </button>
+                    
+                    @if($receipts->remarks == 'valid' && (Auth::user() && Auth::user()->srole == 1))
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateReceiptModal">
+                        Update Receipt
+                    </button>
+                    @endif
                 </div>
     
             @if($receipts->remarks !== 'invalid')
@@ -112,6 +133,7 @@
             
 
             @include('receipt.image-modal')
+            @include('owner.receiptEdit')
         </div>        
     </div>
 
@@ -119,5 +141,16 @@
         function updateReceiptRemarks() {
             document.getElementById('updateRemarksForm').submit();
         }
+        
+        function updateReceiptModal() {
+            document.getElementById('updateReceipt').submit();
+        }
+        
+          @if(session('success'))
+            document.getElementById('successMessage').style.display = 'block';
+            setTimeout(function() {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        @endif
     </script>
 @endsection

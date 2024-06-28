@@ -38,7 +38,7 @@ class AmountCalculator
 
     public static function calculateTotalAmountsPayrollByProject()
     {
-        $payrolls = PayrollBatch::where('remarks', 'valid')->get();
+        $payrolls = PayrollBatch::where('status', 'valid')->get();
 
         $totalAmountsPayrollByProject = [];
 

@@ -10,7 +10,7 @@
             <div class="py-2 mt-3">
                 <div class="card">
                     <div class="card-header text-center">
-                        <p class="fs-5">Request by: {{ $requests->user->username }}</p>
+                        <p class="fs-5">Request by: {{ optional($requests->user)->fname }} {{ optional($requests->user)->mname }} {{ optional($requests->user)->lname }}</p>
                     </div>
                     
                     <div class="card-body mt-3 p-4">
@@ -23,11 +23,13 @@
                             <input type="text" name="text" class="form-control" value="{{ $requests->text }}">
                         </div>
                         <div class="float-end mb-3">
-                            <form action="{{ route('advanceAccept', $requests->id) }}" method="post" id="acceptRequestForm">
-                                @csrf
-                                @method('PUT')
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">Accept Request</button>
-                            </form>
+                            @if($requests->status !== 'accepted')
+                                <form action="{{ route('advanceAccept', $requests->id) }}" method="post" id="acceptRequestForm">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">Accept Request</button>
+                                </form>
+                            @endif
                             
                             <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
@@ -46,9 +48,21 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
+                    @include('payroll.advance')
+                    
+                     <div class="p-2 d-flex justify-content-between">
+                        <a href="{{ route('advance') }}" class="text-decoration-none text-secondary fst-italic mt-2">/Advance list</a>
+                        
+                        @if($requests->status == 'accepted')
+                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createAdvanceModal" style="transition:0.8s;">
+                            <span class="d-none d-sm-inline"><i class="bi bi-plus"></i> Advance</span>
+                        </button>
+                        @endif
+                    </div>
             </div>
         </div>
         <script>

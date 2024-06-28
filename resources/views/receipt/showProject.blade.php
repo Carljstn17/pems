@@ -2,12 +2,17 @@
 
     @section('content')
         <div class="py-2 mt-2">
+            <div class="d-flex align-items-center">
+                <a href="{{ route('on.receipt') }}" class="text-secondary text-decoration-none btn">
+                            <i class="fs-5 bi-backspace"></i>
+                </a>
             <i class="fs-5 bi-receipt"></i> <span class="d-sm-inline head fs-5">Receipt | ID - 
                 @if ($receipts->isNotEmpty())
                 {{ $receipts->first()->project->project_id }}
                 @else
                 @endif
             </span>
+            </div>
         </div>
 
         <div class="pb-2 m-3">

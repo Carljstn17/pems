@@ -17,6 +17,8 @@ use Illuminate\Database\QueryException;
 use App\Notifications\EstimateNotification;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Notifications\EstimateEntryNotification;
+use Barryvdh\DomPDF\Facade as PDF;
+use App\Exports\EstimatesPdf;
 
 class EstimateController extends Controller
 {
@@ -29,7 +31,7 @@ class EstimateController extends Controller
     
     public function showLatestEstimate()
     {
-        $perPage = 20;
+        $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         
         $estimates = Estimate::whereIn('status', ['accepted','pending'])
@@ -51,7 +53,7 @@ class EstimateController extends Controller
 
     public function showLatestOwner()
     {
-        $perPage = 20;
+        $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         
         $estimates = Estimate::whereIn('status', ['accepted','pending'])
@@ -81,7 +83,7 @@ class EstimateController extends Controller
     
     public function showRejectEstimate()
     {
-        $perPage = 20;
+        $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         
         $estimates = Estimate::where('status', 'rejected')
@@ -100,7 +102,7 @@ class EstimateController extends Controller
 
     public function rejectEstimate()
     {
-        $perPage = 20;
+        $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         
         $estimates = Estimate::where('status', 'rejected')
@@ -163,6 +165,19 @@ class EstimateController extends Controller
             'quantity.*' => 'required|numeric|max:999',
             'unit_cost.*' => 'required|numeric|max:999999',
             'remarks' => 'required|string|max:255'
+        ], [
+            'title.required' => 'This field is required*',
+            'title.max' => 'too many characters*',
+            'project_id.required' => 'This field is required*',
+            'description.*.required' => 'This field is required*',
+            'description.*.max' => 'too many*',
+            'uom.*.max' => 'too much*',
+            'quantity.*.required' => 'This field is required*',
+            'quantity.*.max' => 'too much*',
+            'unit_cost.*.required' => 'This field is required*',
+            'unit_cost.*.max' => 'too much*',
+            'remarks.required' => 'This field is required*',
+            'remarks.max' => 'too much*',
         ]);
 
         // Save items to the database
@@ -211,11 +226,26 @@ class EstimateController extends Controller
     {
         // Validation (you can customize based on your needs)
         $request->validate([
-            'description.*' => 'required|string|max:25',
+            'title' => 'required|string|max:25',
+            'project_id' => 'required',
+            'description.*' => 'required|string|max:120',
             'uom.*' => 'nullable|string|max:15',
             'quantity.*' => 'required|numeric|max:999',
             'unit_cost.*' => 'required|numeric|max:999999',
             'remarks' => 'required|string|max:255'
+        ], [
+            'title.required' => 'This field is required*',
+            'title.max' => 'too many characters*',
+            'project_id.required' => 'This field is required*',
+            'description.*.required' => 'This field is required*',
+            'description.*.max' => 'too many*',
+            'uom.*.max' => 'too much*',
+            'quantity.*.required' => 'This field is required*',
+            'quantity.*.max' => 'too much*',
+            'unit_cost.*.required' => 'This field is required*',
+            'unit_cost.*.max' => 'too much*',
+            'remarks.required' => 'This field is required*',
+            'remarks.max' => 'too much*',
         ]);
 
         // Save items to the database
@@ -226,6 +256,8 @@ class EstimateController extends Controller
         foreach ($request->description as $key => $description) {
             $quantity = $request->quantity[$key];
             $unitCost = $request->unit_cost[$key];
+            $project_id = $request->input('project_id');
+            $title = $request->input('title');
 
             // Calculate the amount
             $amount = $quantity * $unitCost;
@@ -233,7 +265,7 @@ class EstimateController extends Controller
             // Create Estimate with amount
             $estimateData = [
                 'user_id' => Auth::id(),
-                'project_id' => $projectId,
+                'project_id' => $project_id,
                 'title' => $title,
                 'description' => $description,
                 'uom' => $request->uom[$key],
@@ -312,7 +344,7 @@ class EstimateController extends Controller
             $user->notify(new EstimateNotification($estimate));
         }
         
-        return redirect()->route('owner.estimateReject')->with('success', 'Estimate updated successfully!');
+        return redirect()->back()->with('success', 'Estimate updated successfully!');
     }
 
     public function accept(Request $request, $group_id)
@@ -329,7 +361,7 @@ class EstimateController extends Controller
             $user->notify(new EstimateNotification($estimate));
         }
         
-        return redirect()->route('owner.estimate')->with('success', 'Estimate updated successfully!');
+        return redirect()->back()->with('success', 'Estimate updated successfully!');
     }
 
     public function export($group_id)
@@ -345,5 +377,11 @@ class EstimateController extends Controller
         $projects = Project::where('status', 'new')->latest()->get();
         
         return view('owner.createEstimate', compact('projects'));
+    }
+    
+     public function exportPdf($group_id)
+    {
+        $pdf = new EstimatesPdf($group_id);
+        return $pdf->export();
     }
 }

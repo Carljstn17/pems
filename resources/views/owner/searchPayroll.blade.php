@@ -24,6 +24,7 @@
                         <th scope="col"><span class="bold text-nowrap">P-Batch</span></th>
                         <th scope="col"><span class="bold text-nowrap">Project Description</span></th>
                         <th scope="col"><span class="bold text-nowrap">Entry By</span></th>
+                        <th scope="col"><span class="bold text-nowrap">Status</span></th>
                         <th scope="col"><span class="bold text-nowrap">Date</span></th>
                     </tr>
                 </thead>
@@ -37,6 +38,7 @@
                                 {{ $batches->entry->username }}
                             </span>
                         </td>
+                        <td><span class="text-nowrap">{{ $batches->status }}</span></td>
                         <td><span class="text-nowrap">{{ $batches->created_at->diffForHumans() }}</span></td>
                     </tr>
                     @empty

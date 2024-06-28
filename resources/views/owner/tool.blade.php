@@ -41,12 +41,12 @@
                     @foreach($toolsByType as $toolType => $toolsInType) 
                         @foreach($toolsInType as $tool)
                             <tr>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->tool_type }}">{{ Str::limit($tool->tool_type, 8) }}</td>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->property }}">{{ Str::limit($tool->property, 8) }}</td>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->tool_name }}">{{ Str::limit($tool->tool_name, 8) }}</td>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->unit_cost }}">{{ Str::limit(number_format($tool->unit_cost, 2), 8) }}</td>
-                                <td class="text-success text-nowrap" data-toggle="tooltip" title="{{ $tool->toolReport->status }}">{{ Str::limit($tool->toolReport->status, 8) }}</td>
-                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->toolReport->whereabout }}">{{ Str::limit($tool->toolReport->whereabout, 8) }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->tool_type }}">{{ $tool->tool_type}}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->property }}">{{ $tool->property }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->tool_name }}">{{ $tool->tool_name }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->unit_cost }}">{{ number_format($tool->unit_cost, 2) }}</td>
+                                <td class="text-success text-nowrap" data-toggle="tooltip" title="{{ $tool->toolReport->status }}">{{ $tool->toolReport->status }}</td>
+                                <td class="text-nowrap" data-toggle="tooltip" title="{{ $tool->toolReport->whereabout }}">{{ $tool->toolReport->whereabout }}</td>
                             </tr>
                         @endforeach
                     @endforeach

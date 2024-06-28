@@ -32,4 +32,9 @@ class Advance extends Model
     {
         return $this->belongsTo(Payroll::class, 'payroll_id');
     }
+    
+    public function laborer()
+    {
+        return $this->belongsTo(User::class, 'user_id')->withTrashed();
+    }
 }

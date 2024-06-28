@@ -24,21 +24,53 @@
                                 <tr>
                                     <td class="col-md-1">{{ $i }}</td>
                                     <td>
-                                        <input type="text" class="form-control no-border" name="suppliers[{{ $i }}][name]">
+                                        <input type="text" class="form-control no-border name" name="suppliers[{{ $i }}][name]" value="{{ old('suppliers.' . $i . '.name') }}">
+                                        @error('suppliers.' . $i . '.name')
+                                            <div class="text-danger px-2">{{ $message }}</div>
+                                        @enderror
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control no-border" name="suppliers[{{ $i }}][contact]">
+                                        <input type="text" class="form-control no-border contact" name="suppliers[{{ $i }}][contact]" value="{{ old('suppliers.' . $i . '.contact') }}">
+                                        @error('suppliers.' . $i . '.contact')
+                                            <div class="text-danger px-2">{{ $message }}</div>
+                                        @enderror
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control no-border" name="suppliers[{{ $i }}][address]">
+                                        <input type="text" class="form-control no-border address" name="suppliers[{{ $i }}][address]" value="{{ old('suppliers.' . $i . '.address') }}">
+                                        @error('suppliers.' . $i . '.address')
+                                            <div class="text-danger px-2">{{ $message }}</div>
+                                        @enderror
                                     </td>
                                 </tr>
                             @endfor
+                            
                         </tbody>
                     </table>
                     <button type="submit" class="btn btn-primary">Submit Supplier</button>
                 </form>
+                @if ($errors->any())
+                    <script>
+                        $(document).ready(function() {
+                            $('#createSupplierModal').modal('show');
+                        });
+                    </script>
+                @endif
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function storeInputValues() {
+        sessionStorage.setItem('name', document.getElementsByClassName('name').user_id);
+        sessionStorage.setItem('contact', document.getElementsByClassName('contact').value);
+        sessionStorage.setItem('address', document.getElementsByClassName('address').value);
+    }
+
+    // Function to retrieve and populate input values when modal is shown
+    function populateInputValues() {
+        document.getElementsByClassName('name').value = sessionStorage.getItem('name');
+        document.getElementsByClassName('contact').value = sessionStorage.getItem('contact');
+        document.getElementsByClassName('address').value = sessionStorage.getItem('address');
+    }
+</script>

@@ -12,8 +12,8 @@
         </div>
     </div>
 
-    <div class="py-2 mt-3">
-        <div class="d-flex justify-content-end border-bottom border-subtle pb-3 gap-2">
+    <div class="pb-2 m-3">
+        <div class="d-flex justify-content-end gap-2">
             <form action="" method="GET" >
                 <div class="input-group">
                     <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
@@ -22,8 +22,9 @@
             </form>
         </div>
     </div>
-
-        <table class="mt-3 table table-bordered">
+    <div class="mt-3 pb-1 px-3">
+        <div class="table-responsive">
+        <table class=" table table-bordered">
             <thead>
                 <tr>
                     <th><span class="bold">Date</span></th>
@@ -40,12 +41,14 @@
                     <tr>
                         <td class="text-nowrap">{{ $advance->created_at->format('y-m-d') }}</td>
                         <td>{{ $advance->amount }}</td>
-                        <td style="color: {{ $advance->remarks === 'add' ? 'green' : 'red' }}">{{ $advance->remarks }}</td>
+                        <td style="color: {{ $advance->remarks === 'valid' ? 'green' : 'red' }}">{{ $advance->remarks === 'valid' ? 'Not yet payrolled' : 'Payrolled' }}</td>
                         <td>{{ $advance->payroll_id }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        </div>
+    </div>
 
     <div class="mt-3 pb-3 float-end">
         {{ $advances->links('vendor.pagination.bootstrap-4') }}

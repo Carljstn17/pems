@@ -7,10 +7,11 @@
 
         <div class="pb-2 m-3">
             <div class="d-flex justify-content-between gap-2">
-                <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#createEstimateModal" style="transition: 0.8s;">
-                    <span class="d-none d-sm-inline">Create New Estimate</span>
+                <a href="{{ route('owner.estimate.form') }}" class="btn btn-outline-dark" style="transition: 0.8s; display: inline-flex; align-items: center;" >
+                    <i class="bi bi-plus"></i>
+                    <span class="d-none d-sm-inline text-nowrap">Create New Estimate</span>
                     <span class="d-sm-inline d-sm-none">Create</span>
-                </button>
+                </a>
 
                 <form action="{{ route('owner.search.estimate.reject') }}" method="GET">
                     <div class="input-group">

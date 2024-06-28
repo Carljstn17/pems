@@ -1,5 +1,5 @@
 main{
-    margin-top: 10rem;
+    margin-top: 5rem;
 }
 
 .letter{
@@ -30,3 +30,10 @@ main{
   ::-webkit-scrollbar-track {
     background-color: #f1f1f1;
   }
+  
+.no-border{
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    font-size: 30px;
+}

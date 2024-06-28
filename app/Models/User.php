@@ -26,7 +26,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'fname',
+        'lname',
+        'mname',
         'email',
         'password',
         'role',
@@ -35,7 +37,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'birthdate', 
         'address',
         'image',
-        'last_updated_at'
+        'last_updated_at',
+        'srole',
+        'project_id'        
     ];
 
     protected $dates = [

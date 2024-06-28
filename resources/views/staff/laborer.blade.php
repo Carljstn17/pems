@@ -3,7 +3,7 @@
     @section('content')
 
     <div class="py-2 mt-2">
-        <i class="fs-5 bi-person-plus"></i> <span class="d-sm-inline fs-5 head">Account</span>
+        <i class="fs-5 bi-person-plus"></i> <span class="d-sm-inline fs-5 head">Account | Laborer only | {{ $selectedProject->project_dsc ?? '' }}</span> 
     </div>    
         
         <div class=" m-3 d-flex justify-content-between  gap-2">
@@ -30,36 +30,59 @@
                     <table class="table table-bordered" id="myTable">
                         <thead class="header">
                             <tr>
-                                <th class="col-md-1">Role</th>
-                                <th class="col-md-3">Email</th>
-                                <th class="col-md-1">Contact</th>
+                                <th class="col-md-1">Username
+                                    <div class="dropdown d-inline float-end" id="selectedProject">
+                                        <i class="bi bi-funnel dropdown-toggle" id="filterDropdown" data-bs-toggle="dropdown" style="cursor: pointer;"></i>
+                                        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                                                <li><a class="dropdown-item {{ request('project_id') == '' ? 'active' : '' }}" href="#" data-role="all" onclick="selectProject('', 'All')">All</a></li>
+                                            @foreach($projects as $project)
+                                                <li><a class="dropdown-item {{ request('project_id') == $project->id ? 'active' : '' }}" href="#" onclick="selectProject('{{ $project->id }}', '{{ $project->project_id }} - {{ $project->project_dsc }}')">{{ $project->project_id }} - {{ $project->project_dsc }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    
+                                    <form id="filterForm" method="GET" action="{{ route('users.filter') }}">
+                                        @csrf
+                                        <input type="hidden" name="project_id" id="projectIdInput" value="{{ request('project_id') }}">
+                                    </form>
+                                </th>
                                 <th class="col-md-2">FullName</th>
-                                <th class="col-md-1">Username</th>
+                                <th class="col-md-2">Email</th>
+                                <th class="col-md-1">Contact</th>
                                 <th class="col-md-1"></th>
                             </tr>
                         </thead>
                     <tbody>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->role }}">{{ $user->role }}</td>
+                                    <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->username }}">{{ $user->username }}</td>
+                                    <td class="text-nowrap col-md-2" data-toggle="tooltip" title="{{ $user->name }}">{{ $user->lname }} {{ $user->fname }} {{ $user->mname }}</td>
                                     <td class="text-nowrap col-md-3" data-toggle="tooltip" title="{{ $user->email }}">
-                                        <span class="d-none d-sm-inline">{{ Str::limit($user->email, 20) }}</span>
+                                        <span class="d-none d-sm-inline">{{ $user->email }}</span>
                                         <span class="d-sm-inline d-sm-none">{{ Str::limit($user->email, 8) }}</span>
                                         </td>
+                                        <span class="d-none d-sm-inline">{{ Str::limit($user->name, 20) }}</span>
+                                        <span class="d-sm-inline d-sm-none">{{ Str::limit($user->name, 8) }}</span>
+                                    </td>
                                     <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->contact }}">
                                         <span class="d-none d-sm-inline">{{ Str::limit($user->contact, 11) }}</span>
                                         <span class="d-sm-inline d-sm-none">{{ Str::limit($user->contact, 8) }}</span>
                                     </td>
-                                    <td class="text-nowrap col-md-2" data-toggle="tooltip" title="{{ $user->name }}">
-                                        <span class="d-none d-sm-inline">{{ Str::limit($user->name, 20) }}</span>
-                                        <span class="d-sm-inline d-sm-none">{{ Str::limit($user->name, 8) }}</span>
-                                    </td>
-                                    <td class="text-nowrap col-md-1" data-toggle="tooltip" title="{{ $user->username }}">{{ $user->username }}</td>
                                     <td class="d-flex justify-content-center gap-2">
    
-                                        <a href="{{ route('staff.show.profile', $user->id) }}" class="btn btn-outline-dark" style="transition: 0.8s;">
+                                        <a href="{{ route('staff.show.profile', $user->id) }}" class="link-dark" style="transition: 0.8s;">
                                             <i class="bi bi-pencil"></i>
                                         </a>
+                                        
+                                        @if((Auth::user() && Auth::user()->srole == 1))
+                                            <form id="deleteStaffForm{{ $user->id }}" method="POST" action="{{ route('owner.user-delete', ['user' => $user->id]) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-outline-danger" onclick="confirmDeleteStaff({{ $user->id }})">
+                                                    <i class="bi bi-trash3"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>  
                                 </tr>
                                 @include('owner.update-modal', ['user' => $user])
@@ -124,6 +147,12 @@
                     }
                 }
             }
+        }
+        
+        function selectProject(projectId, projectDesc) {
+            document.getElementById("selectedProject").innerText = projectDesc;
+            document.getElementById("projectIdInput").value = projectId;
+            document.getElementById("filterForm").submit();
         }
         </script>
 @endsection

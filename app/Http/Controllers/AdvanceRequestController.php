@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\AdvanceRequest;
+use App\Models\Payroll;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -28,7 +29,10 @@ class AdvanceRequestController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric',
+            'amount' => 'required|numeric|max:9999',
+            'text' => 'required|string|max:255'
+        ], [
+            'amount.max' => 'You can only request less than 10,000*'
         ]);
 
         $user = Auth::user();
@@ -75,19 +79,28 @@ class AdvanceRequestController extends Controller
 
     public function show($id){
         $requests = AdvanceRequest::where('id', $id)->firstOrFail();
+        $laborers = User::where('role', 'laborer')->get();
         
-        return view('staff.showRequestNotif', compact('requests'));
+        return view('staff.showRequestNotif', compact('requests', 'laborers'));
     }
 
     public function allRequest(){
-        $requests = AdvanceRequest::latest()->paginate(8);
+        $requests = AdvanceRequest::orderByRaw("FIELD(status, 'pending', 'accepted')")
+                              ->latest()
+                              ->paginate(20);
 
         return view('staff.allRequest', compact('requests'));
     }
     
     public function acceptRequest($advanceId)
     {
-        AdvanceRequest::where('id', $advanceId)->update(['status' => 'accepted']);
+        $user = Auth::user();
+        AdvanceRequest::where('id', $advanceId)->update([
+            'status' => 'accepted',
+            'accepted_by' => $user->id
+            ]);
+            
+        
 
         return redirect()->back()->with('success', 'advance successfully accepted!');
     }

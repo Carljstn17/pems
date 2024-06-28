@@ -16,7 +16,7 @@
                                     <span class="d-none d-sm-inline">PR ID: {{ $project->project_id }}</span>
                                     <span class="d-sm-inline d-sm-none">Pr-id: {{ $project->project_id }}</span>
                                 </th>
-                                <th class="narrow-cell">
+                                <th class="col-md-4">
                                     <span class="d-none d-sm-inline">Date started: {{ $project->Date_started }}</span>
                                     <span class="d-sm-inline d-sm-none">Ds: {{ $project->Date_started }}</span>
                                 </th>
@@ -26,7 +26,7 @@
                                     <span class="d-none d-sm-inline">Location: {{ $project->location }}</span>
                                     <span class="d-sm-inline d-sm-none">Loc: {{ $project->location }}</span>
                                 </th>
-                                <th class="narrow-cell">
+                                <th class="col-md-4">
                                     <span class="d-none d-sm-inline">Date created: {{ $project->created_at->format('Y-m-d') }}</span>
                                     <span class="d-sm-inline d-sm-none">Dc: {{ $project->created_at->format('Y-m-d') }}</span>
                                 </th>
@@ -68,7 +68,7 @@
                     </table>
                     </div>
 
-                    @if(Auth::user() && Auth::user()->id == $project->user_id)
+                    @if(Auth::user() && Auth::user()->id == $project->user_id || (Auth::user() && Auth::user()->srole == 1))
                         <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmationModal{{ $project->id }}">
                             Finish Project
                         </button>

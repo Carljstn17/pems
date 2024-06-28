@@ -28,7 +28,7 @@ class ConcernController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'concern' => 'required|string',
+            'concern' => 'required|string|max:255',
         ]);
 
         $user = Auth::user();
@@ -73,7 +73,7 @@ class ConcernController extends Controller
     }
 
     public function allConcern(){
-        $concerns = Concern::latest()->paginate(4);
+        $concerns = Concern::latest()->paginate(20);
         
         return view('staff.allConcern', compact('concerns'));
     }

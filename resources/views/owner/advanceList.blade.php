@@ -3,17 +3,15 @@
 @section('content')
     <div class="py-2 mt-2 mb-3">
         <div class="d-flex align-items-center">
-            <div class="d-sm-none me-2">
-                <a href="{{ url()->previous() }}" class="text-secondary text-decoration-none">
-                    <i class="bi-backspace"></i>
-                </a>
-            </div>
             <i class="fs-5 bi-wallet me-2"></i> <span class=" d-sm-inline">Payroll | Advance List</span>
         </div>
     </div>
 
-    <div class="py-2 mt-3">
-        <div class="d-flex justify-content-end border-bottom border-subtle pb-3 gap-2">
+    <div class="pb-2 m-3">
+        <div class="d-flex justify-content-between gap-2">
+                <a href="{{ route('owner.payroll') }}" class="btn btn-outline-dark">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
             <form action="" method="GET" >
                 <div class="input-group">
                     <input type="text" class="form-control border-dark-subtle" name="query" placeholder="Search...">
@@ -23,7 +21,7 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div class="px-3 pb-1">
     <table class="mt-3 table table-bordered">
         <thead>
             <tr>
@@ -38,9 +36,10 @@
             @foreach ($advances as $advance)
                 <tr>
                     <td class="text-nowrap" data-toggle="tooltip" title="{{ $advance->created_at->format('Y-m-d') }}">{{ $advance->created_at->format('y-m-d') }}</td>
-                    <td class="text-nowrap" data-toggle="tooltip" title="{{ $advance->name }}">{{ Str::limit($advance->name, 15) }}</td>
+                    <td class="text-nowrap" data-toggle="tooltip" title="{{optional($advance->laborer)->fname}} {{optional($advance->laborer)->mname}} {{optional($advance->laborer)->lname}}">
+                        {{optional($advance->laborer)->fname}} {{optional($advance->laborer)->mname}} {{optional($advance->laborer)->lname}}
                     <td>{{ $advance->amount }}</td>
-                    <td style="color: {{ $advance->remarks === 'add' ? 'green' : 'red' }}">{{ $advance->remarks }}</td>
+                    <td style="color: {{ $advance->remarks === 'valid' ? 'green' : 'red' }}">{{ $advance->remarks === 'valid' ? 'Not yet payrolled' : 'Payrolled' }}</td>
                     <td>{{ $advance->payroll_id }}</td>
                 </tr>
             @endforeach
